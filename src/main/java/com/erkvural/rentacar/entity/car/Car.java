@@ -3,6 +3,7 @@ package com.erkvural.rentacar.entity.car;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,4 +35,8 @@ public class Car {
     @ManyToOne()
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<CarMaintenance> carMaintenances;
 }
