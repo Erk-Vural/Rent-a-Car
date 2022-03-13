@@ -3,7 +3,6 @@ package com.erkvural.rentacar.service.car;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.ColorCreateDto;
-import com.erkvural.rentacar.dto.car.delete.ColorDeleteDto;
 import com.erkvural.rentacar.dto.car.get.ColorGetDto;
 import com.erkvural.rentacar.dto.car.update.ColorUpdateDto;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public interface ColorService {
 
     DataResult<ColorGetDto> getById(long id);
 
-    Result update(ColorUpdateDto colorUpdateDto);
+    Result update(long id, ColorUpdateDto colorUpdateDto);
 
-    Result delete(ColorDeleteDto colorDeleteDto);
+    Result delete(long colorDeleteDto);
 }

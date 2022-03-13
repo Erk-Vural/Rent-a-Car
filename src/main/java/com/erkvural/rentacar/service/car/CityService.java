@@ -3,12 +3,13 @@ package com.erkvural.rentacar.service.car;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CityCreateDto;
-import com.erkvural.rentacar.dto.car.delete.CityDeleteDto;
 import com.erkvural.rentacar.dto.car.get.CityGetDto;
 import com.erkvural.rentacar.dto.car.update.CityUpdateDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface CityService {
     Result add(CityCreateDto cityCreateDto);
 
@@ -16,7 +17,7 @@ public interface CityService {
 
     DataResult<CityGetDto> getById(long id);
 
-    Result update(CityUpdateDto cityUpdateDto);
+    Result update(long id, CityUpdateDto cityUpdateDto);
 
-    Result delete(CityDeleteDto cityDeleteDto);
+    Result delete(long cityDeleteDto);
 }
