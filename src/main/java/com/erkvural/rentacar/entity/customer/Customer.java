@@ -1,20 +1,23 @@
 package com.erkvural.rentacar.entity.customer;
 
 import com.erkvural.rentacar.core.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.erkvural.rentacar.entity.car.CarRental;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 @Table(name = "CUSTOMERS")
 public class Customer extends User {
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<CarRental> carRentals;
 }
