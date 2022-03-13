@@ -22,4 +22,8 @@ public class OrderedAdditionalService {
     @JoinColumn(name = "additional_service_id", nullable = false)
     private AdditonalService additionalService;
 
+    @ManyToOne()
+    @JoinColumn(name = "car_rental_id", nullable = false)
+    private CarRental carRental;
+
 }

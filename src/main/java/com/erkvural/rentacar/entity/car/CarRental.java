@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -47,4 +48,8 @@ public class CarRental {
     @ManyToOne()
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
+
+    @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<OrderedAdditionalService> orderedAdditionalServices;
 }
