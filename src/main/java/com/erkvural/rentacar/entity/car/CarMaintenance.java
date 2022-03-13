@@ -27,5 +27,5 @@ public class CarMaintenance {
 
     @ManyToOne()
     @JoinColumn(name = "car_id", nullable = false)
-    private Car carId;
+    private Car car;
 }
