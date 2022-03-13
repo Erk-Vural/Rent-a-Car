@@ -16,8 +16,8 @@ import javax.persistence.Table;
 @Table(name = "CORPORATE_CUSTOMERS")
 public class CorporateCustomer extends Customer {
     @Column(name = "company_name", length = 64, nullable = false)
-    String companyName;
+    private String companyName;
 
     @Column(name = "tax_number", length = 64, nullable = false)
-    String taxNumber;
+    private String taxNumber;
 }

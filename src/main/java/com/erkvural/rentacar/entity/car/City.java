@@ -28,5 +28,5 @@ public class City {
 
     @OneToMany(mappedBy = "returnedCity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Set<CarRental> ReturnedCityCarRental;
+    private Set<CarRental> ReturnedCityCarRentals;
 }
