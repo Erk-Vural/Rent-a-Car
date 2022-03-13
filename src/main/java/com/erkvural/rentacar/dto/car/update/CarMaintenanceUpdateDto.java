@@ -12,9 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 public class CarMaintenanceUpdateDto {
-    @NotNull
-    @Positive
-    private long id;
 
     @Size(min = 2, max = 50)
     @NotNull

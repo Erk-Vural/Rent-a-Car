@@ -12,10 +12,6 @@ import javax.validation.constraints.*;
 
 public class CarUpdateDto {
     @NotNull
-    @Positive
-    private long id;
-
-    @NotNull
     @Min(10)
     @Max(500)
     private double dailyPrice;

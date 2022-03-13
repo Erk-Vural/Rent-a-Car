@@ -14,9 +14,6 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor
 
 public class OrderedAdditionalServiceUpdateDto {
-    @NotNull
-    @Positive
-    private long id;
 
     @NotNull
     @PositiveOrZero

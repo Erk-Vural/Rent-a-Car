@@ -12,9 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 public class CarRentalUpdateDto {
-    @NotNull
-    @Positive
-    private long id;
 
     private LocalDate startDate;
 

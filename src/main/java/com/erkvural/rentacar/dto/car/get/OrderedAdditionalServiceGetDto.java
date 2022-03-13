@@ -10,9 +10,9 @@ import lombok.*;
 
 public class OrderedAdditionalServiceGetDto {
 
-    private String additionalServiceName;
-
     private int quantity;
+
+    private String additionalServiceName;
 
     private long carRentalId;
 }

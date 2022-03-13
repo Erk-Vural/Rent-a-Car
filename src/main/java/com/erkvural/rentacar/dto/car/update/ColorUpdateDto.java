@@ -13,9 +13,6 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 
 public class ColorUpdateDto {
-    @NotNull
-    @Positive
-    private long id;
 
     @NotNull
     @NotBlank

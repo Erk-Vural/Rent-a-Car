@@ -15,10 +15,6 @@ import javax.validation.constraints.Size;
 public class CityUpdateDto {
 
     @NotNull
-    @Positive
-    private long id;
-
-    @NotNull
     @Size(min = 2, max = 50)
     private String name;
 }

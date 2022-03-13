@@ -12,10 +12,6 @@ import javax.validation.constraints.*;
 
 public class AdditionalServiceUpdateDto {
     @NotNull
-    @Positive
-    private long id;
-
-    @NotNull
     @NotBlank
     private String name;
 
