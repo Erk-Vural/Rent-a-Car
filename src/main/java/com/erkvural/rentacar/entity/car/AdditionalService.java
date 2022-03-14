@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "ADDITIONAL_SERVICES")
-public class AdditonalService {
+public class AdditionalService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

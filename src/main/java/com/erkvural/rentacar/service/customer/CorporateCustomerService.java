@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.customer;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.customer.create.CorporateCustomerCreateDto;
@@ -15,9 +16,9 @@ public interface CorporateCustomerService {
 
     DataResult<List<CorporateCustomerGetDto>> getAll();
 
-    DataResult<CorporateCustomerGetDto> getById(long id);
+    DataResult<CorporateCustomerGetDto> getById(long id) throws BusinessException;
 
-    Result update(long id, CorporateCustomerUpdateDto corporateCustomerUpdateDto);
+    Result update(long id, CorporateCustomerUpdateDto corporateCustomerUpdateDto) throws BusinessException;
 
-    Result delete(long id);
+    Result delete(long id) throws BusinessException;
 }

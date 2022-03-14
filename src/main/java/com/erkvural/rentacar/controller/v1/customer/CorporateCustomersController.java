@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.controller.v1.customer;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.customer.create.CorporateCustomerCreateDto;
@@ -34,17 +35,17 @@ public class CorporateCustomersController {
     }
 
     @GetMapping("/get")
-    public DataResult<CorporateCustomerGetDto> get(@RequestParam("id") long id) {
+    public DataResult<CorporateCustomerGetDto> get(@RequestParam("id") long id) throws BusinessException {
         return corporateCustomerService.getById(id);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CorporateCustomerUpdateDto corporateCustomerUpdateDto) {
+    public Result update(@RequestParam("id") long id, @RequestBody CorporateCustomerUpdateDto corporateCustomerUpdateDto) throws BusinessException {
         return this.corporateCustomerService.update(id, corporateCustomerUpdateDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) {
+    public Result delete(@RequestParam("id") long id) throws BusinessException {
         return this.corporateCustomerService.delete(id);
     }
 }

@@ -26,7 +26,7 @@ public class OrderedAdditionalService {
 
     @ManyToOne()
     @JoinColumn(name = "additional_service_id", nullable = false)
-    private AdditonalService additionalService;
+    private AdditionalService additionalService;
 
     @ManyToOne()
     @JoinColumn(name = "car_rental_id", nullable = false)

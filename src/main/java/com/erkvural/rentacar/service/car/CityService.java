@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CityCreateDto;
@@ -11,13 +12,13 @@ import java.util.List;
 
 @Service
 public interface CityService {
-    Result add(CityCreateDto cityCreateDto);
+    Result add(CityCreateDto cityCreateDto) throws BusinessException;
 
     DataResult<List<CityGetDto>> getAll();
 
-    DataResult<CityGetDto> getById(long id);
+    DataResult<CityGetDto> getById(long id) throws BusinessException;
 
-    Result update(long id, CityUpdateDto cityUpdateDto);
+    Result update(long id, CityUpdateDto cityUpdateDto) throws BusinessException;
 
-    Result delete(long cityDeleteDto);
+    Result delete(long cityDeleteDto) throws BusinessException;
 }

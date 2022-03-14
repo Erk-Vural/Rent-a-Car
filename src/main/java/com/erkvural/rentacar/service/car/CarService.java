@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CarCreateDto;
@@ -16,7 +17,7 @@ public interface CarService {
 
     DataResult<List<CarGetDto>> getAll();
 
-    DataResult<CarGetDto> getById(long id);
+    DataResult<CarGetDto> getById(long id) throws BusinessException;
 
     DataResult<List<CarGetDto>> getAllPaged(int pageNo, int pageSize);
 
@@ -24,7 +25,7 @@ public interface CarService {
 
     DataResult<List<CarGetDto>> getAllByDailyPriceLessThanEqual(double dailyPrice);
 
-    Result update(long id, CarUpdateDto carUpdateDto);
+    Result update(long id, CarUpdateDto carUpdateDto) throws BusinessException;
 
-    Result delete(long carDeleteDto);
+    Result delete(long id) throws BusinessException;
 }

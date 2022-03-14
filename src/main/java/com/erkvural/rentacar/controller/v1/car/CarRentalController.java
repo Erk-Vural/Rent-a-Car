@@ -1,8 +1,10 @@
 package com.erkvural.rentacar.controller.v1.car;
 
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
+import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.dto.car.create.CarRentalCreateDto;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetDto;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateDto;
@@ -24,7 +26,7 @@ public class CarRentalController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarRentalCreateDto carMaintenanceCreateDto) {
+    public Result add(@RequestBody CarRentalCreateDto carMaintenanceCreateDto) throws BusinessException {
         return this.carRentalService.add(carMaintenanceCreateDto);
     }
 
@@ -34,17 +36,17 @@ public class CarRentalController {
     }
 
     @GetMapping("/get")
-    public DataResult<CarRentalGetDto> get(@RequestParam("id") long id) {
+    public DataResult<CarRentalGetDto> get(@RequestParam("id") long id) throws BusinessException {
         return carRentalService.getById(id);
     }
 
     @GetMapping("/getByCarId")
-    public DataResult<CarRentalGetDto> getByCarId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarRentalGetDto>> getByCarId(@RequestParam("id") int id) {
         return carRentalService.getByCarId(id);
     }
 
     @GetMapping("/getByCustomerId")
-    public DataResult<CarRentalGetDto> getByCustomerId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarRentalGetDto>> getByCustomerId(@RequestParam("id") int id) {
         return carRentalService.getByCustomerId(id);
     }
 
@@ -59,12 +61,12 @@ public class CarRentalController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarRentalUpdateDto carRentalUpdateDto) {
+    public Result update(@RequestParam("id") long id, @RequestBody CarRentalUpdateDto carRentalUpdateDto) throws BusinessException {
         return this.carRentalService.update(id, carRentalUpdateDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) {
+    public Result delete(@RequestParam("id") long id) throws BusinessException {
         return this.carRentalService.delete(id);
     }
 }

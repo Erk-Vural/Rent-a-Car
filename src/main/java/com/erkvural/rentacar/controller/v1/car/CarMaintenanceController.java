@@ -1,7 +1,9 @@
 package com.erkvural.rentacar.controller.v1.car;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
+import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateDto;
 import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetDto;
 import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateDto;
@@ -23,7 +25,7 @@ public class CarMaintenanceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarMaintenanceCreateDto carMaintenanceCreateDto) {
+    public Result add(@RequestBody CarMaintenanceCreateDto carMaintenanceCreateDto) throws BusinessException {
         return this.carMaintenanceService.add(carMaintenanceCreateDto);
     }
 
@@ -33,12 +35,12 @@ public class CarMaintenanceController {
     }
 
     @GetMapping("/get")
-    public DataResult<CarMaintenanceGetDto> get(@RequestParam("id") long id) {
+    public DataResult<CarMaintenanceGetDto> get(@RequestParam("id") long id) throws BusinessException {
         return carMaintenanceService.getById(id);
     }
 
     @GetMapping("/getByCarId")
-    public DataResult<CarMaintenanceGetDto> getByCarId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarMaintenanceGetDto>> getByCarId(@RequestParam("id") int id) {
         return carMaintenanceService.getByCarId(id);
     }
 
@@ -54,12 +56,12 @@ public class CarMaintenanceController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateDto carMaintenanceUpdateDto) {
+    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateDto carMaintenanceUpdateDto) throws BusinessException {
         return this.carMaintenanceService.update(id, carMaintenanceUpdateDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) {
+    public Result delete(@RequestParam("id") long id) throws BusinessException {
         return this.carMaintenanceService.delete(id);
     }
 }

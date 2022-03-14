@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.controller.v1.car;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.ColorCreateDto;
@@ -22,7 +23,7 @@ public class ColorController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody ColorCreateDto colorCreateDto) {
+    public Result add(@RequestBody ColorCreateDto colorCreateDto) throws BusinessException {
         return this.colorService.add(colorCreateDto);
     }
 
@@ -32,17 +33,17 @@ public class ColorController {
     }
 
     @GetMapping("/get")
-    public DataResult<ColorGetDto> get(@RequestParam("id") long id) {
+    public DataResult<ColorGetDto> get(@RequestParam("id") long id) throws BusinessException {
         return colorService.getById(id);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateDto colorUpdateDto) {
+    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateDto colorUpdateDto) throws BusinessException {
         return this.colorService.update(id, colorUpdateDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) {
+    public Result delete(@RequestParam("id") long id) throws BusinessException {
         return this.colorService.delete(id);
     }
 }

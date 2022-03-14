@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.controller.v1.car;
 
+import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.AdditionalServiceCreateDto;
@@ -23,7 +24,7 @@ public class AdditionalServiceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody AdditionalServiceCreateDto additionalServiceCreateDto) {
+    public Result add(@RequestBody AdditionalServiceCreateDto additionalServiceCreateDto) throws BusinessException {
         return this.additionalServiceService.add(additionalServiceCreateDto);
     }
 
@@ -34,17 +35,17 @@ public class AdditionalServiceController {
     }
 
     @GetMapping("/get")
-    public DataResult<AdditionalServiceGetDto> get(@RequestParam("id") long id) {
+    public DataResult<AdditionalServiceGetDto> get(@RequestParam("id") long id) throws BusinessException {
         return additionalServiceService.getById(id);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody AdditionalServiceUpdateDto additionalServiceUpdateDto) {
+    public Result update(@RequestParam("id") long id, @RequestBody AdditionalServiceUpdateDto additionalServiceUpdateDto) throws BusinessException {
         return this.additionalServiceService.update(id, additionalServiceUpdateDto);
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) {
+    public Result delete(@RequestParam("id") long id) throws BusinessException {
         return this.additionalServiceService.delete(id);
     }
 }
