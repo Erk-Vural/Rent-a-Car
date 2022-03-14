@@ -26,10 +26,12 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateDto> orderedAdditionalServiceCreateDtos, long carRentalId) throws BusinessException {
-        for (OrderedAdditionalServiceCreateDto requests : orderedAdditionalServiceCreateDtos) {
-            OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(requests, OrderedAdditionalService.class);
+    public void add(Set<OrderedAdditionalServiceCreateDto> orderedAdditionalServiceCreateDtoSet, long carRentalId) throws BusinessException {
+        for (OrderedAdditionalServiceCreateDto createDto : orderedAdditionalServiceCreateDtoSet) {
+            OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createDto, OrderedAdditionalService.class);
+
             orderedAdditionalService.setCarRental(carRentalRepository.findById(carRentalId));
+
             this.orderedAdditionalServiceRepository.save(orderedAdditionalService);
         }
     }
@@ -40,13 +42,14 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public Double calculateBill(List<OrderedAdditionalService> orderedAdditionalServices) {
-        double tempBill = 0;
+    public Double calDailyTotal(Set<OrderedAdditionalService> orderedAdditionalServices) {
+        double dailyTotal = 0;
 
         for (OrderedAdditionalService orderedAdditionalService : orderedAdditionalServices) {
-            tempBill += orderedAdditionalService.getQuantity() * orderedAdditionalService.getAdditionalService().getDailyPrice();
+
+            dailyTotal += orderedAdditionalService.getQuantity() * orderedAdditionalService.getAdditionalService().getDailyPrice();
         }
 
-        return tempBill;
+        return dailyTotal;
     }
 }

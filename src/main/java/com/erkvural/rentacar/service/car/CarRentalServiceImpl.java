@@ -11,7 +11,6 @@ import com.erkvural.rentacar.dto.car.get.CarRentalGetDto;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateDto;
 import com.erkvural.rentacar.entity.car.CarMaintenance;
 import com.erkvural.rentacar.entity.car.CarRental;
-import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
 import com.erkvural.rentacar.repository.car.CarMaintenanceRepository;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.repository.car.CarRepository;
@@ -44,14 +43,17 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Override
     public Result add(CarRentalCreateDto carRentalCreateDto) throws BusinessException {
         checkCarIdExist(carRentalCreateDto.getCarId());
+        checkUnderMaintenance(carRentalCreateDto.getCarId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(carRentalCreateDto, CarRental.class);
-        this.carRentalRepository.save(carRental);
 
         this.orderedAdditionalServiceService.add(carRentalCreateDto.getOrderedAdditionalServiceCreateDtos(), carRental.getId());
+
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
-        carRental.setBill(calculateBill(carRental));
+        carRental.setBill(calRentedTotal(carRental.getId()));
+
+        this.carRentalRepository.save(carRental);
 
         return new SuccessResult("Success, Car Rental added: " + carRental);
     }
@@ -60,10 +62,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public SuccessDataResult<List<CarRentalGetDto>> getAll() {
         List<CarRental> result = carRentalRepository.findAll();
 
-        List<CarRentalGetDto> response = result.stream()
-                .map(carRental -> modelMapperService.forDto()
-                        .map(carRental, CarRentalGetDto.class))
-                .collect(Collectors.toList());
+        List<CarRentalGetDto> response = result.stream().map(carRental -> modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Car Rentals listed.", response);
     }
@@ -82,8 +81,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public SuccessDataResult<List<CarRentalGetDto>> getByCarId(long carId) {
         List<CarRental> result = this.carRentalRepository.findByCar_Id(carId);
 
-        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto()
-                .map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success,  Car Rental with requested carID found", response);
     }
@@ -92,8 +90,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public SuccessDataResult<List<CarRentalGetDto>> getByCustomerId(long customerId) {
         List<CarRental> result = this.carRentalRepository.findByCustomer_UserId(customerId);
 
-        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto()
-                .map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success,  Car Rental with requested customerID found", response);
     }
@@ -121,10 +118,9 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Override
     public Result update(long id, CarRentalUpdateDto carRentalUpdateDto) throws BusinessException {
         checkCarRentalIdExist(id);
+        checkUnderMaintenance(carRentalUpdateDto.getCarId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(carRentalUpdateDto, CarRental.class);
-
-        checkUnderMaintenance(carRental);
 
         this.carRentalRepository.save(carRental);
 
@@ -141,8 +137,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(id)))
-            throw new BusinessException("Can't find Car with id: " + id);
+        if (Objects.nonNull(carRepository.findById(id))) throw new BusinessException("Can't find Car with id: " + id);
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
@@ -150,29 +145,30 @@ public class CarRentalServiceImpl implements CarRentalService {
             throw new BusinessException("Can't find Car Rental with id: " + id);
     }
 
-    private void checkUnderMaintenance(CarRental carRental) throws BusinessException {
-        List<CarMaintenance> result = this.carMaintenanceRepository.findByCar(carRental.getCar());
+    private void checkUnderMaintenance(long carId) throws BusinessException {
+        List<CarMaintenance> result = this.carMaintenanceRepository.findByCar_Id(carId);
         if (result != null) {
             for (CarMaintenance carMaintenance : result) {
                 if (carMaintenance.getReturnDate() != null) {
-                    throw new BusinessException("Car is under maintenance!");
+                    throw new BusinessException("Car is under maintenance until: " + carMaintenance.getReturnDate());
                 }
             }
         }
     }
 
-    private double calculateBill(CarRental carRental) {
+    private double calRentedTotal(long id) {
 
-        double tempBill = checkCityIds(carRental);
+        CarRental carRental = carRentalRepository.findById(id);
 
         long totalDays = ChronoUnit.DAYS.between(carRental.getStartDate(), carRental.getEndDate());
-        tempBill += totalDays * carRental.getCar().getDailyPrice();
 
-        tempBill += this.orderedAdditionalServiceService.
-                calculateBill((List<OrderedAdditionalService>) this.carRentalRepository.getById(carRental.getCar().getId()).
-                        getOrderedAdditionalServices());
+        double carDailyPrice = carRental.getCar().getDailyPrice();
 
-        return tempBill;
+        double OrderedAdditionalServicesDailyPrice = this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices());
+
+        double dailyTotal = carDailyPrice + OrderedAdditionalServicesDailyPrice;
+
+        return (dailyTotal * totalDays) + checkCityIds(carRental);
     }
 
     private double checkCityIds(CarRental carRental) {

@@ -31,7 +31,8 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
 
 
     @Override
-    public Result add(CorporateCustomerCreateDto corporateCustomerCreateDto) {
+    public Result add(CorporateCustomerCreateDto corporateCustomerCreateDto) throws BusinessException {
+        checkEmailExist(corporateCustomerCreateDto.getEmail());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerCreateDto, CorporateCustomer.class);
         this.corporateCustomerRepository.save(corporateCustomer);
@@ -64,6 +65,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     @Override
     public Result update(long id, CorporateCustomerUpdateDto corporateCustomerUpdateDto) throws BusinessException {
         checkUserIdExist(id);
+        checkEmailExist(corporateCustomerUpdateDto.getEmail());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerUpdateDto, CorporateCustomer.class);
         this.corporateCustomerRepository.save(corporateCustomer);
@@ -85,4 +87,8 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
             throw new BusinessException("Can't find Customer with userId: " + userId);
     }
 
+    private void checkEmailExist(String email) throws BusinessException {
+        if (Objects.nonNull(corporateCustomerRepository.findByEmail(email)))
+            throw new BusinessException("Customer with given email exists: " + email);
+    }
 }

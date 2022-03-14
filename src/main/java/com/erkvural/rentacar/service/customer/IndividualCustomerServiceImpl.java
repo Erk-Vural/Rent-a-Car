@@ -31,7 +31,8 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public Result add(IndividualCustomerCreateDto individualCustomerCreateDto) {
+    public Result add(IndividualCustomerCreateDto individualCustomerCreateDto) throws BusinessException {
+        checkEmailExist(individualCustomerCreateDto.getEmail());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerCreateDto, IndividualCustomer.class);
         this.individualCustomerRepository.save(individualCustomer);
@@ -64,6 +65,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     @Override
     public Result update(long id, IndividualCustomerUpdateDto individualCustomerUpdateDto) throws BusinessException {
         checkUserIdExist(id);
+        checkEmailExist(individualCustomerUpdateDto.getEmail());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerUpdateDto, IndividualCustomer.class);
         this.individualCustomerRepository.save(individualCustomer);
@@ -83,5 +85,10 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     private void checkUserIdExist(long userId) throws BusinessException {
         if (Objects.nonNull(individualCustomerRepository.findByUserId(userId)))
             throw new BusinessException("Can't find Customer with userId: " + userId);
+    }
+
+    private void checkEmailExist(String email) throws BusinessException {
+        if (Objects.nonNull(individualCustomerRepository.findByEmail(email)))
+            throw new BusinessException("Customer with given email exists: " + email);
     }
 }

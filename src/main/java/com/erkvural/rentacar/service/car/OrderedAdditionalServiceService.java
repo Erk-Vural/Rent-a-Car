@@ -5,7 +5,6 @@ import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateDto;
 import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -15,5 +14,5 @@ public interface OrderedAdditionalServiceService {
 
     Set<OrderedAdditionalService> getByCarRentalId(long carRentalId);
 
-    Double calculateBill(List<OrderedAdditionalService> orderedAdditionalServices);
+    Double calDailyTotal(Set<OrderedAdditionalService> orderedAdditionalServices);
 }

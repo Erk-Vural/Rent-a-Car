@@ -42,6 +42,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     @Override
     public Result add(CarMaintenanceCreateDto carMaintenanceCreateDto) throws BusinessException {
         checkCarIdExist(carMaintenanceCreateDto.getCarId());
+        checkIsRented(carMaintenanceCreateDto.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(carMaintenanceCreateDto, CarMaintenance.class);
         this.carMaintenanceRepository.save(carMaintenance);
@@ -139,12 +140,12 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
             throw new BusinessException("Can't find Car Maintenance with id: " + id);
     }
 
-    private void checkIsRented(long id) throws BusinessException {
-        List<CarRental> result = this.carRentalRepository.findByCar_Id(id);
-        if (result != null) {
-            for (CarRental carRental : result) {
+    private void checkIsRented(long carId) throws BusinessException {
+        List<CarRental> results = this.carRentalRepository.findByCar_Id(carId);
+        if (results != null) {
+            for (CarRental carRental : results) {
                 if (carRental.getEndDate() != null) {
-                    throw new BusinessException("Car is already rented!");
+                    throw new BusinessException("Car is rented until: " + carRental.getEndDate());
                 }
             }
         }

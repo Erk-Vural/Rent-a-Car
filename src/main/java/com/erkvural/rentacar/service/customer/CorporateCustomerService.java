@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface CorporateCustomerService {
-    Result add(CorporateCustomerCreateDto corporateCustomerCreateDto);
+    Result add(CorporateCustomerCreateDto corporateCustomerCreateDto) throws BusinessException;
 
     DataResult<List<CorporateCustomerGetDto>> getAll();
 
