@@ -24,7 +24,7 @@ public class IndividualCustomerController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody IndividualCustomerCreateDto individualCustomerCreateDto) {
+    public Result add(@RequestBody IndividualCustomerCreateDto individualCustomerCreateDto) throws BusinessException {
         return this.individualCustomerService.add(individualCustomerCreateDto);
     }
 

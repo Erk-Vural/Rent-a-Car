@@ -25,7 +25,7 @@ public class CorporateCustomersController {
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody CorporateCustomerCreateDto corporateCustomerCreateDto) {
+    public Result add(@RequestBody CorporateCustomerCreateDto corporateCustomerCreateDto) throws BusinessException {
         return this.corporateCustomerService.add(corporateCustomerCreateDto);
     }
 
