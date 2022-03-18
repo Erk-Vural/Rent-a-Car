@@ -24,8 +24,8 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarCreateRequest carCreateDto) {
-        return this.carService.add(carCreateDto);
+    public Result add(@RequestBody CarCreateRequest createRequest) {
+        return this.carService.add(createRequest);
     }
 
 
@@ -56,8 +56,8 @@ public class CarController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarUpdateRequest carUpdateDto) throws BusinessException {
-        return this.carService.update(id, carUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody CarUpdateRequest updateRequest) throws BusinessException {
+        return this.carService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")

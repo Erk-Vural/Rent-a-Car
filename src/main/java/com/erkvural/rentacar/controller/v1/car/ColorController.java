@@ -23,8 +23,8 @@ public class ColorController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody ColorCreateRequest colorCreateDto) throws BusinessException {
-        return this.colorService.add(colorCreateDto);
+    public Result add(@RequestBody ColorCreateRequest createRequest) throws BusinessException {
+        return this.colorService.add(createRequest);
     }
 
     @GetMapping("/getAll")
@@ -38,8 +38,8 @@ public class ColorController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateRequest colorUpdateDto) throws BusinessException {
-        return this.colorService.update(id, colorUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateRequest updateRequest) throws BusinessException {
+        return this.colorService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")

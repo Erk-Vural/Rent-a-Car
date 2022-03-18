@@ -25,8 +25,8 @@ public class CarMaintenanceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarMaintenanceCreateRequest carMaintenanceCreateDto) throws BusinessException {
-        return this.carMaintenanceService.add(carMaintenanceCreateDto);
+    public Result add(@RequestBody CarMaintenanceCreateRequest createRequest) throws BusinessException {
+        return this.carMaintenanceService.add(createRequest);
     }
 
     @GetMapping("/getAll")
@@ -56,8 +56,8 @@ public class CarMaintenanceController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateRequest carMaintenanceUpdateDto) throws BusinessException {
-        return this.carMaintenanceService.update(id, carMaintenanceUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateRequest updateRequest) throws BusinessException {
+        return this.carMaintenanceService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")

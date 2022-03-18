@@ -24,8 +24,8 @@ public class AdditionalServiceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody AdditionalServiceCreateRequest additionalServiceCreateDto) throws BusinessException {
-        return this.additionalServiceService.add(additionalServiceCreateDto);
+    public Result add(@RequestBody AdditionalServiceCreateRequest createRequest) throws BusinessException {
+        return this.additionalServiceService.add(createRequest);
     }
 
 
@@ -40,8 +40,8 @@ public class AdditionalServiceController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody AdditionalServiceUpdateRequest additionalServiceUpdateDto) throws BusinessException {
-        return this.additionalServiceService.update(id, additionalServiceUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody AdditionalServiceUpdateRequest updateRequest) throws BusinessException {
+        return this.additionalServiceService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")

@@ -25,8 +25,8 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody BrandCreateRequest brandCreateDto) throws BusinessException {
-        return this.brandService.add(brandCreateDto);
+    public Result add(@RequestBody BrandCreateRequest createRequest) throws BusinessException {
+        return this.brandService.add(createRequest);
     }
 
 
@@ -41,8 +41,8 @@ public class BrandController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody BrandUpdateRequest brandUpdateDto) throws BusinessException {
-        return this.brandService.update(id, brandUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody BrandUpdateRequest updateRequest) throws BusinessException {
+        return this.brandService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")

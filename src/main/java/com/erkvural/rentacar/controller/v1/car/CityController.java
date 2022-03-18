@@ -24,8 +24,8 @@ public class CityController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CityCreateRequest cityCreateDto) throws BusinessException {
-        return this.cityService.add(cityCreateDto);
+    public Result add(@RequestBody CityCreateRequest createRequest) throws BusinessException {
+        return this.cityService.add(createRequest);
     }
 
     @GetMapping("/getAll")
@@ -39,8 +39,8 @@ public class CityController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CityUpdateRequest cityUpdateDto) throws BusinessException {
-        return this.cityService.update(id, cityUpdateDto);
+    public Result update(@RequestParam("id") long id, @RequestBody CityUpdateRequest updateRequest) throws BusinessException {
+        return this.cityService.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete")
