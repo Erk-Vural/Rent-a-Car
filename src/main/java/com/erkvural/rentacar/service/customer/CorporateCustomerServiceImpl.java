@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.customer.create.CorporateCustomerCreateDto;
-import com.erkvural.rentacar.dto.customer.get.CorporateCustomerGetDto;
-import com.erkvural.rentacar.dto.customer.update.CorporateCustomerUpdateDto;
+import com.erkvural.rentacar.dto.customer.create.CorporateCustomerCreateRequest;
+import com.erkvural.rentacar.dto.customer.get.CorporateCustomerGetResponse;
+import com.erkvural.rentacar.dto.customer.update.CorporateCustomerUpdateRequest;
 import com.erkvural.rentacar.entity.customer.CorporateCustomer;
 import com.erkvural.rentacar.repository.customer.CorporateCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
 
 
     @Override
-    public Result add(CorporateCustomerCreateDto corporateCustomerCreateDto) throws BusinessException {
+    public Result add(CorporateCustomerCreateRequest corporateCustomerCreateDto) throws BusinessException {
         checkEmailExist(corporateCustomerCreateDto.getEmail());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerCreateDto, CorporateCustomer.class);
@@ -41,33 +41,33 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public DataResult<List<CorporateCustomerGetDto>> getAll() {
+    public DataResult<List<CorporateCustomerGetResponse>> getAll() {
         List<CorporateCustomer> result = corporateCustomerRepository.findAll();
 
-        List<CorporateCustomerGetDto> response = result.stream()
+        List<CorporateCustomerGetResponse> response = result.stream()
                 .map(corporateCustomer -> modelMapperService.forDto()
-                        .map(corporateCustomer, CorporateCustomerGetDto.class))
+                        .map(corporateCustomer, CorporateCustomerGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Corporate Customer listed.", response);
     }
 
     @Override
-    public DataResult<CorporateCustomerGetDto> getById(long id) throws BusinessException {
+    public DataResult<CorporateCustomerGetResponse> getById(long id) throws BusinessException {
         checkUserIdExist(id);
 
         CorporateCustomer corporateCustomer = corporateCustomerRepository.getById(id);
-        CorporateCustomerGetDto response = modelMapperService.forDto().map(corporateCustomer, CorporateCustomerGetDto.class);
+        CorporateCustomerGetResponse response = modelMapperService.forDto().map(corporateCustomer, CorporateCustomerGetResponse.class);
 
         return new SuccessDataResult<>("Success, Corporate Customer with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, CorporateCustomerUpdateDto corporateCustomerUpdateDto) throws BusinessException {
+    public Result update(long id, CorporateCustomerUpdateRequest corporateCustomerUpdateRequest) throws BusinessException {
         checkUserIdExist(id);
-        checkEmailExist(corporateCustomerUpdateDto.getEmail());
+        checkEmailExist(corporateCustomerUpdateRequest.getEmail());
 
-        CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerUpdateDto, CorporateCustomer.class);
+        CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerUpdateRequest, CorporateCustomer.class);
         this.corporateCustomerRepository.save(corporateCustomer);
 
         return new SuccessResult("Success, Corporate Customer updated: " + corporateCustomer.getEmail());

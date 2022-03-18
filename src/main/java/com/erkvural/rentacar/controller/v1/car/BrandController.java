@@ -3,10 +3,9 @@ package com.erkvural.rentacar.controller.v1.car;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
-import com.erkvural.rentacar.dto.car.create.BrandCreateDto;
-import com.erkvural.rentacar.dto.car.delete.BrandDeleteDto;
-import com.erkvural.rentacar.dto.car.get.BrandGetDto;
-import com.erkvural.rentacar.dto.car.update.BrandUpdateDto;
+import com.erkvural.rentacar.dto.car.create.BrandCreateRequest;
+import com.erkvural.rentacar.dto.car.get.BrandGetResponse;
+import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.service.car.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,23 +25,23 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody BrandCreateDto brandCreateDto) throws BusinessException {
+    public Result add(@RequestBody BrandCreateRequest brandCreateDto) throws BusinessException {
         return this.brandService.add(brandCreateDto);
     }
 
 
     @GetMapping("/getAll")
-    public DataResult<List<BrandGetDto>> getAll() {
+    public DataResult<List<BrandGetResponse>> getAll() {
         return brandService.getAll();
     }
 
     @GetMapping("/get")
-    public DataResult<BrandGetDto> get(@RequestParam("id") long id) throws BusinessException {
+    public DataResult<BrandGetResponse> get(@RequestParam("id") long id) throws BusinessException {
         return brandService.getById(id);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody BrandUpdateDto brandUpdateDto) throws BusinessException {
+    public Result update(@RequestParam("id") long id, @RequestBody BrandUpdateRequest brandUpdateDto) throws BusinessException {
         return this.brandService.update(id, brandUpdateDto);
     }
 

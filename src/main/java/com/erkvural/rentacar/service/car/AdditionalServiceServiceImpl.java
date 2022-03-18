@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.car.create.AdditionalServiceCreateDto;
-import com.erkvural.rentacar.dto.car.get.AdditionalServiceGetDto;
-import com.erkvural.rentacar.dto.car.update.AdditionalServiceUpdateDto;
+import com.erkvural.rentacar.dto.car.create.AdditionalServiceCreateRequest;
+import com.erkvural.rentacar.dto.car.get.AdditionalServiceGetResponse;
+import com.erkvural.rentacar.dto.car.update.AdditionalServiceUpdateRequest;
 import com.erkvural.rentacar.entity.car.AdditionalService;
 import com.erkvural.rentacar.repository.car.AdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     @Override
-    public Result add(AdditionalServiceCreateDto additionalServiceCreateDto) throws BusinessException {
+    public Result add(AdditionalServiceCreateRequest additionalServiceCreateDto) throws BusinessException {
         checkAdditionalServiceExist(additionalServiceCreateDto.getName());
 
         AdditionalService additionalService = this.modelMapperService.forRequest().map(additionalServiceCreateDto, AdditionalService.class);
@@ -41,28 +41,28 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     @Override
-    public DataResult<List<AdditionalServiceGetDto>> getAll() {
+    public DataResult<List<AdditionalServiceGetResponse>> getAll() {
         List<AdditionalService> result = additionalServiceRepository.findAll();
-        List<AdditionalServiceGetDto> response = result.stream()
+        List<AdditionalServiceGetResponse> response = result.stream()
                 .map(additionalService -> modelMapperService.forDto()
-                        .map(additionalService, AdditionalServiceGetDto.class))
+                        .map(additionalService, AdditionalServiceGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Additional Services listed.", response);
     }
 
     @Override
-    public DataResult<AdditionalServiceGetDto> getById(long id) throws BusinessException {
+    public DataResult<AdditionalServiceGetResponse> getById(long id) throws BusinessException {
         checkAdditionalServiceIdExist(id);
 
         AdditionalService additionalService = additionalServiceRepository.getById(id);
-        AdditionalServiceGetDto response = modelMapperService.forDto().map(additionalService, AdditionalServiceGetDto.class);
+        AdditionalServiceGetResponse response = modelMapperService.forDto().map(additionalService, AdditionalServiceGetResponse.class);
 
         return new SuccessDataResult<>("Success, Additional Service with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, AdditionalServiceUpdateDto additionalServiceUpdateDto) throws BusinessException {
+    public Result update(long id, AdditionalServiceUpdateRequest additionalServiceUpdateDto) throws BusinessException {
         checkAdditionalServiceIdExist(id);
 
         AdditionalService additionalService = this.modelMapperService.forRequest().map(additionalServiceUpdateDto, AdditionalService.class);

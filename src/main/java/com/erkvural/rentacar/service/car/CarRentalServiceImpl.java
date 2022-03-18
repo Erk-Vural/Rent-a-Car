@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.car.create.CarRentalCreateDto;
-import com.erkvural.rentacar.dto.car.get.CarRentalGetDto;
-import com.erkvural.rentacar.dto.car.update.CarRentalUpdateDto;
+import com.erkvural.rentacar.dto.car.create.CarRentalCreateRequest;
+import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
+import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarMaintenance;
 import com.erkvural.rentacar.entity.car.CarRental;
 import com.erkvural.rentacar.repository.car.CarMaintenanceRepository;
@@ -41,7 +41,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result add(CarRentalCreateDto carRentalCreateDto) throws BusinessException {
+    public Result add(CarRentalCreateRequest carRentalCreateDto) throws BusinessException {
         checkCarIdExist(carRentalCreateDto.getCarId());
         checkUnderMaintenance(carRentalCreateDto.getCarId());
 
@@ -59,64 +59,64 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public SuccessDataResult<List<CarRentalGetDto>> getAll() {
+    public SuccessDataResult<List<CarRentalGetResponse>> getAll() {
         List<CarRental> result = carRentalRepository.findAll();
 
-        List<CarRentalGetDto> response = result.stream().map(carRental -> modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Car Rentals listed.", response);
     }
 
     @Override
-    public SuccessDataResult<CarRentalGetDto> getById(long id) throws BusinessException {
+    public SuccessDataResult<CarRentalGetResponse> getById(long id) throws BusinessException {
         checkCarRentalIdExist(id);
 
         CarRental carRental = carRentalRepository.findById(id);
-        CarRentalGetDto response = modelMapperService.forDto().map(carRental, CarRentalGetDto.class);
+        CarRentalGetResponse response = modelMapperService.forDto().map(carRental, CarRentalGetResponse.class);
 
         return new SuccessDataResult<>("Success, Car Rental with requested ID found.", response);
     }
 
     @Override
-    public SuccessDataResult<List<CarRentalGetDto>> getByCarId(long carId) {
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(long carId) {
         List<CarRental> result = this.carRentalRepository.findByCar_Id(carId);
 
-        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success,  Car Rental with requested carID found", response);
     }
 
     @Override
-    public SuccessDataResult<List<CarRentalGetDto>> getByCustomerId(long customerId) {
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(long customerId) {
         List<CarRental> result = this.carRentalRepository.findByCustomer_UserId(customerId);
 
-        List<CarRentalGetDto> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success,  Car Rental with requested customerID found", response);
     }
 
     @Override
-    public DataResult<List<CarRentalGetDto>> getAllStartDateSorted(Sort.Direction direction) {
+    public DataResult<List<CarRentalGetResponse>> getAllStartDateSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "startDate");
 
         List<CarRental> result = this.carRentalRepository.findAll(s);
-        List<CarRentalGetDto> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(response);
     }
 
     @Override
-    public DataResult<List<CarRentalGetDto>> getAllEndDateSorted(Sort.Direction direction) {
+    public DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "endDate");
 
         List<CarRental> result = this.carRentalRepository.findAll(s);
-        List<CarRentalGetDto> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetDto.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(response);
     }
 
     @Override
-    public Result update(long id, CarRentalUpdateDto carRentalUpdateDto) throws BusinessException {
+    public Result update(long id, CarRentalUpdateRequest carRentalUpdateDto) throws BusinessException {
         checkCarRentalIdExist(id);
         checkUnderMaintenance(carRentalUpdateDto.getCarId());
 

@@ -3,9 +3,9 @@ package com.erkvural.rentacar.controller.v1.car;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
-import com.erkvural.rentacar.dto.car.create.ColorCreateDto;
-import com.erkvural.rentacar.dto.car.get.ColorGetDto;
-import com.erkvural.rentacar.dto.car.update.ColorUpdateDto;
+import com.erkvural.rentacar.dto.car.create.ColorCreateRequest;
+import com.erkvural.rentacar.dto.car.get.ColorGetResponse;
+import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
 import com.erkvural.rentacar.service.car.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +23,22 @@ public class ColorController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody ColorCreateDto colorCreateDto) throws BusinessException {
+    public Result add(@RequestBody ColorCreateRequest colorCreateDto) throws BusinessException {
         return this.colorService.add(colorCreateDto);
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<ColorGetDto>> getAll() {
+    public DataResult<List<ColorGetResponse>> getAll() {
         return colorService.getAll();
     }
 
     @GetMapping("/get")
-    public DataResult<ColorGetDto> get(@RequestParam("id") long id) throws BusinessException {
+    public DataResult<ColorGetResponse> get(@RequestParam("id") long id) throws BusinessException {
         return colorService.getById(id);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateDto colorUpdateDto) throws BusinessException {
+    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateRequest colorUpdateDto) throws BusinessException {
         return this.colorService.update(id, colorUpdateDto);
     }
 

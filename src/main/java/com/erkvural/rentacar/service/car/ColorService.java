@@ -3,9 +3,9 @@ package com.erkvural.rentacar.service.car;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
-import com.erkvural.rentacar.dto.car.create.ColorCreateDto;
-import com.erkvural.rentacar.dto.car.get.ColorGetDto;
-import com.erkvural.rentacar.dto.car.update.ColorUpdateDto;
+import com.erkvural.rentacar.dto.car.create.ColorCreateRequest;
+import com.erkvural.rentacar.dto.car.get.ColorGetResponse;
+import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 public interface ColorService {
 
-    Result add(ColorCreateDto colorCreateDto) throws BusinessException;
+    Result add(ColorCreateRequest colorCreateDto) throws BusinessException;
 
-    DataResult<List<ColorGetDto>> getAll();
+    DataResult<List<ColorGetResponse>> getAll();
 
-    DataResult<ColorGetDto> getById(long id) throws BusinessException;
+    DataResult<ColorGetResponse> getById(long id) throws BusinessException;
 
-    Result update(long id, ColorUpdateDto colorUpdateDto) throws BusinessException;
+    Result update(long id, ColorUpdateRequest colorUpdateDto) throws BusinessException;
 
     Result delete(long colorDeleteDto) throws BusinessException;
 }

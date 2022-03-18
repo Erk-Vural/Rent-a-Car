@@ -2,14 +2,13 @@ package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
-import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateDto;
+import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateRequest;
 import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.repository.car.OrderedAdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,8 +25,8 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateDto> orderedAdditionalServiceCreateDtoSet, long carRentalId) throws BusinessException {
-        for (OrderedAdditionalServiceCreateDto createDto : orderedAdditionalServiceCreateDtoSet) {
+    public void add(Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateDtoSet, long carRentalId) throws BusinessException {
+        for (OrderedAdditionalServiceCreateRequest createDto : orderedAdditionalServiceCreateDtoSet) {
             OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createDto, OrderedAdditionalService.class);
 
             orderedAdditionalService.setCarRental(carRentalRepository.findById(carRentalId));

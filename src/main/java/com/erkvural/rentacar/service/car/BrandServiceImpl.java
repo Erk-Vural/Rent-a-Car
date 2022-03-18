@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.car.create.BrandCreateDto;
-import com.erkvural.rentacar.dto.car.get.BrandGetDto;
-import com.erkvural.rentacar.dto.car.update.BrandUpdateDto;
+import com.erkvural.rentacar.dto.car.create.BrandCreateRequest;
+import com.erkvural.rentacar.dto.car.get.BrandGetResponse;
+import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.entity.car.Brand;
 import com.erkvural.rentacar.repository.car.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public Result add(BrandCreateDto brandCreateDto) throws BusinessException {
+    public Result add(BrandCreateRequest brandCreateDto) throws BusinessException {
         checkBrandNameExist(brandCreateDto.getName());
 
         Brand brand = this.modelMapperService.forRequest().map(brandCreateDto, Brand.class);
@@ -41,28 +41,28 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public DataResult<List<BrandGetDto>> getAll() {
+    public DataResult<List<BrandGetResponse>> getAll() {
         List<Brand> result = brandRepository.findAll();
-        List<BrandGetDto> response = result.stream()
+        List<BrandGetResponse> response = result.stream()
                 .map(brand -> modelMapperService.forDto()
-                        .map(brand, BrandGetDto.class))
+                        .map(brand, BrandGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Brands listed.", response);
     }
 
     @Override
-    public DataResult<BrandGetDto> getById(long id) throws BusinessException {
+    public DataResult<BrandGetResponse> getById(long id) throws BusinessException {
         checkBrandIdExist(id);
 
         Brand brand = brandRepository.getById(id);
-        BrandGetDto response = modelMapperService.forDto().map(brand, BrandGetDto.class);
+        BrandGetResponse response = modelMapperService.forDto().map(brand, BrandGetResponse.class);
 
         return new SuccessDataResult<>("Success, Brand with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, BrandUpdateDto brandUpdateDto) throws BusinessException {
+    public Result update(long id, BrandUpdateRequest brandUpdateDto) throws BusinessException {
         checkBrandIdExist(id);
 
         Brand brand = this.modelMapperService.forRequest().map(brandUpdateDto, Brand.class);

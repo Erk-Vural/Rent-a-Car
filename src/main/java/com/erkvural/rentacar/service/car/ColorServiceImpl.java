@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.car.create.ColorCreateDto;
-import com.erkvural.rentacar.dto.car.get.ColorGetDto;
-import com.erkvural.rentacar.dto.car.update.ColorUpdateDto;
+import com.erkvural.rentacar.dto.car.create.ColorCreateRequest;
+import com.erkvural.rentacar.dto.car.get.ColorGetResponse;
+import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
 import com.erkvural.rentacar.entity.car.Color;
 import com.erkvural.rentacar.repository.car.ColorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result add(ColorCreateDto colorCreateDto) throws BusinessException {
+    public Result add(ColorCreateRequest colorCreateDto) throws BusinessException {
         checkColorNameExist(colorCreateDto.getName());
 
         Color color = this.modelMapperService.forRequest().map(colorCreateDto, Color.class);
@@ -41,28 +41,28 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public DataResult<List<ColorGetDto>> getAll() {
+    public DataResult<List<ColorGetResponse>> getAll() {
         List<Color> result = colorRepository.findAll();
-        List<ColorGetDto> response = result.stream()
+        List<ColorGetResponse> response = result.stream()
                 .map(color -> modelMapperService.forDto()
-                        .map(color, ColorGetDto.class))
+                        .map(color, ColorGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Colors listed.", response);
     }
 
     @Override
-    public DataResult<ColorGetDto> getById(long id) throws BusinessException {
+    public DataResult<ColorGetResponse> getById(long id) throws BusinessException {
         checkColorIdExist(id);
 
         Color color = colorRepository.getById(id);
-        ColorGetDto response = modelMapperService.forDto().map(color, ColorGetDto.class);
+        ColorGetResponse response = modelMapperService.forDto().map(color, ColorGetResponse.class);
 
         return new SuccessDataResult<>("Success, Color with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, ColorUpdateDto colorUpdateDto) throws BusinessException {
+    public Result update(long id, ColorUpdateRequest colorUpdateDto) throws BusinessException {
         checkColorIdExist(id);
 
         Color color = this.modelMapperService.forRequest().map(colorUpdateDto, Color.class);

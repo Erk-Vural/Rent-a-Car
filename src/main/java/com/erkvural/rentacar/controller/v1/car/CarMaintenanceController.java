@@ -4,9 +4,9 @@ import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
-import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateDto;
-import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetDto;
-import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateDto;
+import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateRequest;
+import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetResponse;
+import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateRequest;
 import com.erkvural.rentacar.service.car.CarMaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -25,38 +25,38 @@ public class CarMaintenanceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarMaintenanceCreateDto carMaintenanceCreateDto) throws BusinessException {
+    public Result add(@RequestBody CarMaintenanceCreateRequest carMaintenanceCreateDto) throws BusinessException {
         return this.carMaintenanceService.add(carMaintenanceCreateDto);
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<CarMaintenanceGetDto>> getAll() {
+    public DataResult<List<CarMaintenanceGetResponse>> getAll() {
         return carMaintenanceService.getAll();
     }
 
     @GetMapping("/get")
-    public DataResult<CarMaintenanceGetDto> get(@RequestParam("id") long id) throws BusinessException {
+    public DataResult<CarMaintenanceGetResponse> get(@RequestParam("id") long id) throws BusinessException {
         return carMaintenanceService.getById(id);
     }
 
     @GetMapping("/getByCarId")
-    public SuccessDataResult<List<CarMaintenanceGetDto>> getByCarId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(@RequestParam("id") int id) {
         return carMaintenanceService.getByCarId(id);
     }
 
     @GetMapping("/getAllSorted")
-    public DataResult<List<CarMaintenanceGetDto>> getAllSorted(@RequestParam("direction") Sort.Direction direction) {
+    public DataResult<List<CarMaintenanceGetResponse>> getAllSorted(@RequestParam("direction") Sort.Direction direction) {
         return this.carMaintenanceService.getAllSorted(direction);
     }
 
     @GetMapping("/getAllPaged")
-    public DataResult<List<CarMaintenanceGetDto>> getAllPaged(@RequestParam("pageNo") int pageNo,
-                                                              @RequestParam("pageSize") int pageSize) {
+    public DataResult<List<CarMaintenanceGetResponse>> getAllPaged(@RequestParam("pageNo") int pageNo,
+                                                                   @RequestParam("pageSize") int pageSize) {
         return this.carMaintenanceService.getAllPaged(pageNo, pageSize);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateDto carMaintenanceUpdateDto) throws BusinessException {
+    public Result update(@RequestParam("id") long id, @RequestBody CarMaintenanceUpdateRequest carMaintenanceUpdateDto) throws BusinessException {
         return this.carMaintenanceService.update(id, carMaintenanceUpdateDto);
     }
 

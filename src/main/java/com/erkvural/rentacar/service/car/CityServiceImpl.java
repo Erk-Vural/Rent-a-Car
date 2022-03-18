@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.car.create.CityCreateDto;
-import com.erkvural.rentacar.dto.car.get.CityGetDto;
-import com.erkvural.rentacar.dto.car.update.CityUpdateDto;
+import com.erkvural.rentacar.dto.car.create.CityCreateRequest;
+import com.erkvural.rentacar.dto.car.get.CityGetResponse;
+import com.erkvural.rentacar.dto.car.update.CityUpdateRequest;
 import com.erkvural.rentacar.entity.car.City;
 import com.erkvural.rentacar.repository.car.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result add(CityCreateDto cityCreateDto) throws BusinessException {
+    public Result add(CityCreateRequest cityCreateDto) throws BusinessException {
         checkCityNameExist(cityCreateDto.getName());
 
         City city = this.modelMapperService.forRequest().map(cityCreateDto, City.class);
@@ -41,29 +41,29 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public DataResult<List<CityGetDto>> getAll() {
+    public DataResult<List<CityGetResponse>> getAll() {
         List<City> result = cityRepository.findAll();
 
-        List<CityGetDto> response = result.stream()
+        List<CityGetResponse> response = result.stream()
                 .map(city -> modelMapperService.forDto()
-                        .map(city, CityGetDto.class))
+                        .map(city, CityGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All Cities listed.", response);
     }
 
     @Override
-    public DataResult<CityGetDto> getById(long id) throws BusinessException {
+    public DataResult<CityGetResponse> getById(long id) throws BusinessException {
         checkCityIdExist(id);
 
         City city = cityRepository.getById(id);
-        CityGetDto response = modelMapperService.forDto().map(city, CityGetDto.class);
+        CityGetResponse response = modelMapperService.forDto().map(city, CityGetResponse.class);
 
         return new SuccessDataResult<>("Success, City with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, CityUpdateDto cityUpdateDto) throws BusinessException {
+    public Result update(long id, CityUpdateRequest cityUpdateDto) throws BusinessException {
         checkCityIdExist(id);
 
         City city = this.modelMapperService.forRequest().map(cityUpdateDto, City.class);

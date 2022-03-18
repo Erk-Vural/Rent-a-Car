@@ -6,9 +6,9 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
-import com.erkvural.rentacar.dto.customer.create.IndividualCustomerCreateDto;
-import com.erkvural.rentacar.dto.customer.get.IndividualCustomerGetDto;
-import com.erkvural.rentacar.dto.customer.update.IndividualCustomerUpdateDto;
+import com.erkvural.rentacar.dto.customer.create.IndividualCustomerCreateRequest;
+import com.erkvural.rentacar.dto.customer.get.IndividualCustomerGetResponse;
+import com.erkvural.rentacar.dto.customer.update.IndividualCustomerUpdateRequest;
 import com.erkvural.rentacar.entity.customer.IndividualCustomer;
 import com.erkvural.rentacar.repository.customer.IndividualCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public Result add(IndividualCustomerCreateDto individualCustomerCreateDto) throws BusinessException {
+    public Result add(IndividualCustomerCreateRequest individualCustomerCreateDto) throws BusinessException {
         checkEmailExist(individualCustomerCreateDto.getEmail());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerCreateDto, IndividualCustomer.class);
@@ -41,29 +41,29 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public DataResult<List<IndividualCustomerGetDto>> getAll() {
+    public DataResult<List<IndividualCustomerGetResponse>> getAll() {
         List<IndividualCustomer> result = individualCustomerRepository.findAll();
 
-        List<IndividualCustomerGetDto> response = result.stream()
+        List<IndividualCustomerGetResponse> response = result.stream()
                 .map(individualCustomer -> modelMapperService.forDto()
-                        .map(individualCustomer, IndividualCustomerGetDto.class))
+                        .map(individualCustomer, IndividualCustomerGetResponse.class))
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<>("Success, All individual Customer listed.", response);
     }
 
     @Override
-    public DataResult<IndividualCustomerGetDto> getById(long id) throws BusinessException {
+    public DataResult<IndividualCustomerGetResponse> getById(long id) throws BusinessException {
         checkUserIdExist(id);
 
         IndividualCustomer individualCustomer = individualCustomerRepository.getById(id);
-        IndividualCustomerGetDto response = modelMapperService.forDto().map(individualCustomer, IndividualCustomerGetDto.class);
+        IndividualCustomerGetResponse response = modelMapperService.forDto().map(individualCustomer, IndividualCustomerGetResponse.class);
 
         return new SuccessDataResult<>("Success, individual Customer with requested ID found.", response);
     }
 
     @Override
-    public Result update(long id, IndividualCustomerUpdateDto individualCustomerUpdateDto) throws BusinessException {
+    public Result update(long id, IndividualCustomerUpdateRequest individualCustomerUpdateDto) throws BusinessException {
         checkUserIdExist(id);
         checkEmailExist(individualCustomerUpdateDto.getEmail());
 
