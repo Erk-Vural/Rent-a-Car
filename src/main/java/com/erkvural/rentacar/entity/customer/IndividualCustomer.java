@@ -22,4 +22,7 @@ public class IndividualCustomer extends Customer {
 
     @Column(name = "last_name", length = 64, nullable = false)
     private String lastName;
+
+    @Column(name = "national_id", unique = true)
+    private String nationalId;
 }

@@ -17,9 +17,15 @@ import java.util.Set;
 
 public class CarRentalCreateRequest {
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
+
+    @NotNull
+    @PositiveOrZero
+    private long startMileage;
 
     @NotNull
     @NotBlank

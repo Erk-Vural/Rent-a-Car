@@ -27,6 +27,12 @@ public class CarRental {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    @Column(name = "start_mileage")
+    private long startMileage;
+
+    @Column(name = "end_mileage")
+    private long endMileage;
+
     @Column(name = "description", length = 64)
     private String description;
 
@@ -52,4 +58,7 @@ public class CarRental {
     @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<OrderedAdditionalService> orderedAdditionalServices;
+
+    @OneToOne(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Invoice invoice;
 }

@@ -28,6 +28,9 @@ public class Car {
     @Column(name = "description", length = 64)
     private String description;
 
+    @Column(name = "mileage")
+    private long mileage;
+
     @ManyToOne()
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
@@ -43,4 +46,7 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<CarRental> carRentals;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CarDamage> carDamages;
 }

@@ -13,9 +13,19 @@ import java.time.LocalDate;
 
 public class CarRentalUpdateRequest {
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
+
+    @NotNull
+    @PositiveOrZero
+    private long startMileage;
+
+    @NotNull
+    @PositiveOrZero
+    private long endMileage;
 
     @NotNull
     @NotBlank

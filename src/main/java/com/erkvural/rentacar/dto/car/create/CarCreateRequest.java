@@ -29,6 +29,10 @@ public class CarCreateRequest {
 
     @NotNull
     @PositiveOrZero
+    private long mileage;
+
+    @NotNull
+    @PositiveOrZero
     private long colorId;
 
     @NotNull

@@ -18,6 +18,10 @@ public class CarRentalGetResponse {
 
     private String description;
 
+    private long startMileage;
+
+    private long endMileage;
+
     private double bill;
 
     private String rentedCityName;
