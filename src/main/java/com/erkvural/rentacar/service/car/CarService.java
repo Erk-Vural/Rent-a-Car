@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public interface CarService {
-    Result add(CarCreateRequest carCreateDto);
+    Result add(CarCreateRequest createRequest);
 
     DataResult<List<CarGetResponse>> getAll();
 
@@ -25,7 +25,7 @@ public interface CarService {
 
     DataResult<List<CarGetResponse>> getAllByDailyPriceLessThanEqual(double dailyPrice);
 
-    Result update(long id, CarUpdateRequest carUpdateDto) throws BusinessException;
+    Result update(long id, CarUpdateRequest updateRequest) throws BusinessException;
 
     Result delete(long id) throws BusinessException;
 }

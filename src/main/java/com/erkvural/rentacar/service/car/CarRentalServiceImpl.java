@@ -41,13 +41,13 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result add(CarRentalCreateRequest carRentalCreateDto) throws BusinessException {
-        checkCarIdExist(carRentalCreateDto.getCarId());
-        checkUnderMaintenance(carRentalCreateDto.getCarId());
+    public Result add(CarRentalCreateRequest createRequest) throws BusinessException {
+        checkCarIdExist(createRequest.getCarId());
+        checkUnderMaintenance(createRequest.getCarId());
 
-        CarRental carRental = this.modelMapperService.forRequest().map(carRentalCreateDto, CarRental.class);
+        CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
-        this.orderedAdditionalServiceService.add(carRentalCreateDto.getOrderedAdditionalServiceCreateDtos(), carRental.getId());
+        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateDtos(), carRental.getId());
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
@@ -116,11 +116,11 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result update(long id, CarRentalUpdateRequest carRentalUpdateDto) throws BusinessException {
+    public Result update(long id, CarRentalUpdateRequest updateRequest) throws BusinessException {
         checkCarRentalIdExist(id);
-        checkUnderMaintenance(carRentalUpdateDto.getCarId());
+        checkUnderMaintenance(updateRequest.getCarId());
 
-        CarRental carRental = this.modelMapperService.forRequest().map(carRentalUpdateDto, CarRental.class);
+        CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
 
         this.carRentalRepository.save(carRental);
 

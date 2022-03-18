@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public interface CarMaintenanceService {
-    Result add(CarMaintenanceCreateRequest carMaintenanceCreateDto) throws BusinessException;
+    Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<CarMaintenanceGetResponse>> getAll();
 
@@ -26,7 +26,7 @@ public interface CarMaintenanceService {
 
     DataResult<List<CarMaintenanceGetResponse>> getAllSorted(Sort.Direction direction);
 
-    Result update(long id, CarMaintenanceUpdateRequest carMaintenanceUpdateDto) throws BusinessException;
+    Result update(long id, CarMaintenanceUpdateRequest updateRequest) throws BusinessException;
 
     Result delete(long id) throws BusinessException;
 }

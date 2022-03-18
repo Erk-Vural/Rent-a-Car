@@ -40,11 +40,11 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result add(CarMaintenanceCreateRequest carMaintenanceCreateDto) throws BusinessException {
-        checkCarIdExist(carMaintenanceCreateDto.getCarId());
-        checkIsRented(carMaintenanceCreateDto.getCarId());
+    public Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException {
+        checkCarIdExist(createRequest.getCarId());
+        checkIsRented(createRequest.getCarId());
 
-        CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(carMaintenanceCreateDto, CarMaintenance.class);
+        CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
         this.carMaintenanceRepository.save(carMaintenance);
 
         return new SuccessResult("Success, Car Maintenance added: " + carMaintenance);
@@ -110,11 +110,11 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result update(long id, CarMaintenanceUpdateRequest carMaintenanceUpdateDto) throws BusinessException {
+    public Result update(long id, CarMaintenanceUpdateRequest updateRequest) throws BusinessException {
         checkCarMaintenanceIdExist(id);
-        checkIsRented(carMaintenanceUpdateDto.getCarId());
+        checkIsRented(updateRequest.getCarId());
 
-        CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(carMaintenanceUpdateDto, CarMaintenance.class);
+        CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
 
         this.carMaintenanceRepository.save(carMaintenance);
 

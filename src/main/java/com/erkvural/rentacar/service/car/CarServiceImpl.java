@@ -30,9 +30,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Result add(CarCreateRequest carCreateDto) {
+    public Result add(CarCreateRequest createRequest) {
 
-        Car car = this.modelMapperService.forRequest().map(carCreateDto, Car.class);
+        Car car = this.modelMapperService.forRequest().map(createRequest, Car.class);
         this.carRepository.save(car);
 
         return new SuccessResult("Success, Car added: " + car);
@@ -103,10 +103,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Result update(long id, CarUpdateRequest carUpdateDto) throws BusinessException {
+    public Result update(long id, CarUpdateRequest updateRequest) throws BusinessException {
         checkCarIdExist(id);
 
-        Car car = this.modelMapperService.forRequest().map(carUpdateDto, Car.class);
+        Car car = this.modelMapperService.forRequest().map(updateRequest, Car.class);
         this.carRepository.save(car);
 
         return new SuccessResult("Success, Car updated: " + car);

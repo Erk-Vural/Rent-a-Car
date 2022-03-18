@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 public interface ColorService {
 
-    Result add(ColorCreateRequest colorCreateDto) throws BusinessException;
+    Result add(ColorCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<ColorGetResponse>> getAll();
 
     DataResult<ColorGetResponse> getById(long id) throws BusinessException;
 
-    Result update(long id, ColorUpdateRequest colorUpdateDto) throws BusinessException;
+    Result update(long id, ColorUpdateRequest updateRequest) throws BusinessException;
 
-    Result delete(long colorDeleteDto) throws BusinessException;
+    Result delete(long id) throws BusinessException;
 }

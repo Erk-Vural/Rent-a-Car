@@ -31,10 +31,10 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public Result add(BrandCreateRequest brandCreateDto) throws BusinessException {
-        checkBrandNameExist(brandCreateDto.getName());
+    public Result add(BrandCreateRequest createRequest) throws BusinessException {
+        checkBrandNameExist(createRequest.getName());
 
-        Brand brand = this.modelMapperService.forRequest().map(brandCreateDto, Brand.class);
+        Brand brand = this.modelMapperService.forRequest().map(createRequest, Brand.class);
         this.brandRepository.save(brand);
 
         return new SuccessResult("Success, Brand added: " + brand.getName());
@@ -62,10 +62,10 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Result update(long id, BrandUpdateRequest brandUpdateDto) throws BusinessException {
+    public Result update(long id, BrandUpdateRequest updateRequest) throws BusinessException {
         checkBrandIdExist(id);
 
-        Brand brand = this.modelMapperService.forRequest().map(brandUpdateDto, Brand.class);
+        Brand brand = this.modelMapperService.forRequest().map(updateRequest, Brand.class);
         this.brandRepository.save(brand);
 
         return new SuccessResult("Success, Brand updated: " + brand.getName());

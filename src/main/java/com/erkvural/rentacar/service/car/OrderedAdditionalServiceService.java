@@ -10,7 +10,7 @@ import java.util.Set;
 @Service
 public interface OrderedAdditionalServiceService {
 
-    void add(Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateDtos, long carRentalId) throws BusinessException;
+    void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException;
 
     Set<OrderedAdditionalService> getByCarRentalId(long carRentalId);
 

@@ -31,10 +31,10 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     @Override
-    public Result add(AdditionalServiceCreateRequest additionalServiceCreateDto) throws BusinessException {
-        checkAdditionalServiceExist(additionalServiceCreateDto.getName());
+    public Result add(AdditionalServiceCreateRequest createRequest) throws BusinessException {
+        checkAdditionalServiceExist(createRequest.getName());
 
-        AdditionalService additionalService = this.modelMapperService.forRequest().map(additionalServiceCreateDto, AdditionalService.class);
+        AdditionalService additionalService = this.modelMapperService.forRequest().map(createRequest, AdditionalService.class);
         this.additionalServiceRepository.save(additionalService);
 
         return new SuccessResult("Success, Additional Service added: " + additionalService.getName());
@@ -62,10 +62,10 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     @Override
-    public Result update(long id, AdditionalServiceUpdateRequest additionalServiceUpdateDto) throws BusinessException {
+    public Result update(long id, AdditionalServiceUpdateRequest updateRequest) throws BusinessException {
         checkAdditionalServiceIdExist(id);
 
-        AdditionalService additionalService = this.modelMapperService.forRequest().map(additionalServiceUpdateDto, AdditionalService.class);
+        AdditionalService additionalService = this.modelMapperService.forRequest().map(updateRequest, AdditionalService.class);
         this.additionalServiceRepository.save(additionalService);
 
         return new SuccessResult("Success, Additional Service updated: " + additionalService.getName());

@@ -31,10 +31,10 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result add(ColorCreateRequest colorCreateDto) throws BusinessException {
-        checkColorNameExist(colorCreateDto.getName());
+    public Result add(ColorCreateRequest createRequest) throws BusinessException {
+        checkColorNameExist(createRequest.getName());
 
-        Color color = this.modelMapperService.forRequest().map(colorCreateDto, Color.class);
+        Color color = this.modelMapperService.forRequest().map(createRequest, Color.class);
         this.colorRepository.save(color);
 
         return new SuccessResult("Success, Color added: " + color.getName());
@@ -62,10 +62,10 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result update(long id, ColorUpdateRequest colorUpdateDto) throws BusinessException {
+    public Result update(long id, ColorUpdateRequest updateRequest) throws BusinessException {
         checkColorIdExist(id);
 
-        Color color = this.modelMapperService.forRequest().map(colorUpdateDto, Color.class);
+        Color color = this.modelMapperService.forRequest().map(updateRequest, Color.class);
         this.colorRepository.save(color);
 
         return new SuccessResult("Success, Color updated: " + color.getName());

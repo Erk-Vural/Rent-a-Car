@@ -25,8 +25,8 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateDtoSet, long carRentalId) throws BusinessException {
-        for (OrderedAdditionalServiceCreateRequest createDto : orderedAdditionalServiceCreateDtoSet) {
+    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException {
+        for (OrderedAdditionalServiceCreateRequest createDto : createRequestSet) {
             OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createDto, OrderedAdditionalService.class);
 
             orderedAdditionalService.setCarRental(carRentalRepository.findById(carRentalId));

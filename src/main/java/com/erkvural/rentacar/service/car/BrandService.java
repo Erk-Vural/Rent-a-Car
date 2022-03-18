@@ -12,13 +12,13 @@ import java.util.List;
 
 @Service
 public interface BrandService {
-    Result add(BrandCreateRequest brandCreateDto) throws BusinessException;
+    Result add(BrandCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<BrandGetResponse>> getAll();
 
     DataResult<BrandGetResponse> getById(long id) throws BusinessException;
 
-    Result update(long id, BrandUpdateRequest brandUpdateDto) throws BusinessException;
+    Result update(long id, BrandUpdateRequest updateRequest) throws BusinessException;
 
-    Result delete(long brandDeleteDto) throws BusinessException;
+    Result delete(long id) throws BusinessException;
 }

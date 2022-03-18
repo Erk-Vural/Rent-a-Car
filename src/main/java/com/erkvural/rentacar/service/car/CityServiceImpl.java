@@ -31,10 +31,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result add(CityCreateRequest cityCreateDto) throws BusinessException {
-        checkCityNameExist(cityCreateDto.getName());
+    public Result add(CityCreateRequest createRequest) throws BusinessException {
+        checkCityNameExist(createRequest.getName());
 
-        City city = this.modelMapperService.forRequest().map(cityCreateDto, City.class);
+        City city = this.modelMapperService.forRequest().map(createRequest, City.class);
         this.cityRepository.save(city);
 
         return new SuccessResult("Success, City added: " + city.getName());
@@ -63,10 +63,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result update(long id, CityUpdateRequest cityUpdateDto) throws BusinessException {
+    public Result update(long id, CityUpdateRequest updateRequest) throws BusinessException {
         checkCityIdExist(id);
 
-        City city = this.modelMapperService.forRequest().map(cityUpdateDto, City.class);
+        City city = this.modelMapperService.forRequest().map(updateRequest, City.class);
         this.cityRepository.save(city);
 
         return new SuccessResult("Success, City updated: " + city.getName());

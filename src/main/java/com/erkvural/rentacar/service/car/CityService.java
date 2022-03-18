@@ -12,13 +12,13 @@ import java.util.List;
 
 @Service
 public interface CityService {
-    Result add(CityCreateRequest cityCreateDto) throws BusinessException;
+    Result add(CityCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<CityGetResponse>> getAll();
 
     DataResult<CityGetResponse> getById(long id) throws BusinessException;
 
-    Result update(long id, CityUpdateRequest cityUpdateDto) throws BusinessException;
+    Result update(long id, CityUpdateRequest updateRequest) throws BusinessException;
 
-    Result delete(long cityDeleteDto) throws BusinessException;
+    Result delete(long id) throws BusinessException;
 }
