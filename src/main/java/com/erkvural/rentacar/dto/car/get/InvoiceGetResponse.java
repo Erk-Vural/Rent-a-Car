@@ -1,7 +1,5 @@
 package com.erkvural.rentacar.dto.car.get;
 
-import com.erkvural.rentacar.entity.car.CarRental;
-import com.erkvural.rentacar.entity.customer.Customer;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,9 +17,11 @@ public class InvoiceGetResponse {
 
     private LocalDate rentEndDate;
 
-    private double bill;
+    private int totalRentDays;
 
-    private long carRentalId;
+    private double total;
 
     private long customerId;
+
+    private long paymentId;
 }

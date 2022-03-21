@@ -31,7 +31,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/getByCustomerId")
-    public DataResult<InvoiceGetResponse> getByCustomerId(@RequestParam("id") long id) throws BusinessException {
+    public DataResult<List<InvoiceGetResponse>> getByCustomerId(@RequestParam("id") long id) throws BusinessException {
         return invoiceService.getByCustomerId(id);
     }
 
