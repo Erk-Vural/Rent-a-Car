@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,19 +22,12 @@ public class Payment {
     @Column(name = "total")
     private double total;
 
-    @Column(name = "card_number")
-    private String CardNumber;
-
-    @Column(name = "cardholder_name")
-    private String CardholderName;
-
-    @Column(name = "expriy_date")
-    private String expiryDate;
-
-    @Column(name = "security_code")
-    private String securityCode;
-
+    @JsonIgnore
     @OneToOne
+    @JoinColumn(name = "car_info_id")
+    private CardInfo cardInfo;
+
+    @ManyToOne
     @JoinColumn(name = "car_rental_id")
     private CarRental carRental;
 

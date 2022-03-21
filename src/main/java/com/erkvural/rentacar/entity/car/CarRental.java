@@ -56,7 +56,7 @@ public class CarRental {
     @ToString.Exclude
     private Set<OrderedAdditionalService> orderedAdditionalServices;
 
-    @OneToOne(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Payment payment;
+    private Set<Payment> payment;
 }

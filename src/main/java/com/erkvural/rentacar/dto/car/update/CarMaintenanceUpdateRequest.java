@@ -18,6 +18,8 @@ public class CarMaintenanceUpdateRequest {
     @NotBlank
     private String description;
 
+    @NotNull
+    @Future
     private LocalDate returnDate;
 
     @NotNull

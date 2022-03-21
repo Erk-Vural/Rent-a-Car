@@ -14,9 +14,11 @@ import java.time.LocalDate;
 public class CarRentalUpdateRequest {
 
     @NotNull
+    @FutureOrPresent
     private LocalDate startDate;
 
     @NotNull
+    @Future
     private LocalDate endDate;
 
     @NotNull

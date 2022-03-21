@@ -1,6 +1,6 @@
 package com.erkvural.rentacar.dto.car.get;
 
-import com.erkvural.rentacar.entity.car.CarRental;
+import com.erkvural.rentacar.entity.car.Payment;
 import lombok.*;
 
 @Getter
@@ -13,13 +13,7 @@ public class PaymentGetResponse {
 
     private double total;
 
-    private String CardNumber;
-
-    private String CardholderName;
-
-    private String expiryDate;
-
-    private String securityCode;
+    private Payment payment;
 
     private long carRental;
 }

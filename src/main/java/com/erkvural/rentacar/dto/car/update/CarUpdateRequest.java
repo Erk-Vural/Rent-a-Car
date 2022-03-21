@@ -11,6 +11,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 
 public class CarUpdateRequest {
+
     @NotNull
     @Min(10)
     @Max(500)

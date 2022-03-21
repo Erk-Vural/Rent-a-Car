@@ -2,10 +2,7 @@ package com.erkvural.rentacar.dto.car.create;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -18,9 +15,11 @@ import java.util.Set;
 public class CarRentalCreateRequest {
 
     @NotNull
+    @FutureOrPresent
     private LocalDate startDate;
 
     @NotNull
+    @Future
     private LocalDate endDate;
 
     @NotNull
@@ -48,5 +47,5 @@ public class CarRentalCreateRequest {
     @PositiveOrZero
     private long carId;
 
-    private Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateDtos;
+    private Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateRequestSet;
 }

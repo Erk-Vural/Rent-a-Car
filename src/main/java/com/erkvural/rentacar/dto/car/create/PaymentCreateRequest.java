@@ -1,6 +1,6 @@
 package com.erkvural.rentacar.dto.car.create;
 
-import com.erkvural.rentacar.entity.car.CarRental;
+import com.erkvural.rentacar.entity.car.CardInfo;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -21,27 +21,11 @@ public class PaymentCreateRequest {
     @NotBlank
     private double total;
 
-    @Size(min = 2, max = 50)
-    @NotNull
-    @NotBlank
-    private String CardNumber;
 
-    @Size(min = 2, max = 50)
     @NotNull
-    @NotBlank
-    private String CardholderName;
-
-    @Size(min = 2, max = 50)
-    @NotNull
-    @NotBlank
-    private String expiryDate;
-
-    @Size(min = 2, max = 50)
-    @NotNull
-    @NotBlank
-    private String securityCode;
+    private CardInfo cardInfo;
 
     @NotNull
     @PositiveOrZero
-    private long carRental;
+    private long carRentalId;
 }
