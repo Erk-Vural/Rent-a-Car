@@ -66,6 +66,8 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         checkAdditionalServiceIdExist(id);
 
         AdditionalService additionalService = this.modelMapperService.forRequest().map(updateRequest, AdditionalService.class);
+        additionalService.setId(id);
+
         this.additionalServiceRepository.save(additionalService);
 
         return new SuccessResult("Success, Additional Service updated: " + additionalService.getName());

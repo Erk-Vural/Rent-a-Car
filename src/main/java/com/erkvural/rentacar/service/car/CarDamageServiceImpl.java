@@ -70,6 +70,8 @@ public class CarDamageServiceImpl implements CarDamageService {
         checkCarDamageIdExist(id);
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(updateRequest, CarDamage.class);
+        carDamage.setId(id);
+
         this.carDamageRepository.save(carDamage);
 
         return new SuccessResult("Success, Car Damage updated: " + carDamage);

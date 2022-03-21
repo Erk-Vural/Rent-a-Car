@@ -67,6 +67,8 @@ public class CityServiceImpl implements CityService {
         checkCityIdExist(id);
 
         City city = this.modelMapperService.forRequest().map(updateRequest, City.class);
+        city.setId(id);
+
         this.cityRepository.save(city);
 
         return new SuccessResult("Success, City updated: " + city.getName());

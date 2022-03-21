@@ -35,6 +35,7 @@ public class BrandServiceImpl implements BrandService {
         checkBrandNameExist(createRequest.getName());
 
         Brand brand = this.modelMapperService.forRequest().map(createRequest, Brand.class);
+
         this.brandRepository.save(brand);
 
         return new SuccessResult("Success, Brand added: " + brand.getName());
@@ -66,6 +67,8 @@ public class BrandServiceImpl implements BrandService {
         checkBrandIdExist(id);
 
         Brand brand = this.modelMapperService.forRequest().map(updateRequest, Brand.class);
+        brand.setId(id);
+
         this.brandRepository.save(brand);
 
         return new SuccessResult("Success, Brand updated: " + brand.getName());

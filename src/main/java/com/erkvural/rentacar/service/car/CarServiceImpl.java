@@ -107,6 +107,8 @@ public class CarServiceImpl implements CarService {
         checkCarIdExist(id);
 
         Car car = this.modelMapperService.forRequest().map(updateRequest, Car.class);
+        car.setId(id);
+
         this.carRepository.save(car);
 
         return new SuccessResult("Success, Car updated: " + car);

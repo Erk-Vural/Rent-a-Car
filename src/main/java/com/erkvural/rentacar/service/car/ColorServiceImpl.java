@@ -66,6 +66,8 @@ public class ColorServiceImpl implements ColorService {
         checkColorIdExist(id);
 
         Color color = this.modelMapperService.forRequest().map(updateRequest, Color.class);
+        color.setId(id);
+
         this.colorRepository.save(color);
 
         return new SuccessResult("Success, Color updated: " + color.getName());

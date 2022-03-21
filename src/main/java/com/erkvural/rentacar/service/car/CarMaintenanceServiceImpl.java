@@ -115,6 +115,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         checkIsRented(updateRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
+        carMaintenance.setId(id);
 
         this.carMaintenanceRepository.save(carMaintenance);
 

@@ -51,7 +51,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
-        carRental.setBill(calRentedTotal(carRental.getId()));
+        // carRental.setBill(calRentedTotal(carRental.getId()));
 
         this.carRentalRepository.save(carRental);
 
@@ -121,6 +121,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         checkUnderMaintenance(updateRequest.getCarId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
+        carRental.setId(id);
 
         this.carRentalRepository.save(carRental);
 
