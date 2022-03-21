@@ -21,9 +21,6 @@ public class OrderedAdditionalService {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "bill")
-    private double bill;
-
     @ManyToOne()
     @JoinColumn(name = "additional_service_id", nullable = false)
     private AdditionalService additionalService;
@@ -31,5 +28,4 @@ public class OrderedAdditionalService {
     @ManyToOne()
     @JoinColumn(name = "car_rental_id", nullable = false)
     private CarRental carRental;
-
 }

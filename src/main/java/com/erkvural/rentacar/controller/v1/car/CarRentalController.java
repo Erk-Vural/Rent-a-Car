@@ -41,12 +41,12 @@ public class CarRentalController {
     }
 
     @GetMapping("/getByCarId")
-    public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(@RequestParam("id") long id) {
         return carRentalService.getByCarId(id);
     }
 
     @GetMapping("/getByCustomerId")
-    public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(@RequestParam("id") long id) {
         return carRentalService.getByCustomerId(id);
     }
 

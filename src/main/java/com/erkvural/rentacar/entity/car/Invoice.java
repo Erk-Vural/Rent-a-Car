@@ -29,14 +29,19 @@ public class Invoice {
     @Column(name = "rent_end_date")
     private LocalDate rentEndDate;
 
-    @Column(name = "bill")
-    private double bill;
+    @Transient
+    @Column(name = "total_rent_days")
+    private int totalRentDays;
 
-    @OneToOne
-    @JoinColumn(name = "car_rental_id")
-    private CarRental carRental;
+    @Column(name = "total")
+    private double total;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
 }

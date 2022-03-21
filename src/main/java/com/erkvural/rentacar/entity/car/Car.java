@@ -29,7 +29,7 @@ public class Car {
     private String description;
 
     @Column(name = "mileage")
-    private long mileage;
+    private double mileage;
 
     @ManyToOne()
     @JoinColumn(name = "brand_id", nullable = false)

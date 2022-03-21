@@ -18,8 +18,8 @@ public class CarDamage {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "damage_record")
-    private String damageRecord;
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "car_id")

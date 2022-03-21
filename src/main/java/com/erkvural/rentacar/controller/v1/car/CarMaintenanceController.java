@@ -40,7 +40,7 @@ public class CarMaintenanceController {
     }
 
     @GetMapping("/getByCarId")
-    public SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(@RequestParam("id") int id) {
+    public SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(@RequestParam("id") long id) {
         return carMaintenanceService.getByCarId(id);
     }
 

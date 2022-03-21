@@ -28,16 +28,13 @@ public class CarRental {
     private LocalDate endDate;
 
     @Column(name = "start_mileage")
-    private long startMileage;
+    private double startMileage;
 
     @Column(name = "end_mileage")
-    private long endMileage;
+    private double endMileage;
 
     @Column(name = "description", length = 64)
     private String description;
-
-    @Column(name = "bill")
-    private double bill;
 
     @ManyToOne()
     @JoinColumn(name = "rented_city_id", nullable = false)
@@ -60,5 +57,6 @@ public class CarRental {
     private Set<OrderedAdditionalService> orderedAdditionalServices;
 
     @OneToOne(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Invoice invoice;
+    @ToString.Exclude
+    private Payment payment;
 }
