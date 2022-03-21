@@ -29,7 +29,6 @@ public class BrandServiceImpl implements BrandService {
         this.modelMapperService = modelMapperService;
     }
 
-
     @Override
     public Result add(BrandCreateRequest createRequest) throws BusinessException {
         checkBrandNameExist(createRequest.getName());
@@ -44,6 +43,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public DataResult<List<BrandGetResponse>> getAll() {
         List<Brand> result = brandRepository.findAll();
+
         List<BrandGetResponse> response = result.stream()
                 .map(brand -> modelMapperService.forDto()
                         .map(brand, BrandGetResponse.class))

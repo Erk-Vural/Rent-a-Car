@@ -16,7 +16,7 @@ public class CardInfoCreateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 32)
+    @Size(min = 2, max = 12)
     private String CardNumber;
 
     @NotNull

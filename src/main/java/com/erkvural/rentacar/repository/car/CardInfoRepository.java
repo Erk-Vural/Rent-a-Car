@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CardInfoRepository extends JpaRepository<CardInfo, Long> {
+
+    CardInfo findById(long id);
 }
