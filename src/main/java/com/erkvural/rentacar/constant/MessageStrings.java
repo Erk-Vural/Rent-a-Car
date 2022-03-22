@@ -60,6 +60,7 @@ public class MessageStrings {
     public static final String RENTALDELETE = "rental.deleted";
     public static final String RENTALLIST = "rentals.listed";
     public static final String RENTALMAINTENANCEERROR = "rented.car.is.on.maintenance";
+    public static final String RENTALALREADYRENTED = "rented.car.is.rented";
     public static final String RENTALFOUNDCARID = "rental.found";
     public static final String RENTALFOUNDCUSTOMERID = "rental.found";
     public static final String RENTALSTARTDATESORTED = "rental.start.date.sorted";
@@ -81,9 +82,8 @@ public class MessageStrings {
     public static final String CREDITCARDNOTFOUND = "credit.card.not.found";
     public static final String CREDITCARDALREADYEXISTS = "credit.card.exists";
 
-    public static final String DATEFORMATNOTVALID = "date.format.not.valid";
-
     public static final String PAYMENTADD = "payment.add";
+    public static final String PAYMENTNOTFOUND = "payment.not.found";
     public static final String PAYMENTUPDATE = "payment.updated";
     public static final String PAYMENTDELETE = "payment.deleted";
     public static final String PAYMENTLIST = "payments.listed";
@@ -133,5 +133,4 @@ public class MessageStrings {
     public static final String ORDEREDADDITIONALSERVICELIST = "ordered.additional.service.listed";
     public static final String ORDEREDADDITIONALSERVICEGET = "ordered.additional.service.found";
     public static final String ORDEREDADDITIONALSERVICENOTFOUND = "ordered.additional.service.not.found";
-
 }

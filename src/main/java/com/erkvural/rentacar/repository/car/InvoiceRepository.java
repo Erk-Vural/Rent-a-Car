@@ -14,7 +14,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     Invoice findById(long id);
 
-    Set<Invoice> findAllByRentStartDateLessThanEqualAndRentEndDateGreaterThanEqual(LocalDate rentStartDate, LocalDate rentEndDate);
+    List<Invoice> findAllByRentStartDateLessThanEqualAndRentEndDateGreaterThanEqual(LocalDate rentStartDate, LocalDate rentEndDate);
 
     List<Invoice> findByCustomer_UserId(long customerId);
 }

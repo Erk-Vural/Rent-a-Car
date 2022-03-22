@@ -35,8 +35,8 @@ public class InvoiceController {
         return invoiceService.getByCustomerId(id);
     }
 
-    public DataResult<InvoiceGetResponse> getByBetweenDates(@RequestParam("endDate") LocalDate endDate,
-                                                            @RequestParam("startDate") LocalDate startDate) {
+    public DataResult<List<InvoiceGetResponse>> getByBetweenDates(@RequestParam("endDate") LocalDate endDate,
+                                                                  @RequestParam("startDate") LocalDate startDate) {
         return invoiceService.getByBetweenDates(endDate, startDate);
     }
 }

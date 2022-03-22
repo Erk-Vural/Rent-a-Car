@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public Result add(CarRentalCreateRequest createRequest) throws BusinessException {
         checkCarIdExist(createRequest.getCarId());
         checkUnderMaintenance(createRequest.getCarId());
+        checkIfCarIsRented(createRequest.getCarId(), createRequest.getStartDate());
 
         CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
@@ -154,6 +156,19 @@ public class CarRentalServiceImpl implements CarRentalService {
                 if (carMaintenance.getReturnDate() != null) {
                     throw new BusinessException(MessageStrings.RENTALMAINTENANCEERROR);
                 }
+            }
+        }
+    }
+
+    private void checkIfCarIsRented(long carId, LocalDate startingDate) throws BusinessException {
+
+        List<CarRental> carRentals = this.carRentalRepository.findByCar_Id(carId);
+
+        for (CarRental carRental : carRentals) {
+
+            if (startingDate.isAfter(carRental.getEndDate())) {
+
+                throw new BusinessException(MessageStrings.RENTALALREADYRENTED);
             }
         }
     }

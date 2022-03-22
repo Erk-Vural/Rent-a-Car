@@ -31,7 +31,7 @@ public class Invoice {
 
     @Transient
     @Column(name = "total_rent_days")
-    private int totalRentDays;
+    private long totalRentDays;
 
     @Column(name = "total")
     private double total;
