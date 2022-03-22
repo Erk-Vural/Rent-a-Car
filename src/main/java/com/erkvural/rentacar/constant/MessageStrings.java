@@ -112,12 +112,6 @@ public class MessageStrings {
     public static final String INVOICENOTFOUND = "invoice.not.found";
     public static final String INVOICENUMBERAlREADYEXISTS = "invoice.exists";
 
-
-    public static final String USEREMAILALREADYEXISTS = "user.email.exists";
-    public static final String USERFOUND = "user.found";
-    public static final String USERNOTFOUND = "user.not.found";
-    public static final String USERLIST = "user.listed";
-
     public static final String DAMAGEADD = "damage.added";
     public static final String DAMAGEDELETE = "damage.deleted";
     public static final String DAMAGEUPDATE = "damage.updated";
