@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +38,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         AdditionalService additionalService = this.modelMapperService.forRequest().map(createRequest, AdditionalService.class);
         this.additionalServiceRepository.save(additionalService);
 
-        return new SuccessResult("Success, Additional Service added: " + additionalService.getName());
+        return new SuccessResult(MessageStrings.ADDITIONALSERVICEADD);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
                         .map(additionalService, AdditionalServiceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Additional Services listed.", response);
+        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICELIST, response);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         AdditionalService additionalService = additionalServiceRepository.getById(id);
         AdditionalServiceGetResponse response = modelMapperService.forDto().map(additionalService, AdditionalServiceGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Additional Service with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICEGET, response);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
 
         this.additionalServiceRepository.save(additionalService);
 
-        return new SuccessResult("Success, Additional Service updated: " + additionalService.getName());
+        return new SuccessResult(MessageStrings.ADDITIONALSERVICEUPDATE);
     }
 
     @Override
@@ -79,17 +80,17 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
 
         this.additionalServiceRepository.deleteById(id);
 
-        return new SuccessResult("Success, Additional Service deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.ADDITIONALSERVICEDELETE);
     }
 
     private void checkAdditionalServiceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(additionalServiceRepository.findById(id)))
-            throw new BusinessException("Can't find Additional Service with id: " + id);
+            throw new BusinessException(MessageStrings.ADDITIONALSERVICENOTIDFOUND);
     }
 
     private void checkAdditionalServiceExist(String name) throws BusinessException {
         if (!Objects.nonNull(additionalServiceRepository.findByName(name)))
-            throw new BusinessException("Additional Service with same name exists: " + name);
+            throw new BusinessException(MessageStrings.ADDITIONALSERVICENAMEERROR);
 
     }
 }

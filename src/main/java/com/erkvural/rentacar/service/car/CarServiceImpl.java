@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.*;
@@ -35,7 +36,7 @@ public class CarServiceImpl implements CarService {
         Car car = this.modelMapperService.forRequest().map(createRequest, Car.class);
         this.carRepository.save(car);
 
-        return new SuccessResult("Success, Car added: " + car);
+        return new SuccessResult(MessageStrings.CARADD);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Cars listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARLIST, response);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class CarServiceImpl implements CarService {
         Car car = carRepository.getById(id);
         CarGetResponse response = modelMapperService.forDto().map(car, CarGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Car with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CARFOUND, response);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("GetAllPaged Results Listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARMPAGED, response);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("GetAllSorted Results Listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARSORTED, response);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("GetAllByDailyPriceLessThanEqual Results Listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARGETLESSTHANEQUAL, response);
     }
 
     @Override
@@ -111,7 +112,7 @@ public class CarServiceImpl implements CarService {
 
         this.carRepository.save(car);
 
-        return new SuccessResult("Success, Car updated: " + car);
+        return new SuccessResult(MessageStrings.CARUPDATE);
     }
 
     @Override
@@ -120,11 +121,11 @@ public class CarServiceImpl implements CarService {
 
         this.carRepository.deleteById(id);
 
-        return new SuccessResult("Success, Car deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CARDELETE);
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
         if (Objects.nonNull(carRepository.findById(id)))
-            throw new BusinessException("Can't find Car with id: " + id);
+            throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 }

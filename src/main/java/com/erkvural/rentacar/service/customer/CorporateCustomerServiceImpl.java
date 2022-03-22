@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.customer;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class CorporateCustomerServiceImpl implements CorporateCustomerService {
@@ -37,7 +37,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerCreateDto, CorporateCustomer.class);
         this.corporateCustomerRepository.save(corporateCustomer);
 
-        return new SuccessResult("Success, Corporate Customer added: " + corporateCustomer.getEmail());
+        return new SuccessResult(MessageStrings.CUSTOMERADD);
     }
 
     @Override
@@ -46,10 +46,9 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
 
         List<CorporateCustomerGetResponse> response = result.stream()
                 .map(corporateCustomer -> modelMapperService.forDto()
-                        .map(corporateCustomer, CorporateCustomerGetResponse.class))
-                .collect(Collectors.toList());
+                        .map(corporateCustomer, CorporateCustomerGetResponse.class)).toList();
 
-        return new SuccessDataResult<>("Success, All Corporate Customer listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERLIST, response);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
         CorporateCustomer corporateCustomer = corporateCustomerRepository.getById(id);
         CorporateCustomerGetResponse response = modelMapperService.forDto().map(corporateCustomer, CorporateCustomerGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Corporate Customer with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERGET, response);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(corporateCustomerUpdateRequest, CorporateCustomer.class);
         this.corporateCustomerRepository.save(corporateCustomer);
 
-        return new SuccessResult("Success, Corporate Customer updated: " + corporateCustomer.getEmail());
+        return new SuccessResult(MessageStrings.CUSTOMERUPDATE);
     }
 
     @Override
@@ -79,16 +78,16 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
 
         this.corporateCustomerRepository.deleteById(id);
 
-        return new SuccessResult("Success, Corporate Customer deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CUSTOMERDELETE);
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
         if (Objects.nonNull(corporateCustomerRepository.findByUserId(userId)))
-            throw new BusinessException("Can't find Customer with userId: " + userId);
+            throw new BusinessException(MessageStrings.CUSTOMERNOTFOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
         if (Objects.nonNull(corporateCustomerRepository.findByEmail(email)))
-            throw new BusinessException("Customer with given email exists: " + email);
+            throw new BusinessException(MessageStrings.CUSTOMERISALREADYEXISTS);
     }
 }

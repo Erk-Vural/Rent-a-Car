@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +38,7 @@ public class CityServiceImpl implements CityService {
         City city = this.modelMapperService.forRequest().map(createRequest, City.class);
         this.cityRepository.save(city);
 
-        return new SuccessResult("Success, City added: " + city.getName());
+        return new SuccessResult(MessageStrings.CITYADD);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class CityServiceImpl implements CityService {
                         .map(city, CityGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Cities listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CITYLIST, response);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class CityServiceImpl implements CityService {
         City city = cityRepository.getById(id);
         CityGetResponse response = modelMapperService.forDto().map(city, CityGetResponse.class);
 
-        return new SuccessDataResult<>("Success, City with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CITYBYID, response);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class CityServiceImpl implements CityService {
 
         this.cityRepository.save(city);
 
-        return new SuccessResult("Success, City updated: " + city.getName());
+        return new SuccessResult(MessageStrings.CITYUPDATE);
     }
 
     @Override
@@ -80,17 +81,17 @@ public class CityServiceImpl implements CityService {
 
         this.cityRepository.deleteById(id);
 
-        return new SuccessResult("Success, City deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CITYDELETE);
     }
 
     private void checkCityIdExist(long id) throws BusinessException {
         if (Objects.nonNull(cityRepository.findById(id)))
-            throw new BusinessException("Can't find City with id: " + id);
+            throw new BusinessException(MessageStrings.CITYNOTFOUND);
     }
 
     private void checkCityNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(cityRepository.findByName(name)))
-            throw new BusinessException("City with same name exists: " + name);
+            throw new BusinessException(MessageStrings.CITYNAMENOTFOUND);
 
     }
 }

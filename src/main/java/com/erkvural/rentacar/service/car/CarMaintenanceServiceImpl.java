@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -47,7 +48,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
         this.carMaintenanceRepository.save(carMaintenance);
 
-        return new SuccessResult("Success, Car Maintenance added: " + carMaintenance);
+        return new SuccessResult(MessageStrings.CARMAINTENANCEADD);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Car Maintenances listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCELIST, response);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         CarMaintenance carMaintenance = carMaintenanceRepository.findById(id);
         CarMaintenanceGetResponse response = modelMapperService.forDto().map(carMaintenance, CarMaintenanceGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Car Maintenance with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGET, response);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         List<CarMaintenanceGetResponse> response = result.stream().map(carMaintenance -> this.modelMapperService.forDto()
                 .map(carMaintenance, CarMaintenanceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success,  Car Maintenance with requested carID found", response);
+        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGETBYCARID, response);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("GetAllPaged Results Listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCEPAGED, response);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("GetAllSorted Results Listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCESORTED, response);
     }
 
     @Override
@@ -119,7 +120,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         this.carMaintenanceRepository.save(carMaintenance);
 
-        return new SuccessResult("Car maintenance updated: " + carMaintenance);
+        return new SuccessResult(MessageStrings.CARMAINTENANCEUPDATE);
     }
 
     @Override
@@ -128,17 +129,17 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         this.carRepository.deleteById(id);
 
-        return new SuccessResult("Success, Car Maintenance deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CARMAINTENANCEDELETE);
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
         if (Objects.nonNull(carRepository.findById(id)))
-            throw new BusinessException("Can't find Car with id: " + id);
+            throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 
     private void checkCarMaintenanceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(carMaintenanceRepository.findById(id)))
-            throw new BusinessException("Can't find Car Maintenance with id: " + id);
+            throw new BusinessException(MessageStrings.CARMAINTENANCENOTFOUND);
     }
 
     private void checkIsRented(long carId) throws BusinessException {
@@ -146,7 +147,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         if (results != null) {
             for (CarRental carRental : results) {
                 if (carRental.getEndDate() != null) {
-                    throw new BusinessException("Car is rented until: " + carRental.getEndDate());
+                    throw new BusinessException(MessageStrings.CARMAINTENANCERENTALERROR);
                 }
             }
         }

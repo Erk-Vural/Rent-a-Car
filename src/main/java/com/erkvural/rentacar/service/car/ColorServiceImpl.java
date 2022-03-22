@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +38,7 @@ public class ColorServiceImpl implements ColorService {
         Color color = this.modelMapperService.forRequest().map(createRequest, Color.class);
         this.colorRepository.save(color);
 
-        return new SuccessResult("Success, Color added: " + color.getName());
+        return new SuccessResult(MessageStrings.COLORADD);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ColorServiceImpl implements ColorService {
                         .map(color, ColorGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Colors listed.", response);
+        return new SuccessDataResult<>(MessageStrings.COLORLIST, response);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ColorServiceImpl implements ColorService {
         Color color = colorRepository.getById(id);
         ColorGetResponse response = modelMapperService.forDto().map(color, ColorGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Color with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.COLORFOUND, response);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ColorServiceImpl implements ColorService {
 
         this.colorRepository.save(color);
 
-        return new SuccessResult("Success, Color updated: " + color.getName());
+        return new SuccessResult(MessageStrings.COLORUPDATE);
     }
 
     @Override
@@ -79,17 +80,17 @@ public class ColorServiceImpl implements ColorService {
 
         this.colorRepository.deleteById(id);
 
-        return new SuccessResult("Success, Color deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.COLORDELETE);
     }
 
     private void checkColorIdExist(long id) throws BusinessException {
         if (Objects.nonNull(colorRepository.findById(id)))
-            throw new BusinessException("Can't find Color with id: " + id);
+            throw new BusinessException(MessageStrings.COLORNOTFOUND);
     }
 
     private void checkColorNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(colorRepository.findByName(name)))
-            throw new BusinessException("Color with same name exists: " + name);
+            throw new BusinessException(MessageStrings.COLORNAMEERROR);
 
     }
 }

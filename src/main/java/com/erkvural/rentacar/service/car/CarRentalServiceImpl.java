@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -47,7 +48,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
-        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateDtos(), carRental.getId());
+        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet(), carRental.getId());
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
@@ -55,7 +56,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.carRentalRepository.save(carRental);
 
-        return new SuccessResult("Success, Car Rental added: " + carRental);
+        return new SuccessResult(MessageStrings.RENTALADD);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Car Rentals listed.", response);
+        return new SuccessDataResult<>(MessageStrings.RENTALLIST, response);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         CarRental carRental = carRentalRepository.findById(id);
         CarRentalGetResponse response = modelMapperService.forDto().map(carRental, CarRentalGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Car Rental with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.RENTALFOUND, response);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success,  Car Rental with requested carID found", response);
+        return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCARID, response);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success,  Car Rental with requested customerID found", response);
+        return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCUSTOMERID, response);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         List<CarRental> result = this.carRentalRepository.findAll(s);
         List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(MessageStrings.RENTALSTARTDATESORTED, response);
     }
 
     @Override
@@ -112,7 +113,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         List<CarRental> result = this.carRentalRepository.findAll(s);
         List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(response);
+        return new SuccessDataResult<>(MessageStrings.RENTALENDDATESORTED, response);
     }
 
     @Override
@@ -125,7 +126,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.carRentalRepository.save(carRental);
 
-        return new SuccessResult("Car Rental updated: " + carRental);
+        return new SuccessResult(MessageStrings.RENTALUPDATE);
     }
 
     @Override
@@ -134,16 +135,16 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.carRepository.deleteById(id);
 
-        return new SuccessResult("Success, Car Rental deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.RENTALDELETE);
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(id))) throw new BusinessException("Can't find Car with id: " + id);
+        if (Objects.nonNull(carRepository.findById(id))) throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
         if (Objects.nonNull(carMaintenanceRepository.findById(id)))
-            throw new BusinessException("Can't find Car Rental with id: " + id);
+            throw new BusinessException(MessageStrings.RENTALNOTFOUND);
     }
 
     private void checkUnderMaintenance(long carId) throws BusinessException {
@@ -151,7 +152,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         if (result != null) {
             for (CarMaintenance carMaintenance : result) {
                 if (carMaintenance.getReturnDate() != null) {
-                    throw new BusinessException("Car is under maintenance until: " + carMaintenance.getReturnDate());
+                    throw new BusinessException(MessageStrings.RENTALMAINTENANCEERROR);
                 }
             }
         }

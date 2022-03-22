@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +38,7 @@ public class BrandServiceImpl implements BrandService {
 
         this.brandRepository.save(brand);
 
-        return new SuccessResult("Success, Brand added: " + brand.getName());
+        return new SuccessResult(MessageStrings.BRANDADD);
     }
 
     @Override
@@ -46,10 +47,9 @@ public class BrandServiceImpl implements BrandService {
 
         List<BrandGetResponse> response = result.stream()
                 .map(brand -> modelMapperService.forDto()
-                        .map(brand, BrandGetResponse.class))
-                .collect(Collectors.toList());
+                        .map(brand, BrandGetResponse.class)).toList();
 
-        return new SuccessDataResult<>("Success, All Brands listed.", response);
+        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICEGET);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = brandRepository.getById(id);
         BrandGetResponse response = modelMapperService.forDto().map(brand, BrandGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Brand with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.BRANDFOUND, response);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class BrandServiceImpl implements BrandService {
 
         this.brandRepository.save(brand);
 
-        return new SuccessResult("Success, Brand updated: " + brand.getName());
+        return new SuccessResult(MessageStrings.BRANDUPDATE);
     }
 
     @Override
@@ -80,17 +80,17 @@ public class BrandServiceImpl implements BrandService {
 
         this.brandRepository.deleteById(id);
 
-        return new SuccessResult("Success, Brand deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.BRANDDELETE);
     }
 
     private void checkBrandIdExist(long id) throws BusinessException {
         if (Objects.nonNull(brandRepository.findById(id)))
-            throw new BusinessException("Can't find Brand with id: " + id);
+            throw new BusinessException(MessageStrings.BRANDNOTFOUND);
     }
 
     private void checkBrandNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(brandRepository.findByName(name)))
-            throw new BusinessException("Brand with same name exists: " + name);
+            throw new BusinessException(MessageStrings.BRANDNAMEERROR);
 
     }
 }

@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.customer;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +38,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerCreateDto, IndividualCustomer.class);
         this.individualCustomerRepository.save(individualCustomer);
 
-        return new SuccessResult("Success, individual Customer added: " + individualCustomer.getEmail());
+        return new SuccessResult(MessageStrings.CUSTOMERADD);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
                         .map(individualCustomer, IndividualCustomerGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All individual Customer listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERLIST, response);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         IndividualCustomer individualCustomer = individualCustomerRepository.getById(id);
         IndividualCustomerGetResponse response = modelMapperService.forDto().map(individualCustomer, IndividualCustomerGetResponse.class);
 
-        return new SuccessDataResult<>("Success, individual Customer with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERGET, response);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerUpdateDto, IndividualCustomer.class);
         this.individualCustomerRepository.save(individualCustomer);
 
-        return new SuccessResult("Success, individual Customer updated: " + individualCustomer.getEmail());
+        return new SuccessResult(MessageStrings.CUSTOMERUPDATE);
     }
 
     @Override
@@ -79,16 +80,16 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
 
         this.individualCustomerRepository.deleteById(id);
 
-        return new SuccessResult("Success, individual Customer deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CUSTOMERDELETE);
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
         if (Objects.nonNull(individualCustomerRepository.findByUserId(userId)))
-            throw new BusinessException("Can't find Customer with userId: " + userId);
+            throw new BusinessException(MessageStrings.CUSTOMERNOTFOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
         if (Objects.nonNull(individualCustomerRepository.findByEmail(email)))
-            throw new BusinessException("Customer with given email exists: " + email);
+            throw new BusinessException(MessageStrings.CUSTOMERISALREADYEXISTS);
     }
 }

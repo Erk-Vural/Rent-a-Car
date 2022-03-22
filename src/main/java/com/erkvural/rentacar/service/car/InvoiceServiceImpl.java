@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -42,7 +43,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<InvoiceGetResponse> response = result.stream().map(invoice -> modelMapperService.forDto().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Invoices listed.", response);
+        return new SuccessDataResult<>(MessageStrings.INVOICELIST, response);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = invoiceRepository.findById(id);
         InvoiceGetResponse response = modelMapperService.forDto().map(invoice, InvoiceGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Invoice with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.INVOICEFOUND, response);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, Invoices with requested customerID found", response);
+        return new SuccessDataResult<>(MessageStrings.INVOICEBYCUSTOMERLIST, response);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private void checkInvoiceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(invoiceRepository.findById(id)))
-            throw new BusinessException("Can't find Car Rental with id: " + id);
+            throw new BusinessException(MessageStrings.INVOICEFOUND);
     }
 
 }

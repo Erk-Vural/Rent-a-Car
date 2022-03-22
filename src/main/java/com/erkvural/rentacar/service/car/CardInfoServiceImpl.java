@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -36,7 +37,7 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.cardInfoRepository.save(cardInfo);
 
-        return new SuccessResult("Success, Card Info added: " + cardInfo);
+        return new SuccessResult(MessageStrings.CREDITCARDADD);
     }
 
     @Override
@@ -48,42 +49,42 @@ public class CardInfoServiceImpl implements CardInfoService {
                         .map(cardInfo, CardInfoGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Card Info listed.", response);
+        return new SuccessDataResult<>(MessageStrings.CREDITCARDLIST, response);
     }
 
     @Override
     public DataResult<CardInfoGetResponse> getById(long id) throws BusinessException {
-        checkCarInfoIdExist(id);
+        checkCardInfoIdExist(id);
 
         CardInfo cardInfo = cardInfoRepository.getById(id);
         CardInfoGetResponse response = modelMapperService.forDto().map(cardInfo, CardInfoGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Card Info with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.CREDITCARDGET, response);
     }
 
     @Override
     public Result update(long id, CardInfoUpdateRequest updateRequest) throws BusinessException {
-        checkCarInfoIdExist(id);
+        checkCardInfoIdExist(id);
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(updateRequest, CardInfo.class);
         cardInfo.setId(id);
 
         this.cardInfoRepository.save(cardInfo);
 
-        return new SuccessResult("Success, Card Info updated: " + cardInfo);
+        return new SuccessResult(MessageStrings.CREDITCARDUPDATE);
     }
 
     @Override
     public Result delete(long id) throws BusinessException {
-        checkCarInfoIdExist(id);
+        checkCardInfoIdExist(id);
 
         this.cardInfoRepository.deleteById(id);
 
-        return new SuccessResult("Success, Card Info deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.CREDITCARDELETE);
     }
 
-    private void checkCarInfoIdExist(long id) throws BusinessException {
+    private void checkCardInfoIdExist(long id) throws BusinessException {
         if (Objects.nonNull(cardInfoRepository.findById(id)))
-            throw new BusinessException("Can't find Card Info with id: " + id);
+            throw new BusinessException(MessageStrings.CREDITCARDNOTFOUND);
     }
 }

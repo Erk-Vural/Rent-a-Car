@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -40,7 +41,7 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = this.modelMapperService.forRequest().map(createRequest, CarDamage.class);
         this.carDamageRepository.save(carDamage);
 
-        return new SuccessResult("Success, Car Damage added: " + carDamage);
+        return new SuccessResult(MessageStrings.DAMAGEADD);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CarDamageServiceImpl implements CarDamageService {
                         .map(carDamage, CarDamageGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>("Success, All Car Damages listed.", response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGELIST, response);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = carDamageRepository.getById(id);
         CarDamageGetResponse response = modelMapperService.forDto().map(carDamage, CarDamageGetResponse.class);
 
-        return new SuccessDataResult<>("Success, Car Damage with requested ID found.", response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGEFOUND, response);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         this.carDamageRepository.save(carDamage);
 
-        return new SuccessResult("Success, Car Damage updated: " + carDamage);
+        return new SuccessResult(MessageStrings.DAMAGEUPDATE);
     }
 
     @Override
@@ -83,16 +84,16 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         this.carDamageRepository.deleteById(id);
 
-        return new SuccessResult("Success, Brand deleted with requested ID: " + id);
+        return new SuccessResult(MessageStrings.DAMAGEDELETE);
     }
 
     private void checkCarDamageIdExist(long id) throws BusinessException {
         if (Objects.nonNull(carDamageRepository.findById(id)))
-            throw new BusinessException("Can't find Car Damage with id: " + id);
+            throw new BusinessException(MessageStrings.DAMAGENOTFOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
         if (Objects.nonNull(carRepository.findById(carId)))
-            throw new BusinessException("Can't find Car with id: " + carId);
+            throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 }
