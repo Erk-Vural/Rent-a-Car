@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
-    private final CarRepository carRepository;
+    private final CarRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
     public CarServiceImpl(CarRepository carRepository, ModelMapperService modelMapperService) {
-        this.carRepository = carRepository;
+        this.repository = carRepository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -34,17 +34,17 @@ public class CarServiceImpl implements CarService {
     public Result add(CarCreateRequest createRequest) {
 
         Car car = this.modelMapperService.forRequest().map(createRequest, Car.class);
-        this.carRepository.save(car);
+        this.repository.save(car);
 
         return new SuccessResult(MessageStrings.CARADD);
     }
 
     @Override
     public DataResult<List<CarGetResponse>> getAll() {
-        List<Car> result = carRepository.findAll();
+        List<Car> result = repository.findAll();
 
         List<CarGetResponse> response = result.stream()
-                .map(car -> modelMapperService.forDto()
+                .map(car -> modelMapperService.forResponse()
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -55,8 +55,8 @@ public class CarServiceImpl implements CarService {
     public DataResult<CarGetResponse> getById(long id) throws BusinessException {
         checkCarIdExist(id);
 
-        Car car = carRepository.getById(id);
-        CarGetResponse response = modelMapperService.forDto().map(car, CarGetResponse.class);
+        Car car = repository.getById(id);
+        CarGetResponse response = modelMapperService.forResponse().map(car, CarGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.CARFOUND, response);
     }
@@ -65,9 +65,9 @@ public class CarServiceImpl implements CarService {
     public DataResult<List<CarGetResponse>> getAllPaged(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-        List<Car> result = this.carRepository.findAll(pageable).getContent();
+        List<Car> result = this.repository.findAll(pageable).getContent();
         List<CarGetResponse> response = result.stream()
-                .map(car -> this.modelMapperService.forDto()
+                .map(car -> this.modelMapperService.forResponse()
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -78,9 +78,9 @@ public class CarServiceImpl implements CarService {
     public DataResult<List<CarGetResponse>> getAllSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "dailyPrice");
 
-        List<Car> result = this.carRepository.findAll(s);
+        List<Car> result = this.repository.findAll(s);
         List<CarGetResponse> response = result.stream()
-                .map(car -> this.modelMapperService.forDto()
+                .map(car -> this.modelMapperService.forResponse()
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -89,14 +89,14 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public DataResult<List<CarGetResponse>> getAllByDailyPriceLessThanEqual(double dailyPrice) {
-        List<Car> result = this.carRepository.findByDailyPriceLessThanEqual(dailyPrice);
+        List<Car> result = this.repository.findByDailyPriceLessThanEqual(dailyPrice);
 
         if (result.isEmpty()) {
             return new ErrorDataResult<>("No results");
         }
 
         List<CarGetResponse> response = result.stream()
-                .map(car -> this.modelMapperService.forDto()
+                .map(car -> this.modelMapperService.forResponse()
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -110,7 +110,7 @@ public class CarServiceImpl implements CarService {
         Car car = this.modelMapperService.forRequest().map(updateRequest, Car.class);
         car.setId(id);
 
-        this.carRepository.save(car);
+        this.repository.save(car);
 
         return new SuccessResult(MessageStrings.CARUPDATE);
     }
@@ -119,13 +119,13 @@ public class CarServiceImpl implements CarService {
     public Result delete(long id) throws BusinessException {
         checkCarIdExist(id);
 
-        this.carRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.CARDELETE);
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 }

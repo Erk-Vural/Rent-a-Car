@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarDamageServiceImpl implements CarDamageService {
-    private final CarDamageRepository carDamageRepository;
+    private final CarDamageRepository repository;
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public CarDamageServiceImpl(CarDamageRepository carDamageRepository, CarRepository carRepository, ModelMapperService modelMapperService) {
-        this.carDamageRepository = carDamageRepository;
+    public CarDamageServiceImpl(CarDamageRepository repository, CarRepository carRepository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.carRepository = carRepository;
         this.modelMapperService = modelMapperService;
     }
@@ -39,16 +39,16 @@ public class CarDamageServiceImpl implements CarDamageService {
         checkCarIdExist(createRequest.getCarId());
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(createRequest, CarDamage.class);
-        this.carDamageRepository.save(carDamage);
+        this.repository.save(carDamage);
 
         return new SuccessResult(MessageStrings.DAMAGEADD);
     }
 
     @Override
     public DataResult<List<CarDamageGetResponse>> getAll() {
-        List<CarDamage> result = carDamageRepository.findAll();
+        List<CarDamage> result = repository.findAll();
         List<CarDamageGetResponse> response = result.stream()
-                .map(carDamage -> modelMapperService.forDto()
+                .map(carDamage -> modelMapperService.forResponse()
                         .map(carDamage, CarDamageGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -59,8 +59,8 @@ public class CarDamageServiceImpl implements CarDamageService {
     public DataResult<CarDamageGetResponse> getById(long id) throws BusinessException {
         checkCarDamageIdExist(id);
 
-        CarDamage carDamage = carDamageRepository.getById(id);
-        CarDamageGetResponse response = modelMapperService.forDto().map(carDamage, CarDamageGetResponse.class);
+        CarDamage carDamage = repository.getById(id);
+        CarDamageGetResponse response = modelMapperService.forResponse().map(carDamage, CarDamageGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.DAMAGEFOUND, response);
     }
@@ -73,7 +73,7 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = this.modelMapperService.forRequest().map(updateRequest, CarDamage.class);
         carDamage.setId(id);
 
-        this.carDamageRepository.save(carDamage);
+        this.repository.save(carDamage);
 
         return new SuccessResult(MessageStrings.DAMAGEUPDATE);
     }
@@ -82,13 +82,13 @@ public class CarDamageServiceImpl implements CarDamageService {
     public Result delete(long id) throws BusinessException {
         checkCarDamageIdExist(id);
 
-        this.carDamageRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.DAMAGEDELETE);
     }
 
     private void checkCarDamageIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carDamageRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.DAMAGENOTFOUND);
     }
 

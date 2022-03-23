@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-    private final InvoiceRepository invoiceRepository;
+    private final InvoiceRepository repository;
     private final PaymentRepository paymentRepository;
     private final ModelMapperService modelMapperService;
     private final CarRentalService carRentalService;
 
     @Autowired
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, PaymentRepository paymentRepository, ModelMapperService modelMapperService, CarRentalService carRentalService) {
-        this.invoiceRepository = invoiceRepository;
+    public InvoiceServiceImpl(InvoiceRepository repository, PaymentRepository paymentRepository, ModelMapperService modelMapperService, CarRentalService carRentalService) {
+        this.repository = repository;
         this.paymentRepository = paymentRepository;
         this.modelMapperService = modelMapperService;
         this.carRentalService = carRentalService;
@@ -45,16 +45,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Invoice invoice = setInvoice(createRequest.getPaymentId());
 
-        this.invoiceRepository.save(invoice);
+        this.repository.save(invoice);
 
         return new SuccessResult(MessageStrings.INVOICEADD);
     }
 
     @Override
     public DataResult<List<InvoiceGetResponse>> getAll() {
-        List<Invoice> result = invoiceRepository.findAll();
+        List<Invoice> result = repository.findAll();
 
-        List<InvoiceGetResponse> response = result.stream().map(invoice -> modelMapperService.forDto().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
+        List<InvoiceGetResponse> response = result.stream().map(invoice -> modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.INVOICELIST, response);
     }
@@ -63,26 +63,26 @@ public class InvoiceServiceImpl implements InvoiceService {
     public DataResult<InvoiceGetResponse> getById(long id) throws BusinessException {
         checkInvoiceIdExist(id);
 
-        Invoice invoice = invoiceRepository.findById(id);
-        InvoiceGetResponse response = modelMapperService.forDto().map(invoice, InvoiceGetResponse.class);
+        Invoice invoice = repository.findById(id);
+        InvoiceGetResponse response = modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.INVOICEFOUND, response);
     }
 
     @Override
     public DataResult<List<InvoiceGetResponse>> getByCustomerId(long customerId) {
-        List<Invoice> result = this.invoiceRepository.findByCustomer_UserId(customerId);
+        List<Invoice> result = this.repository.findByCustomer_UserId(customerId);
 
-        List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
+        List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.INVOICEBYCUSTOMERLIST, response);
     }
 
     @Override
     public DataResult<List<InvoiceGetResponse>> getByBetweenDates(LocalDate startDate, LocalDate endDate) {
-        List<Invoice> result = this.invoiceRepository.findAllByRentStartDateLessThanEqualAndRentEndDateGreaterThanEqual(startDate, endDate);
+        List<Invoice> result = this.repository.findAllByRentStartDateLessThanEqualAndRentEndDateGreaterThanEqual(startDate, endDate);
 
-        List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceGetResponse.class)).toList();
+        List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).toList();
 
         return new SuccessDataResult<>(MessageStrings.INVOICELIST, response);
     }
@@ -94,7 +94,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = this.modelMapperService.forRequest().map(updateRequest, Invoice.class);
         invoice.setId(id);
 
-        this.invoiceRepository.save(invoice);
+        this.repository.save(invoice);
 
         return new SuccessResult(MessageStrings.INVOICEUPDATE);
     }
@@ -103,7 +103,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public Result delete(long id) throws BusinessException {
         checkInvoiceIdExist(id);
 
-        this.invoiceRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.INVOICEDELETE);
     }
@@ -114,7 +114,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private void checkInvoiceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(invoiceRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.INVOICEFOUND);
     }
 

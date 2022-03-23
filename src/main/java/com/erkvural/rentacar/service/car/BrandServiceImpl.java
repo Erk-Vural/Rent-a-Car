@@ -17,16 +17,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class BrandServiceImpl implements BrandService {
-    private final BrandRepository brandRepository;
+    private final BrandRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public BrandServiceImpl(BrandRepository brandRepository, ModelMapperService modelMapperService) {
-        this.brandRepository = brandRepository;
+    public BrandServiceImpl(BrandRepository repository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -36,28 +35,28 @@ public class BrandServiceImpl implements BrandService {
 
         Brand brand = this.modelMapperService.forRequest().map(createRequest, Brand.class);
 
-        this.brandRepository.save(brand);
+        this.repository.save(brand);
 
         return new SuccessResult(MessageStrings.BRANDADD);
     }
 
     @Override
     public DataResult<List<BrandGetResponse>> getAll() {
-        List<Brand> result = brandRepository.findAll();
+        List<Brand> result = repository.findAll();
 
         List<BrandGetResponse> response = result.stream()
-                .map(brand -> modelMapperService.forDto()
+                .map(brand -> modelMapperService.forResponse()
                         .map(brand, BrandGetResponse.class)).toList();
 
-        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICEGET);
+        return new SuccessDataResult<>(MessageStrings.BRANDLIST);
     }
 
     @Override
     public DataResult<BrandGetResponse> getById(long id) throws BusinessException {
         checkBrandIdExist(id);
 
-        Brand brand = brandRepository.getById(id);
-        BrandGetResponse response = modelMapperService.forDto().map(brand, BrandGetResponse.class);
+        Brand brand = repository.getById(id);
+        BrandGetResponse response = modelMapperService.forResponse().map(brand, BrandGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.BRANDFOUND, response);
     }
@@ -69,7 +68,7 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = this.modelMapperService.forRequest().map(updateRequest, Brand.class);
         brand.setId(id);
 
-        this.brandRepository.save(brand);
+        this.repository.save(brand);
 
         return new SuccessResult(MessageStrings.BRANDUPDATE);
     }
@@ -78,18 +77,18 @@ public class BrandServiceImpl implements BrandService {
     public Result delete(long id) throws BusinessException {
         checkBrandIdExist(id);
 
-        this.brandRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.BRANDDELETE);
     }
 
     private void checkBrandIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(brandRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.BRANDNOTFOUND);
     }
 
     private void checkBrandNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(brandRepository.findByName(name)))
+        if (!Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.BRANDNAMEERROR);
 
     }

@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class ColorServiceImpl implements ColorService {
 
-    private final ColorRepository colorRepository;
+    private final ColorRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public ColorServiceImpl(ColorRepository colorRepository, ModelMapperService modelMapperService) {
-        this.colorRepository = colorRepository;
+    public ColorServiceImpl(ColorRepository repository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -36,16 +36,16 @@ public class ColorServiceImpl implements ColorService {
         checkColorNameExist(createRequest.getName());
 
         Color color = this.modelMapperService.forRequest().map(createRequest, Color.class);
-        this.colorRepository.save(color);
+        this.repository.save(color);
 
         return new SuccessResult(MessageStrings.COLORADD);
     }
 
     @Override
     public DataResult<List<ColorGetResponse>> getAll() {
-        List<Color> result = colorRepository.findAll();
+        List<Color> result = repository.findAll();
         List<ColorGetResponse> response = result.stream()
-                .map(color -> modelMapperService.forDto()
+                .map(color -> modelMapperService.forResponse()
                         .map(color, ColorGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -56,8 +56,8 @@ public class ColorServiceImpl implements ColorService {
     public DataResult<ColorGetResponse> getById(long id) throws BusinessException {
         checkColorIdExist(id);
 
-        Color color = colorRepository.getById(id);
-        ColorGetResponse response = modelMapperService.forDto().map(color, ColorGetResponse.class);
+        Color color = repository.getById(id);
+        ColorGetResponse response = modelMapperService.forResponse().map(color, ColorGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.COLORFOUND, response);
     }
@@ -69,7 +69,7 @@ public class ColorServiceImpl implements ColorService {
         Color color = this.modelMapperService.forRequest().map(updateRequest, Color.class);
         color.setId(id);
 
-        this.colorRepository.save(color);
+        this.repository.save(color);
 
         return new SuccessResult(MessageStrings.COLORUPDATE);
     }
@@ -78,18 +78,18 @@ public class ColorServiceImpl implements ColorService {
     public Result delete(long id) throws BusinessException {
         checkColorIdExist(id);
 
-        this.colorRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.COLORDELETE);
     }
 
     private void checkColorIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(colorRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.COLORNOTFOUND);
     }
 
     private void checkColorNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(colorRepository.findByName(name)))
+        if (!Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.COLORNAMEERROR);
 
     }

@@ -22,31 +22,31 @@ import java.util.stream.Collectors;
 @Service
 public class IndividualCustomerServiceImpl implements IndividualCustomerService {
 
-    private final IndividualCustomerRepository individualCustomerRepository;
+    private final IndividualCustomerRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public IndividualCustomerServiceImpl(IndividualCustomerRepository individualCustomerRepository, ModelMapperService modelMapperService) {
-        this.individualCustomerRepository = individualCustomerRepository;
+    public IndividualCustomerServiceImpl(IndividualCustomerRepository repository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
 
     @Override
-    public Result add(IndividualCustomerCreateRequest individualCustomerCreateDto) throws BusinessException {
-        checkEmailExist(individualCustomerCreateDto.getEmail());
+    public Result add(IndividualCustomerCreateRequest createRequest) throws BusinessException {
+        checkEmailExist(createRequest.getEmail());
 
-        IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerCreateDto, IndividualCustomer.class);
-        this.individualCustomerRepository.save(individualCustomer);
+        IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createRequest, IndividualCustomer.class);
+        this.repository.save(individualCustomer);
 
         return new SuccessResult(MessageStrings.CUSTOMERADD);
     }
 
     @Override
     public DataResult<List<IndividualCustomerGetResponse>> getAll() {
-        List<IndividualCustomer> result = individualCustomerRepository.findAll();
+        List<IndividualCustomer> result = repository.findAll();
 
         List<IndividualCustomerGetResponse> response = result.stream()
-                .map(individualCustomer -> modelMapperService.forDto()
+                .map(individualCustomer -> modelMapperService.forResponse()
                         .map(individualCustomer, IndividualCustomerGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -57,19 +57,19 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     public DataResult<IndividualCustomerGetResponse> getById(long id) throws BusinessException {
         checkUserIdExist(id);
 
-        IndividualCustomer individualCustomer = individualCustomerRepository.getById(id);
-        IndividualCustomerGetResponse response = modelMapperService.forDto().map(individualCustomer, IndividualCustomerGetResponse.class);
+        IndividualCustomer individualCustomer = repository.getById(id);
+        IndividualCustomerGetResponse response = modelMapperService.forResponse().map(individualCustomer, IndividualCustomerGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.CUSTOMERGET, response);
     }
 
     @Override
-    public Result update(long id, IndividualCustomerUpdateRequest individualCustomerUpdateDto) throws BusinessException {
+    public Result update(long id, IndividualCustomerUpdateRequest updateRequest) throws BusinessException {
         checkUserIdExist(id);
-        checkEmailExist(individualCustomerUpdateDto.getEmail());
+        checkEmailExist(updateRequest.getEmail());
 
-        IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(individualCustomerUpdateDto, IndividualCustomer.class);
-        this.individualCustomerRepository.save(individualCustomer);
+        IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateRequest, IndividualCustomer.class);
+        this.repository.save(individualCustomer);
 
         return new SuccessResult(MessageStrings.CUSTOMERUPDATE);
     }
@@ -78,18 +78,18 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     public Result delete(long id) throws BusinessException {
         checkUserIdExist(id);
 
-        this.individualCustomerRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.CUSTOMERDELETE);
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
-        if (Objects.nonNull(individualCustomerRepository.findByUserId(userId)))
+        if (Objects.nonNull(repository.findByUserId(userId)))
             throw new BusinessException(MessageStrings.CUSTOMERNOTFOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
-        if (Objects.nonNull(individualCustomerRepository.findByEmail(email)))
+        if (Objects.nonNull(repository.findByEmail(email)))
             throw new BusinessException(MessageStrings.CUSTOMERISALREADYEXISTS);
     }
 }

@@ -2,6 +2,7 @@ package com.erkvural.rentacar.dto.car.create;
 
 import com.erkvural.rentacar.entity.car.CardInfo;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,9 +22,8 @@ public class PaymentCreateRequest {
     @NotBlank
     private double total;
 
-
     @NotNull
-    private CardInfo cardInfo;
+    private CardInfoCreateRequest cardInfo;
 
     @NotNull
     @PositiveOrZero

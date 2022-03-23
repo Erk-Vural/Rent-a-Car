@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CardInfoServiceImpl implements CardInfoService {
-    private final CardInfoRepository cardInfoRepository;
+    private final CardInfoRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
     public CardInfoServiceImpl(CardInfoRepository cardInfoRepository, ModelMapperService modelMapperService) {
-        this.cardInfoRepository = cardInfoRepository;
+        this.repository = cardInfoRepository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -35,17 +35,17 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
 
-        this.cardInfoRepository.save(cardInfo);
+        this.repository.save(cardInfo);
 
         return new SuccessResult(MessageStrings.CREDITCARDADD);
     }
 
     @Override
     public DataResult<List<CardInfoGetResponse>> getAll() {
-        List<CardInfo> result = cardInfoRepository.findAll();
+        List<CardInfo> result = repository.findAll();
 
         List<CardInfoGetResponse> response = result.stream()
-                .map(cardInfo -> modelMapperService.forDto()
+                .map(cardInfo -> modelMapperService.forResponse()
                         .map(cardInfo, CardInfoGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -56,8 +56,8 @@ public class CardInfoServiceImpl implements CardInfoService {
     public DataResult<CardInfoGetResponse> getById(long id) throws BusinessException {
         checkCardInfoIdExist(id);
 
-        CardInfo cardInfo = cardInfoRepository.getById(id);
-        CardInfoGetResponse response = modelMapperService.forDto().map(cardInfo, CardInfoGetResponse.class);
+        CardInfo cardInfo = repository.getById(id);
+        CardInfoGetResponse response = modelMapperService.forResponse().map(cardInfo, CardInfoGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.CREDITCARDGET, response);
     }
@@ -69,7 +69,7 @@ public class CardInfoServiceImpl implements CardInfoService {
         CardInfo cardInfo = this.modelMapperService.forRequest().map(updateRequest, CardInfo.class);
         cardInfo.setId(id);
 
-        this.cardInfoRepository.save(cardInfo);
+        this.repository.save(cardInfo);
 
         return new SuccessResult(MessageStrings.CREDITCARDUPDATE);
     }
@@ -78,13 +78,13 @@ public class CardInfoServiceImpl implements CardInfoService {
     public Result delete(long id) throws BusinessException {
         checkCardInfoIdExist(id);
 
-        this.cardInfoRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.CREDITCARDELETE);
     }
 
     private void checkCardInfoIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(cardInfoRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CREDITCARDNOTFOUND);
     }
 }

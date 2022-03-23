@@ -83,6 +83,7 @@ public class MessageStrings {
     public static final String CREDITCARDALREADYEXISTS = "credit.card.exists";
 
     public static final String PAYMENTADD = "payment.add";
+    public static final String PAYMENTFOUND = "payment.found";
     public static final String PAYMENTNOTFOUND = "payment.not.found";
     public static final String PAYMENTUPDATE = "payment.updated";
     public static final String PAYMENTDELETE = "payment.deleted";

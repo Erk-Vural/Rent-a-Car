@@ -27,15 +27,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarRentalServiceImpl implements CarRentalService {
-    private final CarRentalRepository carRentalRepository;
+    private final CarRentalRepository repository;
     private final CarMaintenanceRepository carMaintenanceRepository;
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
     private final OrderedAdditionalServiceService orderedAdditionalServiceService;
 
     @Autowired
-    public CarRentalServiceImpl(CarRentalRepository carRentalRepository, CarMaintenanceRepository carMaintenanceRepository, CarRepository carRepository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService) {
-        this.carRentalRepository = carRentalRepository;
+    public CarRentalServiceImpl(CarRentalRepository repository, CarMaintenanceRepository carMaintenanceRepository, CarRepository carRepository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService) {
+        this.repository = repository;
         this.carMaintenanceRepository = carMaintenanceRepository;
         this.carRepository = carRepository;
         this.modelMapperService = modelMapperService;
@@ -56,16 +56,16 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         // carRental.setBill(calRentedTotal(carRental.getId()));
 
-        this.carRentalRepository.save(carRental);
+        this.repository.save(carRental);
 
         return new SuccessResult(MessageStrings.RENTALADD);
     }
 
     @Override
     public SuccessDataResult<List<CarRentalGetResponse>> getAll() {
-        List<CarRental> result = carRentalRepository.findAll();
+        List<CarRental> result = repository.findAll();
 
-        List<CarRentalGetResponse> response = result.stream().map(carRental -> modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.RENTALLIST, response);
     }
@@ -74,26 +74,26 @@ public class CarRentalServiceImpl implements CarRentalService {
     public SuccessDataResult<CarRentalGetResponse> getById(long id) throws BusinessException {
         checkCarRentalIdExist(id);
 
-        CarRental carRental = carRentalRepository.findById(id);
-        CarRentalGetResponse response = modelMapperService.forDto().map(carRental, CarRentalGetResponse.class);
+        CarRental carRental = repository.findById(id);
+        CarRentalGetResponse response = modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.RENTALFOUND, response);
     }
 
     @Override
     public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(long carId) {
-        List<CarRental> result = this.carRentalRepository.findByCar_Id(carId);
+        List<CarRental> result = this.repository.findByCar_Id(carId);
 
-        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCARID, response);
     }
 
     @Override
     public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(long customerId) {
-        List<CarRental> result = this.carRentalRepository.findByCustomer_UserId(customerId);
+        List<CarRental> result = this.repository.findByCustomer_UserId(customerId);
 
-        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forDto().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
+        List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCUSTOMERID, response);
     }
@@ -102,8 +102,8 @@ public class CarRentalServiceImpl implements CarRentalService {
     public DataResult<List<CarRentalGetResponse>> getAllStartDateSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "startDate");
 
-        List<CarRental> result = this.carRentalRepository.findAll(s);
-        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
+        List<CarRental> result = this.repository.findAll(s);
+        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forResponse().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.RENTALSTARTDATESORTED, response);
     }
@@ -112,8 +112,8 @@ public class CarRentalServiceImpl implements CarRentalService {
     public DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "endDate");
 
-        List<CarRental> result = this.carRentalRepository.findAll(s);
-        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forDto().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
+        List<CarRental> result = this.repository.findAll(s);
+        List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forResponse().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.RENTALENDDATESORTED, response);
     }
@@ -126,7 +126,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
 
-        this.carRentalRepository.save(carRental);
+        this.repository.save(carRental);
 
         return new SuccessResult(MessageStrings.RENTALUPDATE);
     }
@@ -145,7 +145,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carMaintenanceRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.RENTALNOTFOUND);
     }
 
@@ -162,7 +162,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
     private void checkIfCarIsRented(long carId, LocalDate startingDate) throws BusinessException {
 
-        List<CarRental> carRentals = this.carRentalRepository.findByCar_Id(carId);
+        List<CarRental> carRentals = this.repository.findByCar_Id(carId);
 
         for (CarRental carRental : carRentals) {
 
@@ -175,7 +175,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
     private double calRentedTotal(long id) {
 
-        CarRental carRental = carRentalRepository.findById(id);
+        CarRental carRental = repository.findById(id);
 
         long totalDays = ChronoUnit.DAYS.between(carRental.getStartDate(), carRental.getEndDate());
 

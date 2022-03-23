@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class AdditionalServiceServiceImpl implements AdditionalServiceService {
 
-    private final AdditionalServiceRepository additionalServiceRepository;
+    private final AdditionalServiceRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public AdditionalServiceServiceImpl(AdditionalServiceRepository additionalServiceRepository, ModelMapperService modelMapperService) {
-        this.additionalServiceRepository = additionalServiceRepository;
+    public AdditionalServiceServiceImpl(AdditionalServiceRepository repository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -36,16 +36,16 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         checkAdditionalServiceExist(createRequest.getName());
 
         AdditionalService additionalService = this.modelMapperService.forRequest().map(createRequest, AdditionalService.class);
-        this.additionalServiceRepository.save(additionalService);
+        this.repository.save(additionalService);
 
         return new SuccessResult(MessageStrings.ADDITIONALSERVICEADD);
     }
 
     @Override
     public DataResult<List<AdditionalServiceGetResponse>> getAll() {
-        List<AdditionalService> result = additionalServiceRepository.findAll();
+        List<AdditionalService> result = repository.findAll();
         List<AdditionalServiceGetResponse> response = result.stream()
-                .map(additionalService -> modelMapperService.forDto()
+                .map(additionalService -> modelMapperService.forResponse()
                         .map(additionalService, AdditionalServiceGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -56,8 +56,8 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     public DataResult<AdditionalServiceGetResponse> getById(long id) throws BusinessException {
         checkAdditionalServiceIdExist(id);
 
-        AdditionalService additionalService = additionalServiceRepository.getById(id);
-        AdditionalServiceGetResponse response = modelMapperService.forDto().map(additionalService, AdditionalServiceGetResponse.class);
+        AdditionalService additionalService = repository.getById(id);
+        AdditionalServiceGetResponse response = modelMapperService.forResponse().map(additionalService, AdditionalServiceGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICEGET, response);
     }
@@ -69,7 +69,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         AdditionalService additionalService = this.modelMapperService.forRequest().map(updateRequest, AdditionalService.class);
         additionalService.setId(id);
 
-        this.additionalServiceRepository.save(additionalService);
+        this.repository.save(additionalService);
 
         return new SuccessResult(MessageStrings.ADDITIONALSERVICEUPDATE);
     }
@@ -78,18 +78,18 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     public Result delete(long id) throws BusinessException {
         checkAdditionalServiceIdExist(id);
 
-        this.additionalServiceRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.ADDITIONALSERVICEDELETE);
     }
 
     private void checkAdditionalServiceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(additionalServiceRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.ADDITIONALSERVICENOTIDFOUND);
     }
 
     private void checkAdditionalServiceExist(String name) throws BusinessException {
-        if (!Objects.nonNull(additionalServiceRepository.findByName(name)))
+        if (!Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.ADDITIONALSERVICENAMEERROR);
 
     }

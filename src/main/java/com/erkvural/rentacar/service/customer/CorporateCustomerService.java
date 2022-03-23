@@ -12,13 +12,14 @@ import java.util.List;
 
 @Service
 public interface CorporateCustomerService {
-    Result add(CorporateCustomerCreateRequest corporateCustomerCreateDto) throws BusinessException;
+
+    Result add(CorporateCustomerCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<CorporateCustomerGetResponse>> getAll();
 
     DataResult<CorporateCustomerGetResponse> getById(long id) throws BusinessException;
 
-    Result update(long id, CorporateCustomerUpdateRequest corporateCustomerUpdateRequest) throws BusinessException;
+    Result update(long id, CorporateCustomerUpdateRequest updateRequest) throws BusinessException;
 
     Result delete(long id) throws BusinessException;
 }

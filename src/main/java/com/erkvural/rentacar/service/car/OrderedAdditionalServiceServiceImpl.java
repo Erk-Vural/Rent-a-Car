@@ -13,13 +13,13 @@ import java.util.Set;
 
 @Service
 public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalServiceService {
-    private final OrderedAdditionalServiceRepository orderedAdditionalServiceRepository;
+    private final OrderedAdditionalServiceRepository repository;
     private final ModelMapperService modelMapperService;
     private final CarRentalRepository carRentalRepository;
 
     @Autowired
-    public OrderedAdditionalServiceServiceImpl(OrderedAdditionalServiceRepository orderedAdditionalServiceRepository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository) {
-        this.orderedAdditionalServiceRepository = orderedAdditionalServiceRepository;
+    public OrderedAdditionalServiceServiceImpl(OrderedAdditionalServiceRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.carRentalRepository = carRentalRepository;
     }
@@ -31,13 +31,13 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
 
             orderedAdditionalService.setCarRental(carRentalRepository.findById(carRentalId));
 
-            this.orderedAdditionalServiceRepository.save(orderedAdditionalService);
+            this.repository.save(orderedAdditionalService);
         }
     }
 
     @Override
     public Set<OrderedAdditionalService> getByCarRentalId(long carRentalId) {
-        return this.orderedAdditionalServiceRepository.findByCarRental_Id(carRentalId);
+        return this.repository.findByCarRental_Id(carRentalId);
     }
 
     @Override

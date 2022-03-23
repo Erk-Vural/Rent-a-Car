@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class CityServiceImpl implements CityService {
 
-    private final CityRepository cityRepository;
+    private final CityRepository repository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, ModelMapperService modelMapperService) {
-        this.cityRepository = cityRepository;
+    public CityServiceImpl(CityRepository repository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
 
@@ -36,17 +36,17 @@ public class CityServiceImpl implements CityService {
         checkCityNameExist(createRequest.getName());
 
         City city = this.modelMapperService.forRequest().map(createRequest, City.class);
-        this.cityRepository.save(city);
+        this.repository.save(city);
 
         return new SuccessResult(MessageStrings.CITYADD);
     }
 
     @Override
     public DataResult<List<CityGetResponse>> getAll() {
-        List<City> result = cityRepository.findAll();
+        List<City> result = repository.findAll();
 
         List<CityGetResponse> response = result.stream()
-                .map(city -> modelMapperService.forDto()
+                .map(city -> modelMapperService.forResponse()
                         .map(city, CityGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -57,8 +57,8 @@ public class CityServiceImpl implements CityService {
     public DataResult<CityGetResponse> getById(long id) throws BusinessException {
         checkCityIdExist(id);
 
-        City city = cityRepository.getById(id);
-        CityGetResponse response = modelMapperService.forDto().map(city, CityGetResponse.class);
+        City city = repository.getById(id);
+        CityGetResponse response = modelMapperService.forResponse().map(city, CityGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.CITYBYID, response);
     }
@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
         City city = this.modelMapperService.forRequest().map(updateRequest, City.class);
         city.setId(id);
 
-        this.cityRepository.save(city);
+        this.repository.save(city);
 
         return new SuccessResult(MessageStrings.CITYUPDATE);
     }
@@ -79,18 +79,18 @@ public class CityServiceImpl implements CityService {
     public Result delete(long id) throws BusinessException {
         checkCityIdExist(id);
 
-        this.cityRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.CITYDELETE);
     }
 
     private void checkCityIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(cityRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CITYNOTFOUND);
     }
 
     private void checkCityNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(cityRepository.findByName(name)))
+        if (!Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.CITYNAMENOTFOUND);
 
     }

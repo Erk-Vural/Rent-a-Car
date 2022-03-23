@@ -27,14 +27,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class CarMaintenanceServiceImpl implements CarMaintenanceService {
-    private final CarMaintenanceRepository carMaintenanceRepository;
+    private final CarMaintenanceRepository repository;
     private final CarRepository carRepository;
     private final CarRentalRepository carRentalRepository;
     private final ModelMapperService modelMapperService;
 
     @Autowired
-    public CarMaintenanceServiceImpl(CarMaintenanceRepository carMaintenanceRepository, CarRepository carRepository, CarRentalRepository carRentalRepository, ModelMapperService modelMapperService) {
-        this.carMaintenanceRepository = carMaintenanceRepository;
+    public CarMaintenanceServiceImpl(CarMaintenanceRepository repository, CarRepository carRepository, CarRentalRepository carRentalRepository, ModelMapperService modelMapperService) {
+        this.repository = repository;
         this.carRepository = carRepository;
         this.carRentalRepository = carRentalRepository;
         this.modelMapperService = modelMapperService;
@@ -46,17 +46,17 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         checkIsRented(createRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
-        this.carMaintenanceRepository.save(carMaintenance);
+        this.repository.save(carMaintenance);
 
         return new SuccessResult(MessageStrings.CARMAINTENANCEADD);
     }
 
     @Override
     public DataResult<List<CarMaintenanceGetResponse>> getAll() {
-        List<CarMaintenance> result = carMaintenanceRepository.findAll();
+        List<CarMaintenance> result = repository.findAll();
 
         List<CarMaintenanceGetResponse> response = result.stream()
-                .map(carMaintenance -> modelMapperService.forDto()
+                .map(carMaintenance -> modelMapperService.forResponse()
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -67,8 +67,8 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public DataResult<CarMaintenanceGetResponse> getById(long id) throws BusinessException {
         checkCarMaintenanceIdExist(id);
 
-        CarMaintenance carMaintenance = carMaintenanceRepository.findById(id);
-        CarMaintenanceGetResponse response = modelMapperService.forDto().map(carMaintenance, CarMaintenanceGetResponse.class);
+        CarMaintenance carMaintenance = repository.findById(id);
+        CarMaintenanceGetResponse response = modelMapperService.forResponse().map(carMaintenance, CarMaintenanceGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGET, response);
     }
@@ -76,9 +76,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     @Override
     public SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(long carId) {
 
-        List<CarMaintenance> result = this.carMaintenanceRepository.findByCar_Id(carId);
+        List<CarMaintenance> result = this.repository.findByCar_Id(carId);
 
-        List<CarMaintenanceGetResponse> response = result.stream().map(carMaintenance -> this.modelMapperService.forDto()
+        List<CarMaintenanceGetResponse> response = result.stream().map(carMaintenance -> this.modelMapperService.forResponse()
                 .map(carMaintenance, CarMaintenanceGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGETBYCARID, response);
@@ -88,9 +88,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public DataResult<List<CarMaintenanceGetResponse>> getAllPaged(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-        List<CarMaintenance> result = this.carMaintenanceRepository.findAll(pageable).getContent();
+        List<CarMaintenance> result = this.repository.findAll(pageable).getContent();
         List<CarMaintenanceGetResponse> response = result.stream()
-                .map(carMaintenance -> this.modelMapperService.forDto()
+                .map(carMaintenance -> this.modelMapperService.forResponse()
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -101,9 +101,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public DataResult<List<CarMaintenanceGetResponse>> getAllSorted(Sort.Direction direction) {
         Sort s = Sort.by(direction, "returnDate");
 
-        List<CarMaintenance> result = this.carMaintenanceRepository.findAll(s);
+        List<CarMaintenance> result = this.repository.findAll(s);
         List<CarMaintenanceGetResponse> response = result.stream()
-                .map(carMaintenance -> this.modelMapperService.forDto()
+                .map(carMaintenance -> this.modelMapperService.forResponse()
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
@@ -118,7 +118,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
         carMaintenance.setId(id);
 
-        this.carMaintenanceRepository.save(carMaintenance);
+        this.repository.save(carMaintenance);
 
         return new SuccessResult(MessageStrings.CARMAINTENANCEUPDATE);
     }
@@ -138,7 +138,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     private void checkCarMaintenanceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carMaintenanceRepository.findById(id)))
+        if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CARMAINTENANCENOTFOUND);
     }
 

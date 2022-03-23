@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ModelMapperImpl implements ModelMapperService {
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public ModelMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public ModelMapper forDto() {
+    public ModelMapper forResponse() {
         this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.LOOSE);
         return this.modelMapper;
     }

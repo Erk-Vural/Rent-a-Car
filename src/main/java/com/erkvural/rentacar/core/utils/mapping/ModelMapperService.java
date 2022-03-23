@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ModelMapperService {
-    ModelMapper forDto();
+    ModelMapper forResponse();
 
     ModelMapper forRequest();
 }
