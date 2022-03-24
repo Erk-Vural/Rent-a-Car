@@ -47,7 +47,7 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.repository.save(cardInfo);
 
-        return new SuccessDataResult<CardInfo>(MessageStrings.CREDIT_CARD_ADDED, cardInfo);
+        return new SuccessDataResult<>(MessageStrings.CREDIT_CARD_ADDED, cardInfo);
     }
 
     @Override

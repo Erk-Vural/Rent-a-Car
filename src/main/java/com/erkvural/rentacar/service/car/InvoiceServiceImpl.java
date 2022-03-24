@@ -10,13 +10,13 @@ import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.InvoiceCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
+import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
 import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.entity.car.Invoice;
-import com.erkvural.rentacar.entity.car.Payment;
 import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.InvoiceRepository;
-import com.erkvural.rentacar.repository.car.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,15 +28,15 @@ import java.util.stream.Collectors;
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceRepository repository;
-    private final PaymentRepository paymentRepository;
     private final ModelMapperService modelMapperService;
+    private final PaymentService paymentService;
     private final CarRentalService carRentalService;
 
     @Autowired
-    public InvoiceServiceImpl(InvoiceRepository repository, PaymentRepository paymentRepository, ModelMapperService modelMapperService, CarRentalService carRentalService) {
+    public InvoiceServiceImpl(InvoiceRepository repository, ModelMapperService modelMapperService, @Lazy PaymentService paymentService, CarRentalService carRentalService) {
         this.repository = repository;
-        this.paymentRepository = paymentRepository;
         this.modelMapperService = modelMapperService;
+        this.paymentService = paymentService;
         this.carRentalService = carRentalService;
     }
 
@@ -110,7 +110,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private void checkPaymentIdExist(long paymentId) throws BusinessException {
-        if (Objects.nonNull(paymentRepository.findById(paymentId)))
+        if (Objects.nonNull(paymentService.getById(paymentId).getData()))
             throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
     }
 
@@ -121,8 +121,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private Invoice setInvoice(long paymentId) throws BusinessException {
 
-        Payment payment = this.paymentRepository.findById(paymentId);
-        CarRentalGetResponse carRental = this.carRentalService.getById(payment.getCarRental().getId()).getData();
+        PaymentGetResponse payment = paymentService.getById(paymentId).getData();
+        CarRentalGetResponse carRental = this.carRentalService.getById(payment.getCarRentalId()).getData();
 
         Invoice invoice = new Invoice();
 

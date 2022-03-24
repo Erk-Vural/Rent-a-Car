@@ -20,7 +20,7 @@ public class MessageStrings {
     public static final String CAR_FOUND = "car.found";
     public static final String CAR_NOT_FOUND = "car.not.found";
     public static final String CAR_STATUS_SET = "car.status.set";
-
+    public static final String CAR_MILEAGE_SET = "car.mileage.set";
 
     public static final String CITY_ADDED = "city.added";
     public static final String CITY_UPDATED = "city.updated";
@@ -48,7 +48,6 @@ public class MessageStrings {
     public static final String CUSTOMER_EXISTS = "customer.exists";
     public static final String CUSTOMERS_TAX_NUMBER_EXISTS = "customers.tax.number.exists";
 
-
     public static final String RENTAL_ADDED = "rental.added";
     public static final String RENTAL_UPDATED = "rental.updated";
     public static final String RENTAL_DELETED = "rental.deleted";
@@ -62,7 +61,6 @@ public class MessageStrings {
     public static final String RENTAL_END_DATE_SORTED = "rental.end.date.sorted";
     public static final String RENTAL_FOUND = "rental.found";
     public static final String RENTAL_NOT_FOUND = "rental.not.found";
-
 
     public static final String CREDIT_CARD_ADDED = "credit.card.added";
     public static final String CREDIT_CARD_UPDATED = "credit.card.updated";
@@ -83,7 +81,6 @@ public class MessageStrings {
     public static final String PAYMENT_UPDATED = "payment.updated";
     public static final String PAYMENTS_LISTED = "payments.listed";
     public static final String PAYMENT_CARD_FAIL = "payment.card.fail";
-
     public static final String POS_HALK_BANK_SUCCESSFUL = "pos.halk.bank.successful";
     public static final String POS_IS_BANK_SUCCESSFUL = "pos.is.bank.successful";
 

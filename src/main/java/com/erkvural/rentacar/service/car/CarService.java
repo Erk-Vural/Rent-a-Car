@@ -29,4 +29,6 @@ public interface CarService {
     Result delete(long id) throws BusinessException;
 
     void setCarStatus(CarStatus status, long carId) throws BusinessException;
+
+    void setMileage(double endMileage, long carId) throws BusinessException;
 }

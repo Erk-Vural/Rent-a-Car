@@ -49,6 +49,8 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
+        carService.setCarStatus(CarStatus.RENTED, createRequest.getCarId());
+
         this.repository.save(carRental);
 
         return new SuccessResult(MessageStrings.RENTAL_ADDED);
@@ -118,6 +120,8 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
+        carService.setCarStatus(CarStatus.RENTED, updateRequest.getCarId());
+        carService.setMileage(updateRequest.getEndMileage(), updateRequest.getCarId());
 
         this.repository.save(carRental);
 
@@ -127,6 +131,8 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Override
     public Result delete(long id) throws BusinessException {
         checkCarRentalIdExist(id);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
 
         this.repository.deleteById(id);
 
@@ -139,7 +145,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId))) throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
+        if (Objects.nonNull(carService.getById(carId).getData())) throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkCarStatus(long carId) throws BusinessException {

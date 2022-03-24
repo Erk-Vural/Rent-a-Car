@@ -1,4 +1,4 @@
-package com.erkvural.rentacar.core.pos.service;
+package com.erkvural.rentacar.pos.service;
 
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/payment/invoices")
+@RequestMapping("/api/v1/car/invoices")
 public class InvoiceController {
 
     private final InvoiceService service;
@@ -27,7 +27,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/get/id={id}")
-    public DataResult<InvoiceGetResponse> get(@RequestParam("id") long id) throws BusinessException {
+    public DataResult<InvoiceGetResponse> get(@PathVariable long id) throws BusinessException {
         return service.getById(id);
     }
 

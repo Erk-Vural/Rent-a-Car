@@ -146,18 +146,28 @@ public class CarServiceImpl implements CarService {
         new SuccessResult(MessageStrings.CAR_STATUS_SET);
     }
 
+    @Override
+    public void setMileage(double endMileage, long carId) throws BusinessException {
+        checkCarIdExist(carId);
+
+        Car car = repository.findById(carId);
+        car.setMileage(endMileage);
+
+        new SuccessResult(MessageStrings.CAR_MILEAGE_SET);
+    }
+
     private void checkCarIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkBrandIdExist(long brandId) throws BusinessException {
-        if (Objects.nonNull(brandService.getById(brandId)))
+        if (Objects.nonNull(brandService.getById(brandId).getData()))
             throw new BusinessException(MessageStrings.BRAND_NOT_FOUND);
     }
 
     private void checkColorIdExist(long colorId) throws BusinessException {
-        if (Objects.nonNull(colorService.getById(colorId)))
+        if (Objects.nonNull(colorService.getById(colorId).getData()))
             throw new BusinessException(MessageStrings.COLOR_NOT_FOUND);
     }
 }

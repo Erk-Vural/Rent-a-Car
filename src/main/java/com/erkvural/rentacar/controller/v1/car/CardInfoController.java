@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/payment/card-infos")
+@RequestMapping("/api/v1/car/card-infos")
 public class CardInfoController {
 
     private final CardInfoService service;

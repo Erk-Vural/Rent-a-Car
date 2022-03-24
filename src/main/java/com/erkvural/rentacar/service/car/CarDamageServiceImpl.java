@@ -100,7 +100,7 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId)))
+        if (Objects.nonNull(carService.getById(carId).getData()))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 }

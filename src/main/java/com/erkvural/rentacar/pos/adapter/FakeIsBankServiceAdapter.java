@@ -1,7 +1,7 @@
-package com.erkvural.rentacar.core.pos.adapter;
+package com.erkvural.rentacar.pos.adapter;
 
-import com.erkvural.rentacar.core.pos.service.PosService;
-import com.erkvural.rentacar.core.pos.service.PosServiceIsBankImpl;
+import com.erkvural.rentacar.pos.service.PosService;
+import com.erkvural.rentacar.pos.service.PosServiceIsBankImpl;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import org.springframework.context.annotation.Primary;

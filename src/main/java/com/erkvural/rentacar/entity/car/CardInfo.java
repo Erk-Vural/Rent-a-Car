@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CAR_INFO")
+@Table(name = "CAR_INFOS")
 public class CardInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

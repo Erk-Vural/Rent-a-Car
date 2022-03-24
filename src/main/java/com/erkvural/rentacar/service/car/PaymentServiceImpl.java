@@ -13,9 +13,9 @@ import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
 import com.erkvural.rentacar.entity.car.CardInfo;
 import com.erkvural.rentacar.entity.car.Payment;
-import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.repository.car.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +25,14 @@ import java.util.Objects;
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository repository;
     private final ModelMapperService modelMapperService;
-    private final CarRentalRepository carRentalRepository;
     private final CardInfoService cardInfoService;
     private final CarRentalService carRentalService;
     private final InvoiceService invoiceService;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository, CardInfoService cardInfoService, CarRentalService carRentalService, InvoiceService invoiceService) {
+    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CardInfoService cardInfoService, CarRentalService carRentalService,@Lazy InvoiceService invoiceService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
-        this.carRentalRepository = carRentalRepository;
         this.cardInfoService = cardInfoService;
         this.carRentalService = carRentalService;
         this.invoiceService = invoiceService;
@@ -84,7 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private void checkCarRentalIdExist(long carRentalId) throws BusinessException {
-        if (Objects.nonNull(carRentalRepository.findById(carRentalId)))
+        if (Objects.nonNull(carRentalService.getById(carRentalId).getData()))
             throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
@@ -108,5 +106,4 @@ public class PaymentServiceImpl implements PaymentService {
 
         return cardInfo;
     }
-
 }
