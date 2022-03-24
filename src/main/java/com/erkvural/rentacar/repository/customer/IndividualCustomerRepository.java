@@ -9,10 +9,4 @@ public interface IndividualCustomerRepository extends JpaRepository<IndividualCu
     IndividualCustomer findByUserId(long userId);
 
     IndividualCustomer findByEmail(String email);
-
-    IndividualCustomer findByPassword(String password);
-
-    IndividualCustomer findByFirstName(String firstName);
-
-    IndividualCustomer findByLastName(String lastName);
 }

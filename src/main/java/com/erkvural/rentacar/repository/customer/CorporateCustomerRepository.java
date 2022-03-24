@@ -9,6 +9,4 @@ public interface CorporateCustomerRepository extends JpaRepository<CorporateCust
     CorporateCustomer findByUserId(long userId);
 
     CorporateCustomer findByEmail(String email);
-
-    CorporateCustomer findByPassword(String password);
 }
