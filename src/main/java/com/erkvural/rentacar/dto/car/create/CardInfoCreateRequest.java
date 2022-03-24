@@ -31,6 +31,6 @@ public class CardInfoCreateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 10)
+    @Size(min = 3, max = 3)
     private String securityCode;
 }
