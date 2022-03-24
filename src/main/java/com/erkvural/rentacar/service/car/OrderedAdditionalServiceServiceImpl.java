@@ -15,7 +15,6 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     private final OrderedAdditionalServiceRepository repository;
     private final ModelMapperService modelMapperService;
 
-
     @Autowired
     public OrderedAdditionalServiceServiceImpl(OrderedAdditionalServiceRepository repository, ModelMapperService modelMapperService) {
         this.repository = repository;
@@ -23,7 +22,7 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException {
+    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet) throws BusinessException {
         for (OrderedAdditionalServiceCreateRequest createRequest : createRequestSet) {
 
             OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createRequest, OrderedAdditionalService.class);

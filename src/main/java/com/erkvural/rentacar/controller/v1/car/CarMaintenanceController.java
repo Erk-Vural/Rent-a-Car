@@ -49,7 +49,7 @@ public class CarMaintenanceController {
         return this.service.getAllSorted(direction);
     }
 
-    @GetMapping("/get/all/page-no={pageNo}+page-size{pageSize}")
+    @GetMapping("/get/all/page-no={pageNo}+page-size={pageSize}")
     public DataResult<List<CarMaintenanceGetResponse>> getAllPaged(@PathVariable int pageNo,
                                                                    @PathVariable int pageSize) {
         return this.service.getAllPaged(pageNo, pageSize);

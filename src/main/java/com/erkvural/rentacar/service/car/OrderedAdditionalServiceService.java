@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface OrderedAdditionalServiceService {
 
-    void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException;
+    void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet) throws BusinessException;
 
     Set<OrderedAdditionalService> getByCarRentalId(long carRentalId);
 

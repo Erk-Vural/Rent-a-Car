@@ -45,7 +45,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
-        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet(), carRental.getId());
+        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet());
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
@@ -151,8 +151,10 @@ public class CarRentalServiceImpl implements CarRentalService {
     private void checkCarStatus(long carId) throws BusinessException {
         if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
             throw new BusinessException(MessageStrings.RENTED_CAR_IS_RENTED);
+
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
             throw new BusinessException(MessageStrings.RENTED_CAR_IS_UNDER_MAINTENANCE);
+
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.DAMAGED)
             throw new BusinessException(MessageStrings.RENTED_CAR_IS_DAMAGED);
     }
@@ -161,7 +163,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public double calRentedTotal(long id) {
         CarRental carRental = repository.findById(id);
 
-        return (carRental.getCar().getDailyPrice()
+        return (repository.findById(id).getCar().getDailyPrice()
                 + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
                 * calTotalDays(carRental.getStartDate(), carRental.getEndDate()))
                 + checkCityIds(carRental);

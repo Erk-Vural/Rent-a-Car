@@ -27,7 +27,7 @@ public class IndividualCustomerController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<IndividualCustomerGetResponse>> getAll() {
         return service.getAll();
     }

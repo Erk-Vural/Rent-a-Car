@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/customer/corporate")
+@RequestMapping("/api/v1/customer/corporates")
 public class CorporateCustomersController {
     private final CorporateCustomerService service;
 
@@ -27,12 +27,12 @@ public class CorporateCustomersController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CorporateCustomerGetResponse>> getAll() {
         return service.getAll();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/id={id}")
     public DataResult<CorporateCustomerGetResponse> get(@PathVariable long id) throws BusinessException {
         return service.getById(id);
     }

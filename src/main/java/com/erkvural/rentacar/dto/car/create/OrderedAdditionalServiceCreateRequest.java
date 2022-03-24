@@ -24,5 +24,4 @@ public class OrderedAdditionalServiceCreateRequest {
     @NotNull
     @PositiveOrZero
     private long carRentalId;
-
 }

@@ -148,6 +148,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     private void checkCarStatus(long carId) throws BusinessException {
         if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
             throw new BusinessException(MessageStrings.CAR_MAINTENANCE_RENTAL_ERROR);
+
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
             throw new BusinessException(MessageStrings.CAR_IS_UNDER_MAINTENANCE);
     }

@@ -94,7 +94,6 @@ public class MessageStrings {
     public static final String CAR_MAINTENANCE_FOUND = "car.maintenance.found";
     public static final String CAR_MAINTENANCE_FOUND_BY_CAR_ID = "car.maintenance.found.by.carId";
     public static final String CAR_MAINTENANCE_NOT_FOUND = "car.maintenance.not.found";
-    public static final String CAR_MAINTENANCE_EXISTS = "car.maintenance.exists";
     public static final String CAR_IS_UNDER_MAINTENANCE = "car.is.under.maintenance";
 
     public static final String INVOICE_ADDED = "invoice.added";
