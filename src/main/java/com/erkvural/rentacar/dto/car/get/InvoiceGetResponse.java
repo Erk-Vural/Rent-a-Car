@@ -17,7 +17,7 @@ public class InvoiceGetResponse {
 
     private LocalDate rentEndDate;
 
-    private int totalRentDays;
+    private long totalRentDays;
 
     private double total;
 
