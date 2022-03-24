@@ -24,7 +24,7 @@ public class Payment {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "car_info_id")
+    @JoinColumn(name = "card_info_id")
     private CardInfo cardInfo;
 
     @ManyToOne

@@ -54,8 +54,6 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
-        // carRental.setBill(calRentedTotal(carRental.getId()));
-
         this.repository.save(carRental);
 
         return new SuccessResult(MessageStrings.RENTALADD);
@@ -173,7 +171,8 @@ public class CarRentalServiceImpl implements CarRentalService {
         }
     }
 
-    private double calRentedTotal(long id) {
+    @Override
+    public double calRentedTotal(long id) {
 
         CarRental carRental = repository.findById(id);
 

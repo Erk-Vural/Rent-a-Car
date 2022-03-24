@@ -10,6 +10,7 @@ import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
+import com.erkvural.rentacar.entity.car.CardInfo;
 import com.erkvural.rentacar.entity.car.Payment;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.repository.car.PaymentRepository;
@@ -25,23 +26,27 @@ public class PaymentServiceImpl implements PaymentService {
     private final ModelMapperService modelMapperService;
     private final CarRentalRepository carRentalRepository;
     private final CardInfoService cardInfoService;
+    private final CarRentalService carRentalService;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository, CardInfoService cardInfoService) {
+    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository, CardInfoService cardInfoService, CarRentalService carRentalService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.carRentalRepository = carRentalRepository;
         this.cardInfoService = cardInfoService;
+        this.carRentalService = carRentalService;
     }
+
 
     @Override
     public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
         checkCarRentalIdExist(createRequest.getCarRentalId());
-        // checkCardInfoIdExist(createRequest.getCardInfo());
-
-        saveCardInfo(createRequest.getCardInfo(), rememberCardInfo);
 
         Payment payment = this.modelMapperService.forRequest().map(createRequest, Payment.class);
+
+        payment.setTotal(carRentalService.calRentedTotal(createRequest.getCarRentalId()));
+
+        payment.setCardInfo(handleCardInfo(createRequest.getCardInfo(), rememberCardInfo));
 
         this.repository.save(payment);
 
@@ -79,9 +84,25 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessException(MessageStrings.RENTALNOTFOUND);
     }
 
-    private void saveCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
+    private CardInfo handleCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
         if (rememberCardInfo) {
-            this.cardInfoService.add(createRequest);
+            return saveCardInfo(createRequest);
         }
+        return setCardInfo(createRequest);
     }
+
+    private CardInfo saveCardInfo(CardInfoCreateRequest createRequest) throws BusinessException {
+        return this.cardInfoService.addByPayment(createRequest).getData();
+    }
+
+    private CardInfo setCardInfo(CardInfoCreateRequest createRequest) {
+        CardInfo cardInfo = new CardInfo();
+        cardInfo.setCardNumber(createRequest.getCardNumber());
+        cardInfo.setCardholderName(createRequest.getCardholderName());
+        cardInfo.setExpiryDate(createRequest.getExpiryDate());
+        cardInfo.setSecurityCode(createRequest.getSecurityCode());
+
+        return cardInfo;
+    }
+
 }

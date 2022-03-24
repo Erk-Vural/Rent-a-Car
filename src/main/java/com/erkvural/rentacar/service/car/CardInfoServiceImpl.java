@@ -31,13 +31,23 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result add(CardInfoCreateRequest createRequest) throws BusinessException {
+    public Result add(CardInfoCreateRequest createRequest) {
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
 
         this.repository.save(cardInfo);
 
         return new SuccessResult(MessageStrings.CREDITCARDADD);
+    }
+
+    @Override
+    public DataResult<CardInfo> addByPayment(CardInfoCreateRequest createRequest) {
+
+        CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
+
+        this.repository.save(cardInfo);
+
+        return new SuccessDataResult<CardInfo>(MessageStrings.CREDITCARDADD, cardInfo);
     }
 
     @Override

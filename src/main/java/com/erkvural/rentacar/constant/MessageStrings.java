@@ -92,6 +92,9 @@ public class MessageStrings {
     public static final String PAYMENTCARDNOTSAVE = "payment.card.not.saved";
     public static final String PAYMENTCARDFAIL = "payment.card.fail";
 
+    public static final String POSHALKSUCCESSFULL = "pos.halk.bank.successfull";
+    public static final String POSISSUCCESSFULL = "pos.is.bank.successfull";
+
     public static final String CARMAINTENANCEADD = "car.maintenance.added";
     public static final String CARMAINTENANCEUPDATE = "car.maintenance.updated";
     public static final String CARMAINTENANCEDELETE = "car.maintenance.deleted";

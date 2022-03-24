@@ -32,4 +32,6 @@ public interface CarRentalService {
 
     Result delete(long id) throws BusinessException;
 
+    double calRentedTotal(long id);
+
 }

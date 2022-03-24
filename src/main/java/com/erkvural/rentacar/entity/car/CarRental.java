@@ -36,10 +36,6 @@ public class CarRental {
     @Column(name = "description", length = 64)
     private String description;
 
-    @Column(name = "total")
-    @Transient
-    private double total;
-
     @ManyToOne()
     @JoinColumn(name = "rented_city_id", nullable = false)
     private City rentedCity;
