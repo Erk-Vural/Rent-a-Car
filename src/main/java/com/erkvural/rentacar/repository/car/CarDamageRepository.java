@@ -9,5 +9,4 @@ public interface CarDamageRepository extends JpaRepository<CarDamage, Long> {
 
     CarDamage findById(long id);
 
-    CarDamage findByCar_Id(long carId);
 }

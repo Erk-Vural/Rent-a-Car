@@ -1,7 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.constant.MessageStrings;
-import com.erkvural.rentacar.core.enums.CarStatus;
+import com.erkvural.rentacar.constant.CarStatus;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface PaymentService {
 
     Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException;

@@ -60,7 +60,8 @@ public class MessageStrings {
     public static final String RENTALUPDATE = "rental.updated";
     public static final String RENTALDELETE = "rental.deleted";
     public static final String RENTALLIST = "rentals.listed";
-    public static final String RENTALMAINTENANCEERROR = "rented.car.is.on.maintenance";
+    public static final String RENTALDAMAGEDERROR = "rented.car.is.damaged";
+    public static final String RENTALMAINTENANCEERROR = "rented.car.is.under.maintenance";
     public static final String RENTALALREADYRENTED = "rented.car.is.rented";
     public static final String RENTALFOUNDCARID = "rental.found";
     public static final String RENTALFOUNDCUSTOMERID = "rental.found";

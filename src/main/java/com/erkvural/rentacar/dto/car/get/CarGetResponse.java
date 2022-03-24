@@ -1,10 +1,7 @@
 package com.erkvural.rentacar.dto.car.get;
 
-import com.erkvural.rentacar.core.enums.CarStatus;
+import com.erkvural.rentacar.constant.CarStatus;
 import lombok.*;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter

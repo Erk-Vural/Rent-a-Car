@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Service
 public interface OrderedAdditionalServiceService {
 
     void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException;

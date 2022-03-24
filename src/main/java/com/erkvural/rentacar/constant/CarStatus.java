@@ -1,4 +1,4 @@
-package com.erkvural.rentacar.core.enums;
+package com.erkvural.rentacar.constant;
 
 public enum CarStatus {
     AVAILABLE,

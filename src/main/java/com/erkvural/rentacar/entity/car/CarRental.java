@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CAR_RENTAL")
+@Table(name = "CAR_RENTALS")
 public class CarRental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,5 +58,5 @@ public class CarRental {
 
     @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Set<Payment> payment;
+    private Set<Payment> payments;
 }

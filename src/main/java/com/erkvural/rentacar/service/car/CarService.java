@@ -1,6 +1,6 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.core.enums.CarStatus;
+import com.erkvural.rentacar.constant.CarStatus;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
@@ -10,7 +10,6 @@ import com.erkvural.rentacar.dto.car.update.CarUpdateRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-
 
 public interface CarService {
     Result add(CarCreateRequest createRequest) throws BusinessException;

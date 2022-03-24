@@ -9,7 +9,6 @@ import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
 
 import java.util.List;
 
-
 public interface ColorService {
 
     Result add(ColorCreateRequest createRequest) throws BusinessException;

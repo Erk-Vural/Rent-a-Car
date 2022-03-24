@@ -1,6 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
-import com.erkvural.rentacar.core.enums.CarStatus;
+import com.erkvural.rentacar.constant.CarStatus;
 import lombok.*;
 
 import javax.persistence.*;

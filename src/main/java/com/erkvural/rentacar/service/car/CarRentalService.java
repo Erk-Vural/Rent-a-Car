@@ -8,11 +8,9 @@ import com.erkvural.rentacar.dto.car.create.CarRentalCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface CarRentalService {
     Result add(CarRentalCreateRequest createRequest) throws BusinessException;
 

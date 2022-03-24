@@ -1,6 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.constant.MessageStrings;
+import com.erkvural.rentacar.constant.CarStatus;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -10,11 +11,8 @@ import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CarRentalCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
-import com.erkvural.rentacar.entity.car.CarMaintenance;
 import com.erkvural.rentacar.entity.car.CarRental;
-import com.erkvural.rentacar.repository.car.CarMaintenanceRepository;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
-import com.erkvural.rentacar.repository.car.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -28,25 +26,22 @@ import java.util.stream.Collectors;
 @Service
 public class CarRentalServiceImpl implements CarRentalService {
     private final CarRentalRepository repository;
-    private final CarMaintenanceRepository carMaintenanceRepository;
-    private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
     private final OrderedAdditionalServiceService orderedAdditionalServiceService;
+    private final CarService carService;
 
     @Autowired
-    public CarRentalServiceImpl(CarRentalRepository repository, CarMaintenanceRepository carMaintenanceRepository, CarRepository carRepository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService) {
+    public CarRentalServiceImpl(CarRentalRepository repository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService, CarService carService) {
         this.repository = repository;
-        this.carMaintenanceRepository = carMaintenanceRepository;
-        this.carRepository = carRepository;
         this.modelMapperService = modelMapperService;
         this.orderedAdditionalServiceService = orderedAdditionalServiceService;
+        this.carService = carService;
     }
 
     @Override
     public Result add(CarRentalCreateRequest createRequest) throws BusinessException {
         checkCarIdExist(createRequest.getCarId());
-        checkUnderMaintenance(createRequest.getCarId());
-        checkIfCarIsRented(createRequest.getCarId(), createRequest.getStartDate());
+        checkCarStatus(createRequest.getCarId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
@@ -119,12 +114,10 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Override
     public Result update(long id, CarRentalUpdateRequest updateRequest) throws BusinessException {
         checkCarRentalIdExist(id);
-        checkUnderMaintenance(updateRequest.getCarId());
+        checkCarStatus(updateRequest.getCarId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
-
-        checkExtraDays(repository.findById(id).getEndDate(), carRental.getEndDate());
 
         this.repository.save(carRental);
 
@@ -135,7 +128,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     public Result delete(long id) throws BusinessException {
         checkCarRentalIdExist(id);
 
-        this.carRepository.deleteById(id);
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.RENTALDELETE);
     }
@@ -146,36 +139,20 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(carId))) throw new BusinessException(MessageStrings.CARNOTFOUND);
+        if (Objects.nonNull(carService.getById(carId))) throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 
-    private void checkUnderMaintenance(long carId) throws BusinessException {
-        List<CarMaintenance> result = this.carMaintenanceRepository.findByCar_Id(carId);
-        if (result != null) {
-            for (CarMaintenance carMaintenance : result) {
-                if (carMaintenance.getReturnDate() != null) {
-                    throw new BusinessException(MessageStrings.RENTALMAINTENANCEERROR);
-                }
-            }
-        }
-    }
-
-    private void checkIfCarIsRented(long carId, LocalDate startingDate) throws BusinessException {
-
-        List<CarRental> carRentals = this.repository.findByCar_Id(carId);
-
-        for (CarRental carRental : carRentals) {
-
-            if (startingDate.isAfter(carRental.getEndDate())) {
-
-                throw new BusinessException(MessageStrings.RENTALALREADYRENTED);
-            }
-        }
+    private void checkCarStatus(long carId) throws BusinessException {
+        if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
+            throw new BusinessException(MessageStrings.RENTALALREADYRENTED);
+        else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
+            throw new BusinessException(MessageStrings.RENTALMAINTENANCEERROR);
+        else if (this.carService.getById(carId).getData().getStatus() == CarStatus.DAMAGED)
+            throw new BusinessException(MessageStrings.RENTALDAMAGEDERROR);
     }
 
     @Override
     public double calRentedTotal(long id) {
-
         CarRental carRental = repository.findById(id);
 
         return (carRental.getCar().getDailyPrice()
@@ -194,9 +171,5 @@ public class CarRentalServiceImpl implements CarRentalService {
     private long calTotalDays(LocalDate startDate, LocalDate endDate) {
 
         return ChronoUnit.DAYS.between(startDate, endDate);
-    }
-
-    private long checkExtraDays(LocalDate oldEndDate, LocalDate newEndDate) {
-        return ChronoUnit.DAYS.between(oldEndDate, newEndDate);
     }
 }

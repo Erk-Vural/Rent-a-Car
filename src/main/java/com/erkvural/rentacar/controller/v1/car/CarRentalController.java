@@ -18,55 +18,55 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/car/rentals")
 public class CarRentalController {
-    private final CarRentalService carRentalService;
+    private final CarRentalService service;
 
     @Autowired
-    public CarRentalController(CarRentalService carRentalService) {
-        this.carRentalService = carRentalService;
+    public CarRentalController(CarRentalService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody CarRentalCreateRequest createRequest) throws BusinessException {
-        return this.carRentalService.add(createRequest);
+        return this.service.add(createRequest);
     }
 
     @GetMapping("/getAll")
     public DataResult<List<CarRentalGetResponse>> getAll() {
-        return carRentalService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<CarRentalGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return carRentalService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<CarRentalGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @GetMapping("/getByCarId")
-    public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(@RequestParam("id") long id) {
-        return carRentalService.getByCarId(id);
+    @GetMapping("/getByCarId/carId={carId}")
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(@PathVariable long carId) {
+        return service.getByCarId(carId);
     }
 
-    @GetMapping("/getByCustomerId")
-    public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(@RequestParam("id") long id) {
-        return carRentalService.getByCustomerId(id);
+    @GetMapping("/getByCustomerId/customerId={customerId}")
+    public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(@PathVariable long customerId) {
+        return service.getByCustomerId(customerId);
     }
 
-    @GetMapping("/getAllStartDateSorted")
-    public DataResult<List<CarRentalGetResponse>> getAllStartDateSorted(@RequestParam("direction") Sort.Direction direction) {
-        return this.carRentalService.getAllStartDateSorted(direction);
+    @GetMapping("/getAllStartDateSorted/direction={direction}")
+    public DataResult<List<CarRentalGetResponse>> getAllStartDateSorted(@PathVariable Sort.Direction direction) {
+        return this.service.getAllStartDateSorted(direction);
     }
 
-    @GetMapping("/getAllEndDateSorted")
-    public DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(@RequestParam("direction") Sort.Direction direction) {
-        return this.carRentalService.getAllEndDateSorted(direction);
+    @GetMapping("/getAllEndDateSorted/direction={direction}")
+    public DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(@PathVariable Sort.Direction direction) {
+        return this.service.getAllEndDateSorted(direction);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarRentalUpdateRequest updateRequest) throws BusinessException {
-        return this.carRentalService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody CarRentalUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.carRentalService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

@@ -1,7 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.constant.MessageStrings;
-import com.erkvural.rentacar.core.enums.CarStatus;
+import com.erkvural.rentacar.constant.CarStatus;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -10,7 +10,6 @@ import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetResponse;
-import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarMaintenance;
 import com.erkvural.rentacar.repository.car.CarMaintenanceRepository;
@@ -29,21 +28,18 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     private final CarMaintenanceRepository repository;
     private final ModelMapperService modelMapperService;
     private final CarService carService;
-    private final CarRentalService carRentalService;
 
     @Autowired
-    public CarMaintenanceServiceImpl(CarMaintenanceRepository repository, ModelMapperService modelMapperService, CarService carService, CarRentalService carRentalService) {
+    public CarMaintenanceServiceImpl(CarMaintenanceRepository repository, ModelMapperService modelMapperService, CarService carService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.carService = carService;
-        this.carRentalService = carRentalService;
     }
 
     @Override
     public Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException {
         checkCarIdExist(createRequest.getCarId());
-        checkIsRented(createRequest.getCarId());
-        checkIsUnderMaintenance(createRequest.getCarId());
+        checkCarStatus(createRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
 
@@ -116,7 +112,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     @Override
     public Result update(long id, CarMaintenanceUpdateRequest updateRequest) throws BusinessException {
         checkCarMaintenanceIdExist(id);
-        checkIsRented(updateRequest.getCarId());
+        checkCarStatus(updateRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
 
@@ -149,25 +145,10 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
             throw new BusinessException(MessageStrings.CARMAINTENANCENOTFOUND);
     }
 
-    private void checkIsRented(long carId) throws BusinessException {
-        List<CarRentalGetResponse> results = this.carRentalService.getByCarId(carId).getData();
-
-        if (results != null) {
-            for (CarRentalGetResponse carRental : results) {
-                if (this.carService.getById(carRental.getCarId()).getData().getStatus() == CarStatus.RENTED)
-                    throw new BusinessException(MessageStrings.CARMAINTENANCERENTALERROR);
-            }
-        }
-    }
-
-    private void checkIsUnderMaintenance(long carId) throws BusinessException {
-        List<CarMaintenance> results = this.repository.findByCar_Id(carId);
-
-        if (results != null) {
-            for (CarMaintenance carMaintenance : results) {
-                if (this.carService.getById(carMaintenance.getCar().getId()).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
-                    throw new BusinessException(MessageStrings.CARISUNDERMAINTENANCE);
-            }
-        }
+    private void checkCarStatus(long carId) throws BusinessException {
+        if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
+            throw new BusinessException(MessageStrings.CARMAINTENANCERENTALERROR);
+        else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
+            throw new BusinessException(MessageStrings.CARISUNDERMAINTENANCE);
     }
 }
