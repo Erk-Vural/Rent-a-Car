@@ -18,9 +18,9 @@ public class CarRentalGetResponse {
 
     private String description;
 
-    private long startMileage;
+    private double startMileage;
 
-    private long endMileage;
+    private double endMileage;
 
     private double bill;
 
