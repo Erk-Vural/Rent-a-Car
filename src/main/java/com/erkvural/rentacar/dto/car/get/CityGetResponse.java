@@ -10,6 +10,5 @@ import lombok.*;
 
 public class CityGetResponse {
     private String name;
-
 }
 

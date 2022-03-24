@@ -4,7 +4,6 @@ import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateRequest;
 import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
-import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.repository.car.OrderedAdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,21 +14,19 @@ import java.util.Set;
 public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalServiceService {
     private final OrderedAdditionalServiceRepository repository;
     private final ModelMapperService modelMapperService;
-    private final CarRentalRepository carRentalRepository;
+
 
     @Autowired
-    public OrderedAdditionalServiceServiceImpl(OrderedAdditionalServiceRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository) {
+    public OrderedAdditionalServiceServiceImpl(OrderedAdditionalServiceRepository repository, ModelMapperService modelMapperService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
-        this.carRentalRepository = carRentalRepository;
     }
 
     @Override
     public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) throws BusinessException {
-        for (OrderedAdditionalServiceCreateRequest createDto : createRequestSet) {
-            OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createDto, OrderedAdditionalService.class);
+        for (OrderedAdditionalServiceCreateRequest createRequest : createRequestSet) {
 
-            orderedAdditionalService.setCarRental(carRentalRepository.findById(carRentalId));
+            OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createRequest, OrderedAdditionalService.class);
 
             this.repository.save(orderedAdditionalService);
         }

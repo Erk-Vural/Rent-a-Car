@@ -27,7 +27,7 @@ public class ColorController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<ColorGetResponse>> getAll() {
         return service.getAll();
     }

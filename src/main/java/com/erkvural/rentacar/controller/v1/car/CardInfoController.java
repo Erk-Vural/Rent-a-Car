@@ -13,37 +13,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/payment/card-infos")
 public class CardInfoController {
 
-    private final CardInfoService cardInfoService;
+    private final CardInfoService service;
 
     @Autowired
     public CardInfoController(CardInfoService cardInfoService) {
-        this.cardInfoService = cardInfoService;
+        this.service = cardInfoService;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody CardInfoCreateRequest createRequest) throws BusinessException {
-        return this.cardInfoService.add(createRequest);
+        return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CardInfoGetResponse>> getAll() {
-        return cardInfoService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<CardInfoGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return cardInfoService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<CardInfoGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CardInfoUpdateRequest updateRequest) throws BusinessException {
-        return this.cardInfoService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody CardInfoUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.cardInfoService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

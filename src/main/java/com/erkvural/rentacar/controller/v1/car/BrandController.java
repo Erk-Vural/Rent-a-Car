@@ -29,7 +29,7 @@ public class BrandController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<BrandGetResponse>> getAll() {
         return service.getAll();
     }

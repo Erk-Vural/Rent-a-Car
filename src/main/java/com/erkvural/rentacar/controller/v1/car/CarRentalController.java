@@ -30,7 +30,7 @@ public class CarRentalController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CarRentalGetResponse>> getAll() {
         return service.getAll();
     }
@@ -40,22 +40,22 @@ public class CarRentalController {
         return service.getById(id);
     }
 
-    @GetMapping("/getByCarId/carId={carId}")
+    @GetMapping("/get/carId={carId}")
     public SuccessDataResult<List<CarRentalGetResponse>> getByCarId(@PathVariable long carId) {
         return service.getByCarId(carId);
     }
 
-    @GetMapping("/getByCustomerId/customerId={customerId}")
+    @GetMapping("/get/customerId={customerId}")
     public SuccessDataResult<List<CarRentalGetResponse>> getByCustomerId(@PathVariable long customerId) {
         return service.getByCustomerId(customerId);
     }
 
-    @GetMapping("/getAllStartDateSorted/direction={direction}")
+    @GetMapping("get/all/start-date/sort-direction={direction}")
     public DataResult<List<CarRentalGetResponse>> getAllStartDateSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllStartDateSorted(direction);
     }
 
-    @GetMapping("/getAllEndDateSorted/direction={direction}")
+    @GetMapping("get/all/end-date/sort-direction={direction}")
     public DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllEndDateSorted(direction);
     }

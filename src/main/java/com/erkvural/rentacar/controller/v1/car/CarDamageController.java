@@ -28,7 +28,7 @@ public class CarDamageController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CarDamageGetResponse>> getAll() {
         return service.getAll();
     }

@@ -16,36 +16,35 @@ import java.util.List;
 @RequestMapping("/api/v1/car/additional-services")
 public class AdditionalServiceController {
 
-    private final AdditionalServiceService additionalServiceService;
+    private final AdditionalServiceService service;
 
     @Autowired
-    public AdditionalServiceController(AdditionalServiceService additionalServiceService) {
-        this.additionalServiceService = additionalServiceService;
+    public AdditionalServiceController(AdditionalServiceService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody AdditionalServiceCreateRequest createRequest) throws BusinessException {
-        return this.additionalServiceService.add(createRequest);
+        return this.service.add(createRequest);
     }
 
-
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<AdditionalServiceGetResponse>> getAll() {
-        return additionalServiceService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<AdditionalServiceGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return additionalServiceService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<AdditionalServiceGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody AdditionalServiceUpdateRequest updateRequest) throws BusinessException {
-        return this.additionalServiceService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody AdditionalServiceUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.additionalServiceService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

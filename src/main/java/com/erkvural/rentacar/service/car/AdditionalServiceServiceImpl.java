@@ -91,6 +91,5 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     private void checkAdditionalServiceExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.ADDITIONAL_SERVICE_EXISTS);
-
     }
 }

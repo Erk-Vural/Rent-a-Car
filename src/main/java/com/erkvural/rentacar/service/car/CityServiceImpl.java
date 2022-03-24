@@ -60,7 +60,7 @@ public class CityServiceImpl implements CityService {
         City city = repository.getById(id);
         CityGetResponse response = modelMapperService.forResponse().map(city, CityGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.CITYBYID, response);
+        return new SuccessDataResult<>(MessageStrings.CITY_FOUND, response);
     }
 
     @Override
@@ -91,7 +91,6 @@ public class CityServiceImpl implements CityService {
 
     private void checkCityNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
-            throw new BusinessException(MessageStrings.CITY_NAME_NOT_FOUND);
-
+            throw new BusinessException(MessageStrings.CITY_EXISTS);
     }
 }

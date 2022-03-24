@@ -13,11 +13,16 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor
 
 public class OrderedAdditionalServiceCreateRequest {
+
+    @Positive
+    private int quantity;
+
     @NotNull
     @PositiveOrZero
     private long additionalServiceId;
 
-    @Positive
-    private int quantity;
+    @NotNull
+    @PositiveOrZero
+    private long carRentalId;
 
 }

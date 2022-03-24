@@ -28,7 +28,7 @@ public class CarController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CarGetResponse>> getAll() {
         return service.getAll();
     }
@@ -38,18 +38,18 @@ public class CarController {
         return service.getById(id);
     }
 
-    @GetMapping("/getAllSorted/direction={direction}")
+    @GetMapping("/get/all/sortDirection={direction}")
     public DataResult<List<CarGetResponse>> getAllSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllSorted(direction);
     }
 
-    @GetMapping("/getAllPaged/pageNo={pageNo}+pageSize{pageSize}")
+    @GetMapping("/get/all/page-no={pageNo}+page-size{pageSize}")
     public DataResult<List<CarGetResponse>> getAllPaged(@PathVariable int pageNo,
                                                         @PathVariable int pageSize) {
         return this.service.getAllPaged(pageNo, pageSize);
     }
 
-    @GetMapping("/getAllByDailyPriceLessThanEqual/dailyPrice={dailyPrice}")
+    @GetMapping("/get/all/daily-price-less-then-or-equal={dailyPrice}")
     public DataResult<List<CarGetResponse>> getAllByDailyPriceLessThanEqual(@PathVariable double dailyPrice) {
         return this.service.getAllByDailyPriceLessThanEqual(dailyPrice);
     }

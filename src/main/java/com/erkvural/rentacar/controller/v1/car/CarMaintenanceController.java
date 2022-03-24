@@ -29,7 +29,7 @@ public class CarMaintenanceController {
         return this.service.add(createRequest);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<CarMaintenanceGetResponse>> getAll() {
         return service.getAll();
     }
@@ -39,17 +39,17 @@ public class CarMaintenanceController {
         return service.getById(id);
     }
 
-    @GetMapping("/getByCarId/carId={carId}")
+    @GetMapping("/get/carId={carId}")
     public SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(@PathVariable long carId) {
         return service.getByCarId(carId);
     }
 
-    @GetMapping("/getAllSorted/direction={direction}")
+    @GetMapping("get/all/sort-direction={direction}")
     public DataResult<List<CarMaintenanceGetResponse>> getAllSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllSorted(direction);
     }
 
-    @GetMapping("/getAllPaged/pageNo={pageNo}+pageSize{pageSize}")
+    @GetMapping("/get/all/page-no={pageNo}+page-size{pageSize}")
     public DataResult<List<CarMaintenanceGetResponse>> getAllPaged(@PathVariable int pageNo,
                                                                    @PathVariable int pageSize) {
         return this.service.getAllPaged(pageNo, pageSize);

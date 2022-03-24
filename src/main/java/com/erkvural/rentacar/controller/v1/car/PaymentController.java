@@ -12,27 +12,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/car/payments")
+@RequestMapping("/api/v1/payments")
 public class PaymentController {
-    private final PaymentService paymentService;
+    private final PaymentService service;
 
     @Autowired
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    public PaymentController(PaymentService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody PaymentCreateRequest createRequest, @RequestParam("rememberMe") boolean rememberMe) throws BusinessException {
-        return this.paymentService.add(createRequest, rememberMe);
+        return this.service.add(createRequest, rememberMe);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public DataResult<List<PaymentGetResponse>> getAll() {
-        return paymentService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<PaymentGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return paymentService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<PaymentGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 }
