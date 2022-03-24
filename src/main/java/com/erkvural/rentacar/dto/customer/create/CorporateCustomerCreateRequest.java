@@ -26,6 +26,6 @@ public class CorporateCustomerCreateRequest {
     private String companyName;
 
     @NotNull
-    @Size(min = 2, max = 64)
+    @Size(min = 10, max = 10)
     private String taxNumber;
 }
