@@ -15,35 +15,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/car/colors")
 public class ColorController {
-    private final ColorService colorService;
+    private final ColorService service;
 
     @Autowired
-    public ColorController(ColorService colorService) {
-        this.colorService = colorService;
+    public ColorController(ColorService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody ColorCreateRequest createRequest) throws BusinessException {
-        return this.colorService.add(createRequest);
+        return this.service.add(createRequest);
     }
 
     @GetMapping("/getAll")
     public DataResult<List<ColorGetResponse>> getAll() {
-        return colorService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<ColorGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return colorService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<ColorGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody ColorUpdateRequest updateRequest) throws BusinessException {
-        return this.colorService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody ColorUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.colorService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

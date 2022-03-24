@@ -6,12 +6,12 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.BrandCreateRequest;
 import com.erkvural.rentacar.dto.car.get.BrandGetResponse;
 import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface BrandService {
+
     Result add(BrandCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<BrandGetResponse>> getAll();

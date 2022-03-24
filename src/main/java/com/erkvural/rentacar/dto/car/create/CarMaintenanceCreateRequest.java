@@ -13,14 +13,14 @@ import java.time.LocalDate;
 
 public class CarMaintenanceCreateRequest {
 
+    @NotNull
+    @Future
+    private LocalDate returnDate;
+
     @Size(min = 2, max = 50)
     @NotNull
     @NotBlank
     private String description;
-
-    @NotNull
-    @Future
-    private LocalDate returnDate;
 
     @NotNull
     @PositiveOrZero

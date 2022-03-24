@@ -16,36 +16,35 @@ import java.util.List;
 @RequestMapping("/api/v1/car/car-damages")
 public class CarDamageController {
 
-    private final CarDamageService carDamageService;
+    private final CarDamageService service;
 
     @Autowired
-    public CarDamageController(CarDamageService carDamageService) {
-        this.carDamageService = carDamageService;
+    public CarDamageController(CarDamageService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody CarDamageCreateRequest createRequest) throws BusinessException {
-        return this.carDamageService.add(createRequest);
+        return this.service.add(createRequest);
     }
-
 
     @GetMapping("/getAll")
     public DataResult<List<CarDamageGetResponse>> getAll() {
-        return carDamageService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<CarDamageGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return carDamageService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<CarDamageGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarDamageUpdateRequest updateRequest) throws BusinessException {
-        return this.carDamageService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody CarDamageUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.carDamageService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

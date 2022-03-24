@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -14,9 +13,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 
 public class CorporateCustomerUpdateRequest {
-    @NotNull
-    @Positive
-    private int userId;
 
     @Email
     @NotNull

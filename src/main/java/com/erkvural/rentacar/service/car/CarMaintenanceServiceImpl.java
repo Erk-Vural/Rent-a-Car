@@ -1,6 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.constant.MessageStrings;
+import com.erkvural.rentacar.core.enums.CarStatus;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -9,12 +10,10 @@ import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetResponse;
+import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarMaintenance;
-import com.erkvural.rentacar.entity.car.CarRental;
 import com.erkvural.rentacar.repository.car.CarMaintenanceRepository;
-import com.erkvural.rentacar.repository.car.CarRentalRepository;
-import com.erkvural.rentacar.repository.car.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,24 +27,28 @@ import java.util.stream.Collectors;
 @Service
 public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     private final CarMaintenanceRepository repository;
-    private final CarRepository carRepository;
-    private final CarRentalRepository carRentalRepository;
     private final ModelMapperService modelMapperService;
+    private final CarService carService;
+    private final CarRentalService carRentalService;
 
     @Autowired
-    public CarMaintenanceServiceImpl(CarMaintenanceRepository repository, CarRepository carRepository, CarRentalRepository carRentalRepository, ModelMapperService modelMapperService) {
+    public CarMaintenanceServiceImpl(CarMaintenanceRepository repository, ModelMapperService modelMapperService, CarService carService, CarRentalService carRentalService) {
         this.repository = repository;
-        this.carRepository = carRepository;
-        this.carRentalRepository = carRentalRepository;
         this.modelMapperService = modelMapperService;
+        this.carService = carService;
+        this.carRentalService = carRentalService;
     }
 
     @Override
     public Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException {
         checkCarIdExist(createRequest.getCarId());
         checkIsRented(createRequest.getCarId());
+        checkIsUnderMaintenance(createRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
+
+        carService.setCarStatus(CarStatus.UNDER_MAINTENANCE, createRequest.getCarId());
+
         this.repository.save(carMaintenance);
 
         return new SuccessResult(MessageStrings.CARMAINTENANCEADD);
@@ -116,6 +119,8 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         checkIsRented(updateRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
+
+        carService.setCarStatus(CarStatus.UNDER_MAINTENANCE, updateRequest.getCarId());
         carMaintenance.setId(id);
 
         this.repository.save(carMaintenance);
@@ -127,13 +132,15 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public Result delete(long id) throws BusinessException {
         checkCarMaintenanceIdExist(id);
 
-        this.carRepository.deleteById(id);
+        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
+
+        this.repository.deleteById(id);
 
         return new SuccessResult(MessageStrings.CARMAINTENANCEDELETE);
     }
 
-    private void checkCarIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(id)))
+    private void checkCarIdExist(long carId) throws BusinessException {
+        if (Objects.nonNull(carService.getById(carId)))
             throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 
@@ -143,12 +150,23 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     private void checkIsRented(long carId) throws BusinessException {
-        List<CarRental> results = this.carRentalRepository.findByCar_Id(carId);
+        List<CarRentalGetResponse> results = this.carRentalService.getByCarId(carId).getData();
+
         if (results != null) {
-            for (CarRental carRental : results) {
-                if (carRental.getEndDate() != null) {
+            for (CarRentalGetResponse carRental : results) {
+                if (this.carService.getById(carRental.getCarId()).getData().getStatus() == CarStatus.RENTED)
                     throw new BusinessException(MessageStrings.CARMAINTENANCERENTALERROR);
-                }
+            }
+        }
+    }
+
+    private void checkIsUnderMaintenance(long carId) throws BusinessException {
+        List<CarMaintenance> results = this.repository.findByCar_Id(carId);
+
+        if (results != null) {
+            for (CarMaintenance carMaintenance : results) {
+                if (this.carService.getById(carMaintenance.getCar().getId()).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
+                    throw new BusinessException(MessageStrings.CARISUNDERMAINTENANCE);
             }
         }
     }

@@ -17,8 +17,8 @@ public class CarDamageUpdateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
-    private String damageRecord;
+    @Size(min = 2, max = 64)
+    private String description;
 
 
     @NotNull

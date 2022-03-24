@@ -15,35 +15,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/customer/individual")
 public class IndividualCustomerController {
-    private final IndividualCustomerService individualCustomerService;
+    private final IndividualCustomerService service;
 
     @Autowired
-    public IndividualCustomerController(IndividualCustomerService individualCustomerService) {
-        this.individualCustomerService = individualCustomerService;
+    public IndividualCustomerController(IndividualCustomerService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody IndividualCustomerCreateRequest individualCustomerCreateDto) throws BusinessException {
-        return this.individualCustomerService.add(individualCustomerCreateDto);
+    public Result add(@RequestBody IndividualCustomerCreateRequest createRequest) throws BusinessException {
+        return this.service.add(createRequest);
     }
 
     @GetMapping("/getAll")
     public DataResult<List<IndividualCustomerGetResponse>> getAll() {
-        return individualCustomerService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<IndividualCustomerGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return individualCustomerService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<IndividualCustomerGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody IndividualCustomerUpdateRequest individualCustomerUpdateDto) throws BusinessException {
-        return this.individualCustomerService.update(id, individualCustomerUpdateDto);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody IndividualCustomerUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.individualCustomerService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

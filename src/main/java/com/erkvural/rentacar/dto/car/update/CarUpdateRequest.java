@@ -13,13 +13,12 @@ import javax.validation.constraints.*;
 public class CarUpdateRequest {
 
     @NotNull
-    @Min(10)
-    @Max(500)
+    @PositiveOrZero
     private double dailyPrice;
 
     @NotNull
     @Min(1980)
-    @Max(2021)
+    @Max(2022)
     private int modelYear;
 
     @NotNull
@@ -29,13 +28,13 @@ public class CarUpdateRequest {
 
     @NotNull
     @PositiveOrZero
-    private long mileage;
+    private double mileage;
 
     @NotNull
     @PositiveOrZero
-    private int colorId;
+    private long colorId;
 
     @NotNull
     @PositiveOrZero
-    private int brandId;
+    private long brandId;
 }

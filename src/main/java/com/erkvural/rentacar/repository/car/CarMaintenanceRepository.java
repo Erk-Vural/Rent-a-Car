@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.repository.car;
 
-import com.erkvural.rentacar.entity.car.Car;
 import com.erkvural.rentacar.entity.car.CarMaintenance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +11,4 @@ public interface CarMaintenanceRepository extends JpaRepository<CarMaintenance, 
 
     List<CarMaintenance> findByCar_Id(long carId);
 
-    List<CarMaintenance> findByCar(Car car);
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CorporateCustomerServiceImpl implements CorporateCustomerService {
@@ -28,7 +29,6 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
     }
-
 
     @Override
     public Result add(CorporateCustomerCreateRequest createRequest) throws BusinessException {
@@ -46,7 +46,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
 
         List<CorporateCustomerGetResponse> response = result.stream()
                 .map(corporateCustomer -> modelMapperService.forResponse()
-                        .map(corporateCustomer, CorporateCustomerGetResponse.class)).toList();
+                        .map(corporateCustomer, CorporateCustomerGetResponse.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<>(MessageStrings.CUSTOMERLIST, response);
     }
@@ -67,6 +67,8 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
         checkEmailExist(updateRequest.getEmail());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateRequest, CorporateCustomer.class);
+        corporateCustomer.setUserId(id);
+
         this.repository.save(corporateCustomer);
 
         return new SuccessResult(MessageStrings.CUSTOMERUPDATE);

@@ -17,36 +17,35 @@ import java.util.List;
 @RequestMapping("/api/v1/car/brands")
 public class BrandController {
 
-    private final BrandService brandService;
+    private final BrandService service;
 
     @Autowired
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
+    public BrandController(BrandService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody BrandCreateRequest createRequest) throws BusinessException {
-        return this.brandService.add(createRequest);
+        return this.service.add(createRequest);
     }
-
 
     @GetMapping("/getAll")
     public DataResult<List<BrandGetResponse>> getAll() {
-        return brandService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<BrandGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return brandService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<BrandGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody BrandUpdateRequest updateRequest) throws BusinessException {
-        return this.brandService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody BrandUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.brandService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

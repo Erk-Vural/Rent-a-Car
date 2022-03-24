@@ -12,8 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface CarMaintenanceService {
+
     Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException;
 
     DataResult<List<CarMaintenanceGetResponse>> getAll();

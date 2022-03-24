@@ -6,11 +6,9 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CarDamageCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarDamageGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarDamageUpdateRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface CarDamageService {
     Result add(CarDamageCreateRequest createRequest) throws BusinessException;
 

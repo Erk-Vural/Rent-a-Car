@@ -20,6 +20,7 @@ import java.util.Objects;
 
 @Service
 public class BrandServiceImpl implements BrandService {
+
     private final BrandRepository repository;
     private final ModelMapperService modelMapperService;
 
@@ -48,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
                 .map(brand -> modelMapperService.forResponse()
                         .map(brand, BrandGetResponse.class)).toList();
 
-        return new SuccessDataResult<>(MessageStrings.BRANDLIST);
+        return new SuccessDataResult<>(MessageStrings.BRANDLIST, response);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Result update(long id, BrandUpdateRequest updateRequest) throws BusinessException {
         checkBrandIdExist(id);
+        checkBrandNameExist(updateRequest.getName());
 
         Brand brand = this.modelMapperService.forRequest().map(updateRequest, Brand.class);
         brand.setId(id);

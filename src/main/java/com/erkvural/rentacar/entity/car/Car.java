@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
+import com.erkvural.rentacar.core.enums.CarStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,9 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "status", nullable = false)
+    private CarStatus status;
 
     @Column(name = "daily_price", nullable = false)
     private double dailyPrice;
@@ -48,5 +52,6 @@ public class Car {
     private Set<CarRental> carRentals;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<CarDamage> carDamages;
 }

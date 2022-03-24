@@ -6,11 +6,10 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.ColorCreateRequest;
 import com.erkvural.rentacar.dto.car.get.ColorGetResponse;
 import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface ColorService {
 
     Result add(ColorCreateRequest createRequest) throws BusinessException;

@@ -18,12 +18,13 @@ public class MessageStrings {
     public static final String CARADD = "car.added";
     public static final String CARUPDATE = "car.updated";
     public static final String CARDELETE = "car.deleted";
-    public static final String CARMPAGED = "car.paged";
+    public static final String CARPAGED = "car.paged";
     public static final String CARSORTED = "car.sorted";
     public static final String CARGETLESSTHANEQUAL = "cars.listed.less.than.equal";
     public static final String CARLIST = "cars.listed";
     public static final String CARFOUND = "car.found";
     public static final String CARNOTFOUND = "car.not.found";
+    public static final String CARSTATUSSETTED = "car.not.found";
 
 
     public static final String CITYADD = "city.added";
@@ -106,6 +107,7 @@ public class MessageStrings {
     public static final String CARMAINTENANCENGETBYCARID = "car.maintenance.found.with.carId";
     public static final String CARMAINTENANCENOTFOUND = "car.maintenance.not.found";
     public static final String CARMAINTENANCEALREADYEXISTS = "car.maintenance.exists";
+    public static final String CARISUNDERMAINTENANCE = "car.is.under.maintenance";
 
     public static final String INVOICEADD = "invoice.added";
     public static final String INVOICEUPDATE = "invoice.updated";

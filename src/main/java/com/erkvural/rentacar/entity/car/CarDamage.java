@@ -11,17 +11,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CAR_DAMAGE")
+@Table(name = "CAR_DAMAGES")
 public class CarDamage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "car_id")
+    @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 }

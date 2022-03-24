@@ -65,6 +65,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Result update(long id, ColorUpdateRequest updateRequest) throws BusinessException {
         checkColorIdExist(id);
+        checkColorNameExist(updateRequest.getName());
 
         Color color = this.modelMapperService.forRequest().map(updateRequest, Color.class);
         color.setId(id);

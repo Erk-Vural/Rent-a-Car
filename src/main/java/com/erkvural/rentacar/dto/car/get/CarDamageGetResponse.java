@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class CarDamageGetResponse {
 
-    private String damageRecord;
+    private String description;
 
     private long carId;
 }

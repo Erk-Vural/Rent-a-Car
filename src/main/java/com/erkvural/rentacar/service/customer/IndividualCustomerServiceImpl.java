@@ -69,6 +69,8 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         checkEmailExist(updateRequest.getEmail());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateRequest, IndividualCustomer.class);
+        individualCustomer.setUserId(id);
+
         this.repository.save(individualCustomer);
 
         return new SuccessResult(MessageStrings.CUSTOMERUPDATE);

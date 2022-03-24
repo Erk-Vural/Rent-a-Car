@@ -28,4 +28,8 @@ public class IndividualCustomerCreateRequest {
     @NotNull
     @Size(min = 2, max = 64)
     private String lastName;
+
+    @NotNull
+    @Size(min = 11, max = 11)
+    private String nationalId;
 }

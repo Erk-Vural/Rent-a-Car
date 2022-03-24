@@ -16,52 +16,51 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/car/cars")
 public class CarController {
-    private final CarService carService;
+    private final CarService service;
 
     @Autowired
-    public CarController(CarService carService) {
-        this.carService = carService;
+    public CarController(CarService service) {
+        this.service = service;
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarCreateRequest createRequest) {
-        return this.carService.add(createRequest);
+    public Result add(@RequestBody CarCreateRequest createRequest) throws BusinessException {
+        return this.service.add(createRequest);
     }
-
 
     @GetMapping("/getAll")
     public DataResult<List<CarGetResponse>> getAll() {
-        return carService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<CarGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return carService.getById(id);
+    @GetMapping("/get/id={id}")
+    public DataResult<CarGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @GetMapping("/getAllSorted")
-    public DataResult<List<CarGetResponse>> getAllSorted(@RequestParam("direction") Sort.Direction direction) {
-        return this.carService.getAllSorted(direction);
+    @GetMapping("/getAllSorted/direction={direction}")
+    public DataResult<List<CarGetResponse>> getAllSorted(@PathVariable Sort.Direction direction) {
+        return this.service.getAllSorted(direction);
     }
 
-    @GetMapping("/getAllPaged")
-    public DataResult<List<CarGetResponse>> getAllPaged(@RequestParam("pageNo") int pageNo,
-                                                        @RequestParam("pageSize") int pageSize) {
-        return this.carService.getAllPaged(pageNo, pageSize);
+    @GetMapping("/getAllPaged/pageNo={pageNo}+pageSize{pageSize}")
+    public DataResult<List<CarGetResponse>> getAllPaged(@PathVariable int pageNo,
+                                                        @PathVariable int pageSize) {
+        return this.service.getAllPaged(pageNo, pageSize);
     }
 
-    @GetMapping("/getAllByDailyPriceLessThanEqual")
-    public DataResult<List<CarGetResponse>> getAllByDailyPriceLessThanEqual(@RequestParam("dailyPrice") double dailyPrice) {
-        return this.carService.getAllByDailyPriceLessThanEqual(dailyPrice);
+    @GetMapping("/getAllByDailyPriceLessThanEqual/dailyPrice={dailyPrice}")
+    public DataResult<List<CarGetResponse>> getAllByDailyPriceLessThanEqual(@PathVariable double dailyPrice) {
+        return this.service.getAllByDailyPriceLessThanEqual(dailyPrice);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CarUpdateRequest updateRequest) throws BusinessException {
-        return this.carService.update(id, updateRequest);
+    @PutMapping("/update/id={id}")
+    public Result update(@PathVariable long id, @RequestBody CarUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.carService.delete(id);
+    @DeleteMapping("/delete/id={id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

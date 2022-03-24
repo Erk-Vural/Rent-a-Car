@@ -12,9 +12,9 @@ import java.time.LocalDate;
 
 public class CarMaintenanceGetResponse {
 
-    private String description;
-
     private LocalDate returnDate;
+
+    private String description;
 
     private long carId;
 }

@@ -15,4 +15,6 @@ public class IndividualCustomerGetResponse {
     private String firstName;
 
     private String lastName;
+
+    private String nationalId;
 }

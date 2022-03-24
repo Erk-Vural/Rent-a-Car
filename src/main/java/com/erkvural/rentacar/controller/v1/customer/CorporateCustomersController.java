@@ -15,36 +15,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/customer/corporate")
 public class CorporateCustomersController {
-    private final CorporateCustomerService corporateCustomerService;
+    private final CorporateCustomerService service;
 
     @Autowired
-    public CorporateCustomersController(CorporateCustomerService corporateCustomerService) {
-        this.corporateCustomerService = corporateCustomerService;
+    public CorporateCustomersController(CorporateCustomerService service) {
+        this.service = service;
     }
 
-
     @PostMapping("/add")
-    public Result add(@RequestBody CorporateCustomerCreateRequest corporateCustomerCreateDto) throws BusinessException {
-        return this.corporateCustomerService.add(corporateCustomerCreateDto);
+    public Result add(@RequestBody CorporateCustomerCreateRequest createRequest) throws BusinessException {
+        return this.service.add(createRequest);
     }
 
     @GetMapping("/getAll")
     public DataResult<List<CorporateCustomerGetResponse>> getAll() {
-        return corporateCustomerService.getAll();
+        return service.getAll();
     }
 
-    @GetMapping("/get")
-    public DataResult<CorporateCustomerGetResponse> get(@RequestParam("id") long id) throws BusinessException {
-        return corporateCustomerService.getById(id);
+    @GetMapping("/get/{id}")
+    public DataResult<CorporateCustomerGetResponse> get(@PathVariable long id) throws BusinessException {
+        return service.getById(id);
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestParam("id") long id, @RequestBody CorporateCustomerUpdateRequest corporateCustomerUpdateRequest) throws BusinessException {
-        return this.corporateCustomerService.update(id, corporateCustomerUpdateRequest);
+    @PutMapping("/update/{id}")
+    public Result update(@PathVariable long id, @RequestBody CorporateCustomerUpdateRequest updateRequest) throws BusinessException {
+        return this.service.update(id, updateRequest);
     }
 
-    @DeleteMapping("/delete")
-    public Result delete(@RequestParam("id") long id) throws BusinessException {
-        return this.corporateCustomerService.delete(id);
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable long id) throws BusinessException {
+        return this.service.delete(id);
     }
 }

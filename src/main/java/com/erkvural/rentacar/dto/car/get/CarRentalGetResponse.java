@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.dto.car.get;
 
+import com.erkvural.rentacar.core.enums.CarStatus;
 import lombok.*;
 
 import java.time.LocalDate;

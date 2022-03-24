@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface CorporateCustomerService {
 
     Result add(CorporateCustomerCreateRequest createRequest) throws BusinessException;
