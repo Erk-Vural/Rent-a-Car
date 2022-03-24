@@ -24,7 +24,7 @@ public class OrderedAdditionalServiceUpdateRequest {
     private int quantity;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carRentalId;
 
 }

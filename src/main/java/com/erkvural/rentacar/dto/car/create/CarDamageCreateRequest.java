@@ -2,10 +2,7 @@ package com.erkvural.rentacar.dto.car.create;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -21,6 +18,6 @@ public class CarDamageCreateRequest {
 
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carId;
 }

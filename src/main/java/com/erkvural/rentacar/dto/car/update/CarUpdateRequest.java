@@ -31,10 +31,10 @@ public class CarUpdateRequest {
     private double mileage;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long colorId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long brandId;
 }

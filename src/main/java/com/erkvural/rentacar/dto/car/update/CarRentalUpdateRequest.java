@@ -23,11 +23,11 @@ public class CarRentalUpdateRequest {
 
     @NotNull
     @PositiveOrZero
-    private long startMileage;
+    private double startMileage;
 
     @NotNull
     @PositiveOrZero
-    private long endMileage;
+    private double endMileage;
 
     @NotNull
     @NotBlank
@@ -35,19 +35,19 @@ public class CarRentalUpdateRequest {
     private String description;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long rentedCityId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long returnedCityId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long customerId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carId;
 
 }

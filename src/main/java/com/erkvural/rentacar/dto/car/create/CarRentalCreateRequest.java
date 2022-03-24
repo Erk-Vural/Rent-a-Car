@@ -24,7 +24,7 @@ public class CarRentalCreateRequest {
 
     @NotNull
     @PositiveOrZero
-    private long startMileage;
+    private double startMileage;
 
     @NotNull
     @NotBlank
@@ -32,19 +32,19 @@ public class CarRentalCreateRequest {
     private String description;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long rentedCityId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long returnedCityId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long customerId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carId;
 
     private Set<OrderedAdditionalServiceCreateRequest> orderedAdditionalServiceCreateRequestSet;

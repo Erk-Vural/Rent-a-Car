@@ -23,6 +23,6 @@ public class CarMaintenanceUpdateRequest {
     private String description;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carId;
 }

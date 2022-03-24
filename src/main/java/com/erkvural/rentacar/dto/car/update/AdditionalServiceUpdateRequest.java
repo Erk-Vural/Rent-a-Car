@@ -16,8 +16,7 @@ public class AdditionalServiceUpdateRequest {
     private String name;
 
     @NotNull
-    @Min(10)
-    @Max(500)
+    @PositiveOrZero
     private double dailyPrice;
 
 }

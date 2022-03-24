@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -22,6 +22,6 @@ public class CarDamageUpdateRequest {
 
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carId;
 }

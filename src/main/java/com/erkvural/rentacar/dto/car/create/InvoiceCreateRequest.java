@@ -3,7 +3,7 @@ package com.erkvural.rentacar.dto.car.create;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
@@ -14,6 +14,6 @@ import javax.validation.constraints.PositiveOrZero;
 public class InvoiceCreateRequest {
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long paymentId;
 }

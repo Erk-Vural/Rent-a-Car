@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
@@ -18,10 +17,10 @@ public class OrderedAdditionalServiceCreateRequest {
     private int quantity;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long additionalServiceId;
 
     @NotNull
-    @PositiveOrZero
+    @Positive
     private long carRentalId;
 }
