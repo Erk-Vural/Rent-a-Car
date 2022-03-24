@@ -16,17 +16,17 @@ public class CardInfoCreateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 12)
+    @Size(min = 16, max = 16)
     private String CardNumber;
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 64)
     private String CardholderName;
 
     @NotNull
     @NotBlank
-    @Size(min = 4, max = 10)
+    @Size(min = 5, max = 5)
     private String expiryDate;
 
     @NotNull

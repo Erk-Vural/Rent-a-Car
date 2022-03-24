@@ -121,7 +121,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private Invoice setInvoice(long paymentId) throws BusinessException {
 
-        PaymentGetResponse payment = paymentService.getById(paymentId).getData();
+        PaymentGetResponse payment = this.paymentService.getById(paymentId).getData();
         CarRentalGetResponse carRental = this.carRentalService.getById(payment.getCarRentalId()).getData();
 
         Invoice invoice = new Invoice();
