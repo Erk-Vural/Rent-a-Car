@@ -21,7 +21,7 @@ public class CardInfoUpdateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 64)
     private String CardholderName;
 
     @NotNull
@@ -31,6 +31,6 @@ public class CardInfoUpdateRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 3)
+    @Size(min = 3, max = 3)
     private String securityCode;
 }
