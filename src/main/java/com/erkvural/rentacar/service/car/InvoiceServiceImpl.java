@@ -13,6 +13,7 @@ import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
 import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.entity.car.Invoice;
 import com.erkvural.rentacar.entity.car.Payment;
+import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.InvoiceRepository;
 import com.erkvural.rentacar.repository.car.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +131,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setRentEndDate(carRental.getEndDate());
         invoice.setTotalRentDays((ChronoUnit.DAYS.between(carRental.getStartDate(), carRental.getEndDate()) + 1));
         invoice.setTotal(payment.getTotal());
+        Customer customer = new Customer();
+        customer.setUserId(carRental.getCustomerId());
+        invoice.setCustomer(customer);
 
         return invoice;
     }

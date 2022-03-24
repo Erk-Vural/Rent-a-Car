@@ -8,6 +8,7 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
+import com.erkvural.rentacar.dto.car.create.InvoiceCreateRequest;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
 import com.erkvural.rentacar.entity.car.CardInfo;
@@ -27,16 +28,17 @@ public class PaymentServiceImpl implements PaymentService {
     private final CarRentalRepository carRentalRepository;
     private final CardInfoService cardInfoService;
     private final CarRentalService carRentalService;
+    private final InvoiceService invoiceService;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository, CardInfoService cardInfoService, CarRentalService carRentalService) {
+    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CarRentalRepository carRentalRepository, CardInfoService cardInfoService, CarRentalService carRentalService, InvoiceService invoiceService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.carRentalRepository = carRentalRepository;
         this.cardInfoService = cardInfoService;
         this.carRentalService = carRentalService;
+        this.invoiceService = invoiceService;
     }
-
 
     @Override
     public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
@@ -49,6 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setCardInfo(handleCardInfo(createRequest.getCardInfo(), rememberCardInfo));
 
         this.repository.save(payment);
+
+        invoiceService.add(new InvoiceCreateRequest(payment.getId()));
 
         return new SuccessResult(MessageStrings.PAYMENTADD);
     }

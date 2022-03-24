@@ -124,6 +124,8 @@ public class CarRentalServiceImpl implements CarRentalService {
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
 
+        checkExtraDays(repository.findById(id).getEndDate(), carRental.getEndDate());
+
         this.repository.save(carRental);
 
         return new SuccessResult(MessageStrings.RENTALUPDATE);
@@ -138,13 +140,13 @@ public class CarRentalServiceImpl implements CarRentalService {
         return new SuccessResult(MessageStrings.RENTALDELETE);
     }
 
-    private void checkCarIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(carRepository.findById(id))) throw new BusinessException(MessageStrings.CARNOTFOUND);
-    }
-
     private void checkCarRentalIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.RENTALNOTFOUND);
+    }
+
+    private void checkCarIdExist(long carId) throws BusinessException {
+        if (Objects.nonNull(carRepository.findById(carId))) throw new BusinessException(MessageStrings.CARNOTFOUND);
     }
 
     private void checkUnderMaintenance(long carId) throws BusinessException {
@@ -176,15 +178,10 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         CarRental carRental = repository.findById(id);
 
-        long totalDays = ChronoUnit.DAYS.between(carRental.getStartDate(), carRental.getEndDate());
-
-        double carDailyPrice = carRental.getCar().getDailyPrice();
-
-        double OrderedAdditionalServicesDailyPrice = this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices());
-
-        double dailyTotal = carDailyPrice + OrderedAdditionalServicesDailyPrice;
-
-        return (dailyTotal * totalDays) + checkCityIds(carRental);
+        return (carRental.getCar().getDailyPrice()
+                + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
+                * calTotalDays(carRental.getStartDate(), carRental.getEndDate()))
+                + checkCityIds(carRental);
     }
 
     private double checkCityIds(CarRental carRental) {
@@ -192,5 +189,14 @@ public class CarRentalServiceImpl implements CarRentalService {
             return 750.0;
         }
         return 0.0;
+    }
+
+    private long calTotalDays(LocalDate startDate, LocalDate endDate) {
+
+        return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    private long checkExtraDays(LocalDate oldEndDate, LocalDate newEndDate) {
+        return ChronoUnit.DAYS.between(oldEndDate, newEndDate);
     }
 }

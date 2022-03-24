@@ -15,9 +15,5 @@ public class InvoiceCreateRequest {
 
     @NotNull
     @PositiveOrZero
-    private long customerId;
-
-    @NotNull
-    @PositiveOrZero
     private long paymentId;
 }
