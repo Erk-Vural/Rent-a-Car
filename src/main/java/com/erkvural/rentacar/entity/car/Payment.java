@@ -24,11 +24,11 @@ public class Payment {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "card_info_id")
+    @JoinColumn(name = "card_info_id", nullable = false)
     private CardInfo cardInfo;
 
     @ManyToOne
-    @JoinColumn(name = "car_rental_id")
+    @JoinColumn(name = "car_rental_id", nullable = false)
     private CarRental carRental;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

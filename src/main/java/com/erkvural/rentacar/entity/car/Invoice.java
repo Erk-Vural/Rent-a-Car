@@ -21,7 +21,7 @@ public class Invoice {
     private Long id;
 
     @Column(name = "create_date")
-    private LocalDate createDate;
+    private LocalDate createDate = LocalDate.now();
 
     @Column(name = "rent_start_date")
     private LocalDate rentStartDate;
@@ -37,11 +37,11 @@ public class Invoice {
     private double total;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @OneToOne
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
 }
