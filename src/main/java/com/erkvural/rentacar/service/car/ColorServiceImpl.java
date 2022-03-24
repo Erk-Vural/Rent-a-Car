@@ -32,7 +32,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result add(ColorCreateRequest createRequest) throws BusinessException {
+    public Result add(ColorCreateRequest createRequest){
         checkColorNameExist(createRequest.getName());
 
         Color color = this.modelMapperService.forRequest().map(createRequest, Color.class);
@@ -53,7 +53,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public DataResult<ColorGetResponse> getById(long id) throws BusinessException {
+    public DataResult<ColorGetResponse> getById(long id){
         checkColorIdExist(id);
 
         Color color = repository.getById(id);
@@ -63,7 +63,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result update(long id, ColorUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, ColorUpdateRequest updateRequest){
         checkColorIdExist(id);
         checkColorNameExist(updateRequest.getName());
 
@@ -76,7 +76,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id){
         checkColorIdExist(id);
 
         this.repository.deleteById(id);

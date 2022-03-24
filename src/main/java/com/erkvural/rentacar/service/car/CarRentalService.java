@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
@@ -12,11 +11,11 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 public interface CarRentalService {
-    Result add(CarRentalCreateRequest createRequest) throws BusinessException;
+    Result add(CarRentalCreateRequest createRequest);
 
     SuccessDataResult<List<CarRentalGetResponse>> getAll();
 
-    SuccessDataResult<CarRentalGetResponse> getById(long id) throws BusinessException;
+    SuccessDataResult<CarRentalGetResponse> getById(long id);
 
     SuccessDataResult<List<CarRentalGetResponse>> getByCarId(long carId);
 
@@ -26,9 +25,9 @@ public interface CarRentalService {
 
     DataResult<List<CarRentalGetResponse>> getAllEndDateSorted(Sort.Direction direction);
 
-    Result update(long id, CarRentalUpdateRequest updateRequest) throws BusinessException;
+    Result update(long id, CarRentalUpdateRequest updateRequest);
 
-    Result delete(long id) throws BusinessException;
+    Result delete(long id);
 
     double calRentedTotal(long id);
 

@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
+    public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo){
         checkCarRentalIdExist(createRequest.getCarRentalId());
 
         Payment payment = this.modelMapperService.forRequest().map(createRequest, Payment.class);
@@ -67,7 +67,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public DataResult<PaymentGetResponse> getById(long id) throws BusinessException {
+    public DataResult<PaymentGetResponse> getById(long id){
         checkPaymentIdExist(id);
 
         Payment payment = repository.getById(id);

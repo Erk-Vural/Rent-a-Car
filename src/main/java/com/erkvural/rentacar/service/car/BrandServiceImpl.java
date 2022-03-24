@@ -31,7 +31,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Result add(BrandCreateRequest createRequest) throws BusinessException {
+    public Result add(BrandCreateRequest createRequest){
         checkBrandNameExist(createRequest.getName());
 
         Brand brand = this.modelMapperService.forRequest().map(createRequest, Brand.class);
@@ -53,7 +53,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public DataResult<BrandGetResponse> getById(long id) throws BusinessException {
+    public DataResult<BrandGetResponse> getById(long id){
         checkBrandIdExist(id);
 
         Brand brand = repository.getById(id);
@@ -63,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Result update(long id, BrandUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, BrandUpdateRequest updateRequest){
         checkBrandIdExist(id);
         checkBrandNameExist(updateRequest.getName());
 

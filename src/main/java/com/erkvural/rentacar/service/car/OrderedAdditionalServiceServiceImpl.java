@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateRequest;
 import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
@@ -22,7 +21,7 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet) throws BusinessException {
+    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet) {
         for (OrderedAdditionalServiceCreateRequest createRequest : createRequestSet) {
 
             OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createRequest, OrderedAdditionalService.class);

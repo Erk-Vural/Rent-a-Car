@@ -34,7 +34,7 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     @Override
-    public Result add(CarDamageCreateRequest createRequest) throws BusinessException {
+    public Result add(CarDamageCreateRequest createRequest){
         checkCarIdExist(createRequest.getCarId());
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(createRequest, CarDamage.class);
@@ -59,7 +59,7 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     @Override
-    public DataResult<CarDamageGetResponse> getById(long id) throws BusinessException {
+    public DataResult<CarDamageGetResponse> getById(long id){
         checkCarDamageIdExist(id);
 
         CarDamage carDamage = repository.getById(id);
@@ -69,7 +69,7 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     @Override
-    public Result update(long id, CarDamageUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CarDamageUpdateRequest updateRequest){
         checkCarIdExist(updateRequest.getCarId());
         checkCarDamageIdExist(id);
 

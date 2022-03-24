@@ -37,7 +37,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException {
+    public Result add(CarMaintenanceCreateRequest createRequest){
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
 
@@ -63,7 +63,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public DataResult<CarMaintenanceGetResponse> getById(long id) throws BusinessException {
+    public DataResult<CarMaintenanceGetResponse> getById(long id){
         checkCarMaintenanceIdExist(id);
 
         CarMaintenance carMaintenance = repository.findById(id);
@@ -110,7 +110,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result update(long id, CarMaintenanceUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CarMaintenanceUpdateRequest updateRequest){
         checkCarMaintenanceIdExist(id);
         checkCarStatus(updateRequest.getCarId());
 

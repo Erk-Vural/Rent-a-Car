@@ -32,7 +32,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result add(CityCreateRequest createRequest) throws BusinessException {
+    public Result add(CityCreateRequest createRequest){
         checkCityNameExist(createRequest.getName());
 
         City city = this.modelMapperService.forRequest().map(createRequest, City.class);
@@ -54,7 +54,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public DataResult<CityGetResponse> getById(long id) throws BusinessException {
+    public DataResult<CityGetResponse> getById(long id){
         checkCityIdExist(id);
 
         City city = repository.getById(id);
@@ -64,7 +64,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result update(long id, CityUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CityUpdateRequest updateRequest){
         checkCityIdExist(id);
 
         City city = this.modelMapperService.forRequest().map(updateRequest, City.class);
@@ -76,7 +76,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id){
         checkCityIdExist(id);
 
         this.repository.deleteById(id);

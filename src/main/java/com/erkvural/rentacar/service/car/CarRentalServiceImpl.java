@@ -39,7 +39,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result add(CarRentalCreateRequest createRequest) throws BusinessException {
+    public Result add(CarRentalCreateRequest createRequest){
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
 
@@ -66,7 +66,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public SuccessDataResult<CarRentalGetResponse> getById(long id) throws BusinessException {
+    public SuccessDataResult<CarRentalGetResponse> getById(long id){
         checkCarRentalIdExist(id);
 
         CarRental carRental = repository.findById(id);
@@ -114,7 +114,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result update(long id, CarRentalUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CarRentalUpdateRequest updateRequest){
         checkCarRentalIdExist(id);
         checkCarStatus(updateRequest.getCarId());
 

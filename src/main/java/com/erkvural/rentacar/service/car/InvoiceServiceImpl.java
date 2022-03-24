@@ -41,7 +41,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Result add(InvoiceCreateRequest createRequest) throws BusinessException {
+    public Result add(InvoiceCreateRequest createRequest){
         checkPaymentIdExist(createRequest.getPaymentId());
 
         Invoice invoice = setInvoice(createRequest.getPaymentId());
@@ -61,7 +61,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public DataResult<InvoiceGetResponse> getById(long id) throws BusinessException {
+    public DataResult<InvoiceGetResponse> getById(long id){
         checkInvoiceIdExist(id);
 
         Invoice invoice = repository.findById(id);
@@ -89,7 +89,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Result update(long id, BrandUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, BrandUpdateRequest updateRequest){
         checkInvoiceIdExist(id);
 
         Invoice invoice = this.modelMapperService.forRequest().map(updateRequest, Invoice.class);
@@ -101,7 +101,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id){
         checkInvoiceIdExist(id);
 
         this.repository.deleteById(id);
@@ -119,7 +119,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new BusinessException(MessageStrings.INVOICE_FOUND);
     }
 
-    private Invoice setInvoice(long paymentId) throws BusinessException {
+    private Invoice setInvoice(long paymentId){
 
         PaymentGetResponse payment = this.paymentService.getById(paymentId).getData();
         CarRentalGetResponse carRental = this.carRentalService.getById(payment.getCarRentalId()).getData();

@@ -63,7 +63,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public DataResult<CardInfoGetResponse> getById(long id) throws BusinessException {
+    public DataResult<CardInfoGetResponse> getById(long id){
         checkCardInfoIdExist(id);
 
         CardInfo cardInfo = repository.getById(id);
@@ -73,7 +73,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result update(long id, CardInfoUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CardInfoUpdateRequest updateRequest){
         checkCardInfoIdExist(id);
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(updateRequest, CardInfo.class);
@@ -85,7 +85,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id){
         checkCardInfoIdExist(id);
 
         this.repository.deleteById(id);

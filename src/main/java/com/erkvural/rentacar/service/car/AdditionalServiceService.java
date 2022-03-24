@@ -11,13 +11,13 @@ import java.util.List;
 
 
 public interface AdditionalServiceService {
-    Result add(AdditionalServiceCreateRequest createRequest) throws BusinessException;
+    Result add(AdditionalServiceCreateRequest createRequest);
 
     DataResult<List<AdditionalServiceGetResponse>> getAll();
 
-    DataResult<AdditionalServiceGetResponse> getById(long id) throws BusinessException;
+    DataResult<AdditionalServiceGetResponse> getById(long id);
 
-    Result update(long id, AdditionalServiceUpdateRequest updateRequest) throws BusinessException;
+    Result update(long id, AdditionalServiceUpdateRequest updateRequest);
 
-    Result delete(long id) throws BusinessException;
+    Result delete(long id);
 }

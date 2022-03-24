@@ -15,11 +15,11 @@ import java.util.List;
 
 public interface CarMaintenanceService {
 
-    Result add(CarMaintenanceCreateRequest createRequest) throws BusinessException;
+    Result add(CarMaintenanceCreateRequest createRequest);
 
     DataResult<List<CarMaintenanceGetResponse>> getAll();
 
-    DataResult<CarMaintenanceGetResponse> getById(long id) throws BusinessException;
+    DataResult<CarMaintenanceGetResponse> getById(long id);
 
     SuccessDataResult<List<CarMaintenanceGetResponse>> getByCarId(long carId);
 
@@ -27,7 +27,7 @@ public interface CarMaintenanceService {
 
     DataResult<List<CarMaintenanceGetResponse>> getAllSorted(Sort.Direction direction);
 
-    Result update(long id, CarMaintenanceUpdateRequest updateRequest) throws BusinessException;
+    Result update(long id, CarMaintenanceUpdateRequest updateRequest);
 
-    Result delete(long id) throws BusinessException;
+    Result delete(long id);
 }
