@@ -22,8 +22,6 @@ public class CarRentalGetResponse {
 
     private double endMileage;
 
-    private double bill;
-
     private String rentedCityName;
 
     private String returnedCityName;
