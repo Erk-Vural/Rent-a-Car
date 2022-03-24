@@ -51,7 +51,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.repository.save(carRental);
 
-        return new SuccessResult(MessageStrings.RENTALADD);
+        return new SuccessResult(MessageStrings.RENTAL_ADDED);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.RENTALLIST, response);
+        return new SuccessDataResult<>(MessageStrings.RENTALS_LISTED, response);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         CarRental carRental = repository.findById(id);
         CarRentalGetResponse response = modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.RENTALFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.RENTAL_FOUND, response);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCARID, response);
+        return new SuccessDataResult<>(MessageStrings.RENTAL_FOUND_BY_CAR_ID, response);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         List<CarRentalGetResponse> response = result.stream().map(carRental -> this.modelMapperService.forResponse().map(carRental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.RENTALFOUNDCUSTOMERID, response);
+        return new SuccessDataResult<>(MessageStrings.RENTAL_FOUND_BY_CUSTOMER_ID, response);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         List<CarRental> result = this.repository.findAll(s);
         List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forResponse().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.RENTALSTARTDATESORTED, response);
+        return new SuccessDataResult<>(MessageStrings.RENTAL_START_DATE_SORTED, response);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class CarRentalServiceImpl implements CarRentalService {
         List<CarRental> result = this.repository.findAll(s);
         List<CarRentalGetResponse> response = result.stream().map(rental -> this.modelMapperService.forResponse().map(rental, CarRentalGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.RENTALENDDATESORTED, response);
+        return new SuccessDataResult<>(MessageStrings.RENTAL_END_DATE_SORTED, response);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.repository.save(carRental);
 
-        return new SuccessResult(MessageStrings.RENTALUPDATE);
+        return new SuccessResult(MessageStrings.RENTAL_UPDATED);
     }
 
     @Override
@@ -130,25 +130,25 @@ public class CarRentalServiceImpl implements CarRentalService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.RENTALDELETE);
+        return new SuccessResult(MessageStrings.RENTAL_DELETED);
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.RENTALNOTFOUND);
+            throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId))) throw new BusinessException(MessageStrings.CARNOTFOUND);
+        if (Objects.nonNull(carService.getById(carId))) throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkCarStatus(long carId) throws BusinessException {
         if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
-            throw new BusinessException(MessageStrings.RENTALALREADYRENTED);
+            throw new BusinessException(MessageStrings.RENTED_CAR_IS_RENTED);
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
-            throw new BusinessException(MessageStrings.RENTALMAINTENANCEERROR);
+            throw new BusinessException(MessageStrings.RENTED_CAR_IS_UNDER_MAINTENANCE);
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.DAMAGED)
-            throw new BusinessException(MessageStrings.RENTALDAMAGEDERROR);
+            throw new BusinessException(MessageStrings.RENTED_CAR_IS_DAMAGED);
     }
 
     @Override

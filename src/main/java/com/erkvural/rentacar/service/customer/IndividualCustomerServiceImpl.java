@@ -38,7 +38,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createRequest, IndividualCustomer.class);
         this.repository.save(individualCustomer);
 
-        return new SuccessResult(MessageStrings.CUSTOMERADD);
+        return new SuccessResult(MessageStrings.CUSTOMER_ADDED);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
                         .map(individualCustomer, IndividualCustomerGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CUSTOMERLIST, response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERS_LISTED, response);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
         IndividualCustomer individualCustomer = repository.getById(id);
         IndividualCustomerGetResponse response = modelMapperService.forResponse().map(individualCustomer, IndividualCustomerGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.CUSTOMERGET, response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMER_FOUND, response);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
 
         this.repository.save(individualCustomer);
 
-        return new SuccessResult(MessageStrings.CUSTOMERUPDATE);
+        return new SuccessResult(MessageStrings.CUSTOMER_UPDATED);
     }
 
     @Override
@@ -82,16 +82,16 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.CUSTOMERDELETE);
+        return new SuccessResult(MessageStrings.CUSTOMER_DELETED);
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
         if (Objects.nonNull(repository.findByUserId(userId)))
-            throw new BusinessException(MessageStrings.CUSTOMERNOTFOUND);
+            throw new BusinessException(MessageStrings.CUSTOMER_NOT_FOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
         if (Objects.nonNull(repository.findByEmail(email)))
-            throw new BusinessException(MessageStrings.CUSTOMERISALREADYEXISTS);
+            throw new BusinessException(MessageStrings.CUSTOMER_EXISTS);
     }
 }

@@ -43,7 +43,7 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         this.repository.save(carDamage);
 
-        return new SuccessResult(MessageStrings.DAMAGEADD);
+        return new SuccessResult(MessageStrings.DAMAGE_ADDED);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CarDamageServiceImpl implements CarDamageService {
                         .map(carDamage, CarDamageGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.DAMAGELIST, response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGES_LISTED, response);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = repository.getById(id);
         CarDamageGetResponse response = modelMapperService.forResponse().map(carDamage, CarDamageGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.DAMAGEFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGE_EXISTS, response);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         this.repository.save(carDamage);
 
-        return new SuccessResult(MessageStrings.DAMAGEUPDATE);
+        return new SuccessResult(MessageStrings.DAMAGE_UPDATED);
     }
 
     @Override
@@ -91,16 +91,16 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.DAMAGEDELETE);
+        return new SuccessResult(MessageStrings.DAMAGE_DELETED);
     }
 
     private void checkCarDamageIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.DAMAGENOTFOUND);
+            throw new BusinessException(MessageStrings.DAMAGE_NOT_FOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
         if (Objects.nonNull(carService.getById(carId)))
-            throw new BusinessException(MessageStrings.CARNOTFOUND);
+            throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 }

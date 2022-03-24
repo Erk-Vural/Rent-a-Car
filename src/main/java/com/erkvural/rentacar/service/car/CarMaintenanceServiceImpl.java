@@ -47,7 +47,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         this.repository.save(carMaintenance);
 
-        return new SuccessResult(MessageStrings.CARMAINTENANCEADD);
+        return new SuccessResult(MessageStrings.CAR_MAINTENANCE_ADDED);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCELIST, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_MAINTENANCES_LISTED, response);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         CarMaintenance carMaintenance = repository.findById(id);
         CarMaintenanceGetResponse response = modelMapperService.forResponse().map(carMaintenance, CarMaintenanceGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGET, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_MAINTENANCE_FOUND, response);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         List<CarMaintenanceGetResponse> response = result.stream().map(carMaintenance -> this.modelMapperService.forResponse()
                 .map(carMaintenance, CarMaintenanceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCENGETBYCARID, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_MAINTENANCE_FOUND_BY_CAR_ID, response);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCEPAGED, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_MAINTENANCES_PAGED, response);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
                         .map(carMaintenance, CarMaintenanceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARMAINTENANCESORTED, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_MAINTENANCES_SORTED, response);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         this.repository.save(carMaintenance);
 
-        return new SuccessResult(MessageStrings.CARMAINTENANCEUPDATE);
+        return new SuccessResult(MessageStrings.CAR_MAINTENANCE_UPDATED);
     }
 
     @Override
@@ -132,23 +132,23 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.CARMAINTENANCEDELETE);
+        return new SuccessResult(MessageStrings.CAR_MAINTENANCE_DELETED);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
         if (Objects.nonNull(carService.getById(carId)))
-            throw new BusinessException(MessageStrings.CARNOTFOUND);
+            throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkCarMaintenanceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.CARMAINTENANCENOTFOUND);
+            throw new BusinessException(MessageStrings.CAR_MAINTENANCE_NOT_FOUND);
     }
 
     private void checkCarStatus(long carId) throws BusinessException {
         if (this.carService.getById(carId).getData().getStatus() == CarStatus.RENTED)
-            throw new BusinessException(MessageStrings.CARMAINTENANCERENTALERROR);
+            throw new BusinessException(MessageStrings.CAR_MAINTENANCE_RENTAL_ERROR);
         else if (this.carService.getById(carId).getData().getStatus() == CarStatus.UNDER_MAINTENANCE)
-            throw new BusinessException(MessageStrings.CARISUNDERMAINTENANCE);
+            throw new BusinessException(MessageStrings.CAR_IS_UNDER_MAINTENANCE);
     }
 }

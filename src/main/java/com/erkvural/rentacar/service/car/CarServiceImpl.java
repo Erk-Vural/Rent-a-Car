@@ -45,7 +45,7 @@ public class CarServiceImpl implements CarService {
 
         this.repository.save(car);
 
-        return new SuccessResult(MessageStrings.CARADD);
+        return new SuccessResult(MessageStrings.CAR_ADDED);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARLIST, response);
+        return new SuccessDataResult<>(MessageStrings.CARS_LISTED, response);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class CarServiceImpl implements CarService {
         Car car = repository.findById(id);
         CarGetResponse response = modelMapperService.forResponse().map(car, CarGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.CARFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_FOUND, response);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARPAGED, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_PAGED, response);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARSORTED, response);
+        return new SuccessDataResult<>(MessageStrings.CAR_SORTED, response);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class CarServiceImpl implements CarService {
         List<Car> result = this.repository.findByDailyPriceLessThanEqual(dailyPrice);
 
         if (result.isEmpty()) {
-            return new ErrorDataResult<>(MessageStrings.CARNOTFOUND);
+            return new ErrorDataResult<>(MessageStrings.CAR_NOT_FOUND);
         }
 
         List<CarGetResponse> response = result.stream()
@@ -109,7 +109,7 @@ public class CarServiceImpl implements CarService {
                         .map(car, CarGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CARGETLESSTHANEQUAL, response);
+        return new SuccessDataResult<>(MessageStrings.CARS_LISTED_LESS_THAN_EQUAL, response);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class CarServiceImpl implements CarService {
 
         this.repository.save(car);
 
-        return new SuccessResult(MessageStrings.CARUPDATE);
+        return new SuccessResult(MessageStrings.CAR_UPDATED);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class CarServiceImpl implements CarService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.CARDELETE);
+        return new SuccessResult(MessageStrings.CAR_DELETED);
     }
 
     @Override
@@ -143,21 +143,21 @@ public class CarServiceImpl implements CarService {
         Car car = repository.findById(carId);
         car.setStatus(status);
 
-        new SuccessResult(MessageStrings.CARSTATUSSETTED);
+        new SuccessResult(MessageStrings.CAR_STATUS_SET);
     }
 
     private void checkCarIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.CARNOTFOUND);
+            throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkBrandIdExist(long brandId) throws BusinessException {
         if (Objects.nonNull(brandService.getById(brandId)))
-            throw new BusinessException(MessageStrings.BRANDNOTFOUND);
+            throw new BusinessException(MessageStrings.BRAND_NOT_FOUND);
     }
 
     private void checkColorIdExist(long colorId) throws BusinessException {
         if (Objects.nonNull(colorService.getById(colorId)))
-            throw new BusinessException(MessageStrings.COLORNOTFOUND);
+            throw new BusinessException(MessageStrings.COLOR_NOT_FOUND);
     }
 }

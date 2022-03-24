@@ -9,6 +9,6 @@ public class PosServiceIsBankImpl {
 
     public Result makePayment(CardInfoCreateRequest createRequest) {
 
-        return new SuccessResult(MessageStrings.POSISSUCCESSFULL);
+        return new SuccessResult(MessageStrings.POS_IS_BANK_SUCCESSFUL);
     }
 }

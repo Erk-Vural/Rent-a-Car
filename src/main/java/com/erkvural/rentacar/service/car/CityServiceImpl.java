@@ -38,7 +38,7 @@ public class CityServiceImpl implements CityService {
         City city = this.modelMapperService.forRequest().map(createRequest, City.class);
         this.repository.save(city);
 
-        return new SuccessResult(MessageStrings.CITYADD);
+        return new SuccessResult(MessageStrings.CITY_ADDED);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CityServiceImpl implements CityService {
                         .map(city, CityGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CITYLIST, response);
+        return new SuccessDataResult<>(MessageStrings.CITIES_LISTED, response);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CityServiceImpl implements CityService {
 
         this.repository.save(city);
 
-        return new SuccessResult(MessageStrings.CITYUPDATE);
+        return new SuccessResult(MessageStrings.CITY_UPDATED);
     }
 
     @Override
@@ -81,17 +81,17 @@ public class CityServiceImpl implements CityService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.CITYDELETE);
+        return new SuccessResult(MessageStrings.CITY_DELETED);
     }
 
     private void checkCityIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.CITYNOTFOUND);
+            throw new BusinessException(MessageStrings.CITY_NOT_FOUND);
     }
 
     private void checkCityNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
-            throw new BusinessException(MessageStrings.CITYNAMENOTFOUND);
+            throw new BusinessException(MessageStrings.CITY_NAME_NOT_FOUND);
 
     }
 }

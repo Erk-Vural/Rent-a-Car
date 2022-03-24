@@ -37,7 +37,7 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.repository.save(cardInfo);
 
-        return new SuccessResult(MessageStrings.CREDITCARDADD);
+        return new SuccessResult(MessageStrings.CREDIT_CARD_ADDED);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.repository.save(cardInfo);
 
-        return new SuccessDataResult<CardInfo>(MessageStrings.CREDITCARDADD, cardInfo);
+        return new SuccessDataResult<CardInfo>(MessageStrings.CREDIT_CARD_ADDED, cardInfo);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CardInfoServiceImpl implements CardInfoService {
                         .map(cardInfo, CardInfoGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.CREDITCARDLIST, response);
+        return new SuccessDataResult<>(MessageStrings.CREDIT_CARDS_LISTED, response);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class CardInfoServiceImpl implements CardInfoService {
         CardInfo cardInfo = repository.getById(id);
         CardInfoGetResponse response = modelMapperService.forResponse().map(cardInfo, CardInfoGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.CREDITCARDGET, response);
+        return new SuccessDataResult<>(MessageStrings.CREDIT_CARD_FOUND, response);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.repository.save(cardInfo);
 
-        return new SuccessResult(MessageStrings.CREDITCARDUPDATE);
+        return new SuccessResult(MessageStrings.CREDIT_CARD_UPDATED);
     }
 
     @Override
@@ -90,11 +90,11 @@ public class CardInfoServiceImpl implements CardInfoService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.CREDITCARDELETE);
+        return new SuccessResult(MessageStrings.CREDIT_CARD_DELETED);
     }
 
     private void checkCardInfoIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.CREDITCARDNOTFOUND);
+            throw new BusinessException(MessageStrings.CREDIT_CARD_NOT_FOUND);
     }
 }

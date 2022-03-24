@@ -54,7 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         invoiceService.add(new InvoiceCreateRequest(payment.getId()));
 
-        return new SuccessResult(MessageStrings.PAYMENTADD);
+        return new SuccessResult(MessageStrings.PAYMENT_ADDED);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .map(payment -> modelMapperService.forResponse()
                         .map(payment, PaymentGetResponse.class)).toList();
 
-        return new SuccessDataResult<>(MessageStrings.PAYMENTLIST, response);
+        return new SuccessDataResult<>(MessageStrings.PAYMENTS_LISTED, response);
     }
 
     @Override
@@ -75,17 +75,17 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = repository.getById(id);
         PaymentGetResponse response = modelMapperService.forResponse().map(payment, PaymentGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.PAYMENTFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.PAYMENT_FOUND, response);
     }
 
     private void checkPaymentIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.PAYMENTNOTFOUND);
+            throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
     }
 
     private void checkCarRentalIdExist(long carRentalId) throws BusinessException {
         if (Objects.nonNull(carRentalRepository.findById(carRentalId)))
-            throw new BusinessException(MessageStrings.RENTALNOTFOUND);
+            throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
     private CardInfo handleCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {

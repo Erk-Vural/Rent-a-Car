@@ -48,7 +48,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         this.repository.save(invoice);
 
-        return new SuccessResult(MessageStrings.INVOICEADD);
+        return new SuccessResult(MessageStrings.INVOICE_ADDED);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<InvoiceGetResponse> response = result.stream().map(invoice -> modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.INVOICELIST, response);
+        return new SuccessDataResult<>(MessageStrings.INVOICES_LISTED, response);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = repository.findById(id);
         InvoiceGetResponse response = modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.INVOICEFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.INVOICE_FOUND, response);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.INVOICEBYCUSTOMERLIST, response);
+        return new SuccessDataResult<>(MessageStrings.CUSTOMERS_INVOICES_LISTED, response);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         List<InvoiceGetResponse> response = result.stream().map(invoice -> this.modelMapperService.forResponse().map(invoice, InvoiceGetResponse.class)).toList();
 
-        return new SuccessDataResult<>(MessageStrings.INVOICELIST, response);
+        return new SuccessDataResult<>(MessageStrings.INVOICES_LISTED, response);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         this.repository.save(invoice);
 
-        return new SuccessResult(MessageStrings.INVOICEUPDATE);
+        return new SuccessResult(MessageStrings.INVOICE_UPDATED);
     }
 
     @Override
@@ -106,17 +106,17 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.INVOICEDELETE);
+        return new SuccessResult(MessageStrings.INVOICE_DELETED);
     }
 
     private void checkPaymentIdExist(long paymentId) throws BusinessException {
         if (Objects.nonNull(paymentRepository.findById(paymentId)))
-            throw new BusinessException(MessageStrings.PAYMENTNOTFOUND);
+            throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
     }
 
     private void checkInvoiceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.INVOICEFOUND);
+            throw new BusinessException(MessageStrings.INVOICE_FOUND);
     }
 
     private Invoice setInvoice(long paymentId) throws BusinessException {

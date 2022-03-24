@@ -38,7 +38,7 @@ public class ColorServiceImpl implements ColorService {
         Color color = this.modelMapperService.forRequest().map(createRequest, Color.class);
         this.repository.save(color);
 
-        return new SuccessResult(MessageStrings.COLORADD);
+        return new SuccessResult(MessageStrings.COLOR_ADDED);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ColorServiceImpl implements ColorService {
                         .map(color, ColorGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.COLORLIST, response);
+        return new SuccessDataResult<>(MessageStrings.COLORS_LISTED, response);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ColorServiceImpl implements ColorService {
         Color color = repository.getById(id);
         ColorGetResponse response = modelMapperService.forResponse().map(color, ColorGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.COLORFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.COLOR_FOUND, response);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ColorServiceImpl implements ColorService {
 
         this.repository.save(color);
 
-        return new SuccessResult(MessageStrings.COLORUPDATE);
+        return new SuccessResult(MessageStrings.COLOR_UPDATED);
     }
 
     @Override
@@ -81,17 +81,17 @@ public class ColorServiceImpl implements ColorService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.COLORDELETE);
+        return new SuccessResult(MessageStrings.COLOR_DELETED);
     }
 
     private void checkColorIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.COLORNOTFOUND);
+            throw new BusinessException(MessageStrings.COLOR_NOT_FOUND);
     }
 
     private void checkColorNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
-            throw new BusinessException(MessageStrings.COLORNAMEERROR);
+            throw new BusinessException(MessageStrings.COLOR_EXISTS);
 
     }
 }

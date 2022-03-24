@@ -8,6 +8,6 @@ import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 public class PosServiceHalkBankImpl {
     public Result makePayment(CardInfoCreateRequest createRequest) {
 
-        return new SuccessResult(MessageStrings.POSHALKSUCCESSFULL);
+        return new SuccessResult(MessageStrings.POS_HALK_BANK_SUCCESSFUL);
     }
 }

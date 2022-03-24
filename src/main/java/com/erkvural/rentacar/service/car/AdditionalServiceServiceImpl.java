@@ -38,7 +38,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         AdditionalService additionalService = this.modelMapperService.forRequest().map(createRequest, AdditionalService.class);
         this.repository.save(additionalService);
 
-        return new SuccessResult(MessageStrings.ADDITIONALSERVICEADD);
+        return new SuccessResult(MessageStrings.ADDITIONAL_SERVICE_ADDED);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
                         .map(additionalService, AdditionalServiceGetResponse.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICELIST, response);
+        return new SuccessDataResult<>(MessageStrings.ADDITIONAL_SERVICES_LISTED, response);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
         AdditionalService additionalService = repository.getById(id);
         AdditionalServiceGetResponse response = modelMapperService.forResponse().map(additionalService, AdditionalServiceGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.ADDITIONALSERVICEGET, response);
+        return new SuccessDataResult<>(MessageStrings.ADDITIONAL_SERVICE_FOUND, response);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
 
         this.repository.save(additionalService);
 
-        return new SuccessResult(MessageStrings.ADDITIONALSERVICEUPDATE);
+        return new SuccessResult(MessageStrings.ADDITIONAL_SERVICE_UPDATED);
     }
 
     @Override
@@ -80,17 +80,17 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.ADDITIONALSERVICEDELETE);
+        return new SuccessResult(MessageStrings.ADDITIONAL_SERVICE_DELETED);
     }
 
     private void checkAdditionalServiceIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.ADDITIONALSERVICENOTIDFOUND);
+            throw new BusinessException(MessageStrings.ADDITIONAL_SERVICE_NOT_BY_ID_FOUND);
     }
 
     private void checkAdditionalServiceExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
-            throw new BusinessException(MessageStrings.ADDITIONALSERVICENAMEERROR);
+            throw new BusinessException(MessageStrings.ADDITIONAL_SERVICE_EXISTS);
 
     }
 }

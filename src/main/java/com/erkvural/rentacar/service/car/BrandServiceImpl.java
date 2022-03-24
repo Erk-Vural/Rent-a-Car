@@ -38,7 +38,7 @@ public class BrandServiceImpl implements BrandService {
 
         this.repository.save(brand);
 
-        return new SuccessResult(MessageStrings.BRANDADD);
+        return new SuccessResult(MessageStrings.BRAND_ADDED);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
                 .map(brand -> modelMapperService.forResponse()
                         .map(brand, BrandGetResponse.class)).toList();
 
-        return new SuccessDataResult<>(MessageStrings.BRANDLIST, response);
+        return new SuccessDataResult<>(MessageStrings.BRANDS_LISTED, response);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = repository.getById(id);
         BrandGetResponse response = modelMapperService.forResponse().map(brand, BrandGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.BRANDFOUND, response);
+        return new SuccessDataResult<>(MessageStrings.BRAND_FOUND, response);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class BrandServiceImpl implements BrandService {
 
         this.repository.save(brand);
 
-        return new SuccessResult(MessageStrings.BRANDUPDATE);
+        return new SuccessResult(MessageStrings.BRAND_UPDATED);
     }
 
     @Override
@@ -81,17 +81,17 @@ public class BrandServiceImpl implements BrandService {
 
         this.repository.deleteById(id);
 
-        return new SuccessResult(MessageStrings.BRANDDELETE);
+        return new SuccessResult(MessageStrings.BRAND_DELETED);
     }
 
     private void checkBrandIdExist(long id) throws BusinessException {
         if (Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.BRANDNOTFOUND);
+            throw new BusinessException(MessageStrings.BRAND_NOT_FOUND);
     }
 
     private void checkBrandNameExist(String name) throws BusinessException {
         if (!Objects.nonNull(repository.findByName(name)))
-            throw new BusinessException(MessageStrings.BRANDNAMEERROR);
+            throw new BusinessException(MessageStrings.BRAND_EXISTS);
 
     }
 }
