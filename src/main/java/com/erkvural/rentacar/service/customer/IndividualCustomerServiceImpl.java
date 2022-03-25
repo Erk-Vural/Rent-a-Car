@@ -32,7 +32,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public Result add(IndividualCustomerCreateRequest createRequest) throws BusinessException {
+    public Result add(IndividualCustomerCreateRequest createRequest) {
         checkEmailExist(createRequest.getEmail());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createRequest, IndividualCustomer.class);
@@ -54,7 +54,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public DataResult<IndividualCustomerGetResponse> getById(long id) throws BusinessException {
+    public DataResult<IndividualCustomerGetResponse> getById(long id) {
         checkUserIdExist(id);
 
         IndividualCustomer individualCustomer = repository.getById(id);
@@ -64,7 +64,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public Result update(long id, IndividualCustomerUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, IndividualCustomerUpdateRequest updateRequest) {
         checkUserIdExist(id);
         checkEmailExist(updateRequest.getEmail());
 
@@ -77,7 +77,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id) {
         checkUserIdExist(id);
 
         this.repository.deleteById(id);

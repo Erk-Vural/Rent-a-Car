@@ -31,7 +31,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result add(CorporateCustomerCreateRequest createRequest) throws BusinessException {
+    public Result add(CorporateCustomerCreateRequest createRequest){
         checkEmailExist(createRequest.getEmail());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createRequest, CorporateCustomer.class);
@@ -52,7 +52,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public DataResult<CorporateCustomerGetResponse> getById(long id) throws BusinessException {
+    public DataResult<CorporateCustomerGetResponse> getById(long id){
         checkUserIdExist(id);
 
         CorporateCustomer corporateCustomer = repository.getById(id);
@@ -62,7 +62,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result update(long id, CorporateCustomerUpdateRequest updateRequest) throws BusinessException {
+    public Result update(long id, CorporateCustomerUpdateRequest updateRequest){
         checkUserIdExist(id);
         checkEmailExist(updateRequest.getEmail());
 
@@ -75,7 +75,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id){
         checkUserIdExist(id);
 
         this.repository.deleteById(id);
