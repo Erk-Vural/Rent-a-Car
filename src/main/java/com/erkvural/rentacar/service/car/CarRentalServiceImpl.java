@@ -127,6 +127,9 @@ public class CarRentalServiceImpl implements CarRentalService {
     public Result update(long id, CarRentalUpdateRequest updateRequest) {
         checkCarRentalIdExist(id);
         checkCarStatus(updateRequest.getCarId());
+        checkCustomerIdExist(updateRequest.getCustomerId());
+        checkCityIdExist(updateRequest.getRentedCityId());
+        checkCityIdExist(updateRequest.getReturnedCityId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
