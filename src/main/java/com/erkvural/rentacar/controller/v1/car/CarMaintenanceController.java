@@ -44,7 +44,7 @@ public class CarMaintenanceController {
         return service.getByCarId(carId);
     }
 
-    @GetMapping("get/all/sort-direction={direction}")
+    @GetMapping("get/all/return-date/sort-direction={direction}")
     public DataResult<List<CarMaintenanceGetResponse>> getAllSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllSorted(direction);
     }

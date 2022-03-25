@@ -1,7 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.constant.CarStatus;
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -39,7 +39,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result add(CarRentalCreateRequest createRequest){
+    public Result add(CarRentalCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
 
@@ -66,7 +66,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public SuccessDataResult<CarRentalGetResponse> getById(long id){
+    public SuccessDataResult<CarRentalGetResponse> getById(long id) {
         checkCarRentalIdExist(id);
 
         CarRental carRental = repository.findById(id);
@@ -114,7 +114,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    public Result update(long id, CarRentalUpdateRequest updateRequest){
+    public Result update(long id, CarRentalUpdateRequest updateRequest) {
         checkCarRentalIdExist(id);
         checkCarStatus(updateRequest.getCarId());
 
@@ -145,7 +145,8 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId).getData())) throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
+        if (Objects.nonNull(carService.getById(carId).getData()))
+            throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkCarStatus(long carId) throws BusinessException {
@@ -178,6 +179,6 @@ public class CarRentalServiceImpl implements CarRentalService {
 
     private long calTotalDays(LocalDate startDate, LocalDate endDate) {
 
-        return ChronoUnit.DAYS.between(startDate, endDate);
+        return ChronoUnit.DAYS.between(startDate, endDate) + 1;
     }
 }

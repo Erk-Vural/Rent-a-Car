@@ -1,7 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.constant.CarStatus;
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -37,7 +37,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result add(CarMaintenanceCreateRequest createRequest){
+    public Result add(CarMaintenanceCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
 
@@ -63,7 +63,7 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public DataResult<CarMaintenanceGetResponse> getById(long id){
+    public DataResult<CarMaintenanceGetResponse> getById(long id) {
         checkCarMaintenanceIdExist(id);
 
         CarMaintenance carMaintenance = repository.findById(id);
@@ -110,13 +110,13 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     @Override
-    public Result update(long id, CarMaintenanceUpdateRequest updateRequest){
+    public Result update(long id, CarMaintenanceUpdateRequest updateRequest) {
         checkCarMaintenanceIdExist(id);
         checkCarStatus(updateRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
 
-        carService.setCarStatus(CarStatus.UNDER_MAINTENANCE, updateRequest.getCarId());
+        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
         carMaintenance.setId(id);
 
         this.repository.save(carMaintenance);
@@ -136,12 +136,12 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId).getData()))
+        if (!Objects.nonNull(carService.getById(carId).getData()))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
     private void checkCarMaintenanceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CAR_MAINTENANCE_NOT_FOUND);
     }
 
