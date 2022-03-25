@@ -13,6 +13,7 @@ import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarRental;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
+import com.erkvural.rentacar.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -29,25 +30,34 @@ public class CarRentalServiceImpl implements CarRentalService {
     private final ModelMapperService modelMapperService;
     private final OrderedAdditionalServiceService orderedAdditionalServiceService;
     private final CarService carService;
+    private final CustomerService customerService;
+    private final CityService cityService;
 
     @Autowired
-    public CarRentalServiceImpl(CarRentalRepository repository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService, CarService carService) {
+    public CarRentalServiceImpl(CarRentalRepository repository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService, CarService carService, CustomerService customerService, CityService cityService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.orderedAdditionalServiceService = orderedAdditionalServiceService;
         this.carService = carService;
+        this.customerService = customerService;
+        this.cityService = cityService;
     }
 
     @Override
     public Result add(CarRentalCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
+        checkCustomerIdExist(createRequest.getCustomerId());
+        checkCityIdExist(createRequest.getRentedCityId());
+        checkCityIdExist(createRequest.getReturnedCityId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
         this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet());
-
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
+
+        carRental.setStartMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
+        carRental.setEndMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
 
         carService.setCarStatus(CarStatus.RENTED, createRequest.getCarId());
 
@@ -147,6 +157,16 @@ public class CarRentalServiceImpl implements CarRentalService {
     private void checkCarIdExist(long carId) throws BusinessException {
         if (!Objects.nonNull(carService.getById(carId).getData()))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
+    }
+
+    private void checkCustomerIdExist(long userId) throws BusinessException {
+        if (!Objects.nonNull(customerService.getById(userId)))
+            throw new BusinessException(MessageStrings.CUSTOMER_NOT_FOUND);
+    }
+
+    private void checkCityIdExist(long cityId) throws BusinessException {
+        if (!Objects.nonNull(cityService.getById(cityId).getData()))
+            throw new BusinessException(MessageStrings.CITY_NOT_FOUND);
     }
 
     private void checkCarStatus(long carId) throws BusinessException {

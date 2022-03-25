@@ -23,10 +23,6 @@ public class CarRentalCreateRequest {
     private LocalDate endDate;
 
     @NotNull
-    @PositiveOrZero
-    private double startMileage;
-
-    @NotNull
     @NotBlank
     @Size(min = 2, max = 64)
     private String description;
