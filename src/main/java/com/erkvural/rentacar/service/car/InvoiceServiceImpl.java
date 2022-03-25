@@ -11,7 +11,6 @@ import com.erkvural.rentacar.dto.car.create.InvoiceCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
-import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.entity.car.Invoice;
 import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.InvoiceRepository;
@@ -41,7 +40,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Result add(InvoiceCreateRequest createRequest){
+    public Result add(InvoiceCreateRequest createRequest) {
         checkPaymentIdExist(createRequest.getPaymentId());
 
         Invoice invoice = setInvoice(createRequest.getPaymentId());
@@ -61,7 +60,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public DataResult<InvoiceGetResponse> getById(long id){
+    public DataResult<InvoiceGetResponse> getById(long id) {
         checkInvoiceIdExist(id);
 
         Invoice invoice = repository.findById(id);
@@ -88,27 +87,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         return new SuccessDataResult<>(MessageStrings.INVOICES_LISTED, response);
     }
 
-    @Override
-    public Result update(long id, BrandUpdateRequest updateRequest){
-        checkInvoiceIdExist(id);
-
-        Invoice invoice = this.modelMapperService.forRequest().map(updateRequest, Invoice.class);
-        invoice.setId(id);
-
-        this.repository.save(invoice);
-
-        return new SuccessResult(MessageStrings.INVOICE_UPDATED);
-    }
-
-    @Override
-    public Result delete(long id){
-        checkInvoiceIdExist(id);
-
-        this.repository.deleteById(id);
-
-        return new SuccessResult(MessageStrings.INVOICE_DELETED);
-    }
-
     private void checkPaymentIdExist(long paymentId) throws BusinessException {
         if (Objects.nonNull(paymentService.getById(paymentId).getData()))
             throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
@@ -119,7 +97,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             throw new BusinessException(MessageStrings.INVOICE_FOUND);
     }
 
-    private Invoice setInvoice(long paymentId){
+    private Invoice setInvoice(long paymentId) {
 
         PaymentGetResponse payment = this.paymentService.getById(paymentId).getData();
         CarRentalGetResponse carRental = this.carRentalService.getById(payment.getCarRentalId()).getData();

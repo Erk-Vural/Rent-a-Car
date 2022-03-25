@@ -90,8 +90,7 @@ public class ColorServiceImpl implements ColorService {
     }
 
     private void checkColorNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(repository.findByName(name)))
+        if (Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.COLOR_EXISTS);
-
     }
 }
