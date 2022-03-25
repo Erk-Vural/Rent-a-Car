@@ -31,8 +31,9 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result add(CorporateCustomerCreateRequest createRequest){
+    public Result add(CorporateCustomerCreateRequest createRequest) {
         checkEmailExist(createRequest.getEmail());
+        checkTaxNumberExist(createRequest.getTaxNumber());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createRequest, CorporateCustomer.class);
         this.repository.save(corporateCustomer);
@@ -52,7 +53,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public DataResult<CorporateCustomerGetResponse> getById(long id){
+    public DataResult<CorporateCustomerGetResponse> getById(long id) {
         checkUserIdExist(id);
 
         CorporateCustomer corporateCustomer = repository.getById(id);
@@ -62,9 +63,10 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result update(long id, CorporateCustomerUpdateRequest updateRequest){
+    public Result update(long id, CorporateCustomerUpdateRequest updateRequest) {
         checkUserIdExist(id);
         checkEmailExist(updateRequest.getEmail());
+        checkTaxNumberExist(updateRequest.getTaxNumber());
 
         CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateRequest, CorporateCustomer.class);
         corporateCustomer.setUserId(id);
@@ -75,7 +77,7 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     @Override
-    public Result delete(long id){
+    public Result delete(long id) {
         checkUserIdExist(id);
 
         this.repository.deleteById(id);
@@ -84,12 +86,17 @@ public class CorporateCustomerServiceImpl implements CorporateCustomerService {
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
-        if (Objects.nonNull(repository.findByUserId(userId)))
+        if (!Objects.nonNull(repository.findByUserId(userId)))
             throw new BusinessException(MessageStrings.CUSTOMER_NOT_FOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
         if (Objects.nonNull(repository.findByEmail(email)))
             throw new BusinessException(MessageStrings.CUSTOMER_EXISTS);
+    }
+
+    private void checkTaxNumberExist(String taxNumber) throws BusinessException {
+        if (Objects.nonNull(repository.findByTaxNumber(taxNumber)))
+            throw new BusinessException(MessageStrings.CUSTOMERS_TAX_NUMBER_EXISTS);
     }
 }

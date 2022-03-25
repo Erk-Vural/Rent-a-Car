@@ -47,6 +47,7 @@ public class MessageStrings {
     public static final String CUSTOMER_NOT_FOUND = "customer.not.found";
     public static final String CUSTOMER_EXISTS = "customer.exists";
     public static final String CUSTOMERS_TAX_NUMBER_EXISTS = "customers.tax.number.exists";
+    public static final String CUSTOMERS_NATIONAL_ID_EXISTS = "customers.national.id.exists";
 
     public static final String RENTAL_ADDED = "rental.added";
     public static final String RENTAL_UPDATED = "rental.updated";

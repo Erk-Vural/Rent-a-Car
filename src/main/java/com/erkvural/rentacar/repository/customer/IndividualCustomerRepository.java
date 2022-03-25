@@ -9,4 +9,6 @@ public interface IndividualCustomerRepository extends JpaRepository<IndividualCu
     IndividualCustomer findByUserId(long userId);
 
     IndividualCustomer findByEmail(String email);
+
+    IndividualCustomer findByNationalId(String nationalId);
 }

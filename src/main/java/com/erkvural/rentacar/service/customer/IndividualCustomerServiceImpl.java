@@ -34,6 +34,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     @Override
     public Result add(IndividualCustomerCreateRequest createRequest) {
         checkEmailExist(createRequest.getEmail());
+        checkNationalIdExist(createRequest.getNationalId());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createRequest, IndividualCustomer.class);
         this.repository.save(individualCustomer);
@@ -67,6 +68,7 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     public Result update(long id, IndividualCustomerUpdateRequest updateRequest) {
         checkUserIdExist(id);
         checkEmailExist(updateRequest.getEmail());
+        checkNationalIdExist(updateRequest.getNationalId());
 
         IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateRequest, IndividualCustomer.class);
         individualCustomer.setUserId(id);
@@ -86,12 +88,17 @@ public class IndividualCustomerServiceImpl implements IndividualCustomerService 
     }
 
     private void checkUserIdExist(long userId) throws BusinessException {
-        if (Objects.nonNull(repository.findByUserId(userId)))
+        if (!Objects.nonNull(repository.findByUserId(userId)))
             throw new BusinessException(MessageStrings.CUSTOMER_NOT_FOUND);
     }
 
     private void checkEmailExist(String email) throws BusinessException {
         if (Objects.nonNull(repository.findByEmail(email)))
             throw new BusinessException(MessageStrings.CUSTOMER_EXISTS);
+    }
+
+    private void checkNationalIdExist(String nationalId) throws BusinessException {
+        if (Objects.nonNull(repository.findByNationalId(nationalId)))
+            throw new BusinessException(MessageStrings.CUSTOMERS_NATIONAL_ID_EXISTS);
     }
 }

@@ -9,4 +9,6 @@ public interface CorporateCustomerRepository extends JpaRepository<CorporateCust
     CorporateCustomer findByUserId(long userId);
 
     CorporateCustomer findByEmail(String email);
+
+    CorporateCustomer findByTaxNumber(String taxNumber);
 }
