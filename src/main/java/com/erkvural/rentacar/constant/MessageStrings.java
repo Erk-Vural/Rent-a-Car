@@ -112,6 +112,7 @@ public class MessageStrings {
     public static final String DAMAGES_LISTED = "damages.listed";
     public static final String DAMAGE_NOT_FOUND = "damage.not.found";
     public static final String DAMAGE_EXISTS = "damage.exists";
+    public static final String DAMAGE_ALREADY_EXISTS = "damage.already.exists";
 
     public static final String ADDITIONAL_SERVICE_ADDED = "additional.service.added";
     public static final String ADDITIONAL_SERVICE_UPDATED = "additional.service.updated";

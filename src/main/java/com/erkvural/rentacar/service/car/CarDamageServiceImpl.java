@@ -1,7 +1,7 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.constant.CarStatus;
+import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.core.utils.results.DataResult;
@@ -34,8 +34,9 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     @Override
-    public Result add(CarDamageCreateRequest createRequest){
+    public Result add(CarDamageCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
+        checkCarStatus(createRequest.getCarId());
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(createRequest, CarDamage.class);
 
@@ -59,24 +60,24 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     @Override
-    public DataResult<CarDamageGetResponse> getById(long id){
+    public DataResult<CarDamageGetResponse> getById(long id) {
         checkCarDamageIdExist(id);
 
         CarDamage carDamage = repository.getById(id);
         CarDamageGetResponse response = modelMapperService.forResponse().map(carDamage, CarDamageGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.DAMAGE_EXISTS, response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGE_ALREADY_EXISTS, response);
     }
 
     @Override
-    public Result update(long id, CarDamageUpdateRequest updateRequest){
+    public Result update(long id, CarDamageUpdateRequest updateRequest) {
         checkCarIdExist(updateRequest.getCarId());
         checkCarDamageIdExist(id);
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(updateRequest, CarDamage.class);
 
         carDamage.setId(id);
-        carService.setCarStatus(CarStatus.DAMAGED, updateRequest.getCarId());
+        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
         this.repository.save(carDamage);
 
@@ -95,12 +96,18 @@ public class CarDamageServiceImpl implements CarDamageService {
     }
 
     private void checkCarDamageIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.DAMAGE_NOT_FOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId).getData()))
+        if (!Objects.nonNull(carService.getById(carId).getData()))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
+    }
+
+
+    private void checkCarStatus(long carId) throws BusinessException {
+        if (this.carService.getById(carId).getData().getStatus() == CarStatus.DAMAGED)
+            throw new BusinessException(MessageStrings.DAMAGE_ALREADY_EXISTS);
     }
 }
