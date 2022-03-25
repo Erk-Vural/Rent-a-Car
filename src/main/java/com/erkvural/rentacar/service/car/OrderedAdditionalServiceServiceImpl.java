@@ -2,6 +2,7 @@ package com.erkvural.rentacar.service.car;
 
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
 import com.erkvural.rentacar.dto.car.create.OrderedAdditionalServiceCreateRequest;
+import com.erkvural.rentacar.entity.car.CarRental;
 import com.erkvural.rentacar.entity.car.OrderedAdditionalService;
 import com.erkvural.rentacar.repository.car.OrderedAdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class OrderedAdditionalServiceServiceImpl implements OrderedAdditionalSer
     }
 
     @Override
-    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet) {
+    public void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId) {
         for (OrderedAdditionalServiceCreateRequest createRequest : createRequestSet) {
 
             OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createRequest, OrderedAdditionalService.class);
+
+            CarRental carRental = new CarRental();
+            carRental.setId(carRentalId);
+            orderedAdditionalService.setCarRental(carRental);
 
             this.repository.save(orderedAdditionalService);
         }

@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface OrderedAdditionalServiceService {
 
-    void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet);
+    void add(Set<OrderedAdditionalServiceCreateRequest> createRequestSet, long carRentalId);
 
     Set<OrderedAdditionalService> getByCarRentalId(long carRentalId);
 

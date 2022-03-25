@@ -43,9 +43,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createRequest, CarMaintenance.class);
 
-        carService.setCarStatus(CarStatus.UNDER_MAINTENANCE, createRequest.getCarId());
-
         this.repository.save(carMaintenance);
+
+        carService.setCarStatus(CarStatus.UNDER_MAINTENANCE, createRequest.getCarId());
 
         return new SuccessResult(MessageStrings.CAR_MAINTENANCE_ADDED);
     }
@@ -115,11 +115,11 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
         checkCarStatus(updateRequest.getCarId());
 
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateRequest, CarMaintenance.class);
-
-        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
         carMaintenance.setId(id);
 
         this.repository.save(carMaintenance);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
         return new SuccessResult(MessageStrings.CAR_MAINTENANCE_UPDATED);
     }
@@ -128,9 +128,9 @@ public class CarMaintenanceServiceImpl implements CarMaintenanceService {
     public Result delete(long id) throws BusinessException {
         checkCarMaintenanceIdExist(id);
 
-        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
-
         this.repository.deleteById(id);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
 
         return new SuccessResult(MessageStrings.CAR_MAINTENANCE_DELETED);
     }

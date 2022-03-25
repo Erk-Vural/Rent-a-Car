@@ -128,7 +128,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Result delete(long id) throws BusinessException {
+    public Result delete(long id) {
         checkCarIdExist(id);
 
         this.repository.deleteById(id);
@@ -137,17 +137,19 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void setCarStatus(CarStatus status, long carId) throws BusinessException {
+    public void setCarStatus(CarStatus status, long carId) {
         checkCarIdExist(carId);
 
         Car car = repository.findById(carId);
         car.setStatus(status);
 
+        System.out.println(repository.findById(carId));
+
         new SuccessResult(MessageStrings.CAR_STATUS_SET);
     }
 
     @Override
-    public void setMileage(double endMileage, long carId) throws BusinessException {
+    public void setMileage(double endMileage, long carId){
         checkCarIdExist(carId);
 
         Car car = repository.findById(carId);

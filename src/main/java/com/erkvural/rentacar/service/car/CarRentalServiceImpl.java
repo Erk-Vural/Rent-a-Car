@@ -12,12 +12,14 @@ import com.erkvural.rentacar.dto.car.create.CarRentalCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarRental;
+import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -44,6 +46,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
+    @Transactional
     public Result add(CarRentalCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
@@ -51,17 +54,21 @@ public class CarRentalServiceImpl implements CarRentalService {
         checkCityIdExist(createRequest.getRentedCityId());
         checkCityIdExist(createRequest.getReturnedCityId());
 
-        CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
+        CarRental temp = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
-        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet());
+        Customer customer = new Customer();
+        customer.setUserId(createRequest.getCustomerId());
+        temp.setCustomer(customer);
+
+        temp.setStartMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
+        temp.setEndMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
+
+        CarRental carRental = this.repository.saveAndFlush(temp);
+
+        this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet(), carRental.getId());
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));
 
-        carRental.setStartMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
-        carRental.setEndMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
-
-        carService.setCarStatus(CarStatus.RENTED, createRequest.getCarId());
-
-        this.repository.save(carRental);
+        carService.setCarStatus(CarStatus.RENTED, carRental.getCar().getId());
 
         return new SuccessResult(MessageStrings.RENTAL_ADDED);
     }
@@ -126,17 +133,21 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Override
     public Result update(long id, CarRentalUpdateRequest updateRequest) {
         checkCarRentalIdExist(id);
-        checkCarStatus(updateRequest.getCarId());
         checkCustomerIdExist(updateRequest.getCustomerId());
         checkCityIdExist(updateRequest.getRentedCityId());
         checkCityIdExist(updateRequest.getReturnedCityId());
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
-        carService.setCarStatus(CarStatus.RENTED, updateRequest.getCarId());
         carService.setMileage(updateRequest.getEndMileage(), updateRequest.getCarId());
 
+        Customer customer = new Customer();
+        customer.setUserId(updateRequest.getCustomerId());
+        carRental.setCustomer(customer);
+
         this.repository.save(carRental);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
         return new SuccessResult(MessageStrings.RENTAL_UPDATED);
     }
@@ -145,9 +156,11 @@ public class CarRentalServiceImpl implements CarRentalService {
     public Result delete(long id) throws BusinessException {
         checkCarRentalIdExist(id);
 
-        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
+        long carId = repository.findById(id).getCar().getId();
 
         this.repository.deleteById(id);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, carId);
 
         return new SuccessResult(MessageStrings.RENTAL_DELETED);
     }

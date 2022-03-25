@@ -40,9 +40,9 @@ public class CarDamageServiceImpl implements CarDamageService {
 
         CarDamage carDamage = this.modelMapperService.forRequest().map(createRequest, CarDamage.class);
 
-        carService.setCarStatus(CarStatus.DAMAGED, createRequest.getCarId());
-
         this.repository.save(carDamage);
+
+        carService.setCarStatus(CarStatus.DAMAGED, createRequest.getCarId());
 
         return new SuccessResult(MessageStrings.DAMAGE_ADDED);
     }
@@ -77,9 +77,10 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = this.modelMapperService.forRequest().map(updateRequest, CarDamage.class);
 
         carDamage.setId(id);
-        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
         this.repository.save(carDamage);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
         return new SuccessResult(MessageStrings.DAMAGE_UPDATED);
     }
@@ -88,9 +89,9 @@ public class CarDamageServiceImpl implements CarDamageService {
     public Result delete(long id) throws BusinessException {
         checkCarDamageIdExist(id);
 
-        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
-
         this.repository.deleteById(id);
+
+        carService.setCarStatus(CarStatus.AVAILABLE, repository.findById(id).getCar().getId());
 
         return new SuccessResult(MessageStrings.DAMAGE_DELETED);
     }
