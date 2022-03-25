@@ -84,12 +84,12 @@ public class AdditionalServiceServiceImpl implements AdditionalServiceService {
     }
 
     private void checkAdditionalServiceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.ADDITIONAL_SERVICE_NOT_BY_ID_FOUND);
     }
 
     private void checkAdditionalServiceExist(String name) throws BusinessException {
-        if (!Objects.nonNull(repository.findByName(name)))
+        if (Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.ADDITIONAL_SERVICE_EXISTS);
     }
 }

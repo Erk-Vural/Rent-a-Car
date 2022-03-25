@@ -85,12 +85,12 @@ public class CityServiceImpl implements CityService {
     }
 
     private void checkCityIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CITY_NOT_FOUND);
     }
 
     private void checkCityNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(repository.findByName(name)))
+        if (Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.CITY_EXISTS);
     }
 }
