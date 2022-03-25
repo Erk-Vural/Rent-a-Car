@@ -85,7 +85,8 @@ public class ColorServiceImpl implements ColorService {
     }
 
     private void checkColorIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        System.out.println(repository.findById(id));
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.COLOR_NOT_FOUND);
     }
 
