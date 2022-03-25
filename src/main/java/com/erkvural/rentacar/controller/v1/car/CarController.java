@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.controller.v1.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CarCreateRequest;
@@ -24,7 +23,7 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarCreateRequest createRequest) throws BusinessException {
+    public Result add(@RequestBody CarCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -34,7 +33,7 @@ public class CarController {
     }
 
     @GetMapping("/get/id={id}")
-    public DataResult<CarGetResponse> get(@PathVariable long id) throws BusinessException {
+    public DataResult<CarGetResponse> get(@PathVariable long id) {
         return service.getById(id);
     }
 
@@ -55,12 +54,12 @@ public class CarController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody CarUpdateRequest updateRequest) throws BusinessException {
+    public Result update(@PathVariable long id, @RequestBody CarUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 
     @DeleteMapping("/delete/id={id}")
-    public Result delete(@PathVariable long id) throws BusinessException {
+    public Result delete(@PathVariable long id) {
         return this.service.delete(id);
     }
 }

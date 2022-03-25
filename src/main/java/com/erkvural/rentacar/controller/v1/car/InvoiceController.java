@@ -1,11 +1,13 @@
 package com.erkvural.rentacar.controller.v1.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
 import com.erkvural.rentacar.service.car.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,12 +29,12 @@ public class InvoiceController {
     }
 
     @GetMapping("/get/id={id}")
-    public DataResult<InvoiceGetResponse> get(@PathVariable long id) throws BusinessException {
+    public DataResult<InvoiceGetResponse> get(@PathVariable long id) {
         return service.getById(id);
     }
 
     @GetMapping("/get/customerId={customerId}")
-    public DataResult<List<InvoiceGetResponse>> getByCustomerId(@PathVariable long customerId) throws BusinessException {
+    public DataResult<List<InvoiceGetResponse>> getByCustomerId(@PathVariable long customerId) {
         return service.getByCustomerId(customerId);
     }
 

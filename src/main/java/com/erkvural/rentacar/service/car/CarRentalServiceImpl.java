@@ -140,12 +140,12 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
-        if (Objects.nonNull(carService.getById(carId).getData()))
+        if (!Objects.nonNull(carService.getById(carId).getData()))
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 

@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.controller.v1.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
@@ -22,7 +21,7 @@ public class PaymentController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody PaymentCreateRequest createRequest, @RequestParam("rememberMe") boolean rememberMe) throws BusinessException {
+    public Result add(@RequestBody PaymentCreateRequest createRequest, @RequestParam("rememberMe") boolean rememberMe) {
         return this.service.add(createRequest, rememberMe);
     }
 
@@ -32,7 +31,7 @@ public class PaymentController {
     }
 
     @GetMapping("/get/id={id}")
-    public DataResult<PaymentGetResponse> get(@PathVariable long id) throws BusinessException {
+    public DataResult<PaymentGetResponse> get(@PathVariable long id) {
         return service.getById(id);
     }
 }

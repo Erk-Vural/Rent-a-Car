@@ -25,7 +25,7 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody BrandCreateRequest createRequest) throws BusinessException {
+    public Result add(@RequestBody BrandCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -35,12 +35,12 @@ public class BrandController {
     }
 
     @GetMapping("/get/id={id}")
-    public DataResult<BrandGetResponse> get(@PathVariable long id) throws BusinessException {
+    public DataResult<BrandGetResponse> get(@PathVariable long id) {
         return service.getById(id);
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody BrandUpdateRequest updateRequest) throws BusinessException {
+    public Result update(@PathVariable long id, @RequestBody BrandUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 
