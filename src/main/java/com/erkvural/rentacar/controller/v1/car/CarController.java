@@ -38,7 +38,7 @@ public class CarController {
         return service.getById(id);
     }
 
-    @GetMapping("/get/all/sortDirection={direction}")
+    @GetMapping("/get/all/daily-price/sortDirection={direction}")
     public DataResult<List<CarGetResponse>> getAllSorted(@PathVariable Sort.Direction direction) {
         return this.service.getAllSorted(direction);
     }
