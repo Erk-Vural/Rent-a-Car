@@ -85,12 +85,12 @@ public class BrandServiceImpl implements BrandService {
     }
 
     private void checkBrandIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.BRAND_NOT_FOUND);
     }
 
     private void checkBrandNameExist(String name) throws BusinessException {
-        if (!Objects.nonNull(repository.findByName(name)))
+        if (Objects.nonNull(repository.findByName(name)))
             throw new BusinessException(MessageStrings.BRAND_EXISTS);
 
     }
