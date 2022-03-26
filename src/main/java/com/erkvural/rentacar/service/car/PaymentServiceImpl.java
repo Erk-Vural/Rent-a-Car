@@ -77,12 +77,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private void checkPaymentIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
     }
 
     private void checkCarRentalIdExist(long carRentalId) throws BusinessException {
-        if (Objects.nonNull(carRentalService.getById(carRentalId).getData()))
+        if (!Objects.nonNull(carRentalService.getById(carRentalId).getData()))
             throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 

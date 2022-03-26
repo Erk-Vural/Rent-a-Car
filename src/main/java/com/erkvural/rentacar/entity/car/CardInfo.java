@@ -24,7 +24,7 @@ public class CardInfo {
     @Column(name = "cardholder_name")
     private String CardholderName;
 
-    @Column(name = "expriy_date")
+    @Column(name = "expiry_date")
     private String expiryDate;
 
     @Column(name = "security_code")

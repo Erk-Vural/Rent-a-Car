@@ -88,12 +88,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private void checkPaymentIdExist(long paymentId) throws BusinessException {
-        if (Objects.nonNull(paymentService.getById(paymentId).getData()))
+        if (!Objects.nonNull(paymentService.getById(paymentId).getData()))
             throw new BusinessException(MessageStrings.PAYMENT_NOT_FOUND);
     }
 
     private void checkInvoiceIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.INVOICE_FOUND);
     }
 

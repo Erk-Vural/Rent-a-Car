@@ -94,7 +94,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     private void checkCardInfoIdExist(long id) throws BusinessException {
-        if (Objects.nonNull(repository.findById(id)))
+        if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CREDIT_CARD_NOT_FOUND);
     }
 }
