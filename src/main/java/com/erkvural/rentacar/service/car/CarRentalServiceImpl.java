@@ -46,7 +46,6 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     @Override
-    @Transactional
     public Result add(CarRentalCreateRequest createRequest) {
         checkCarIdExist(createRequest.getCarId());
         checkCarStatus(createRequest.getCarId());
@@ -54,16 +53,16 @@ public class CarRentalServiceImpl implements CarRentalService {
         checkCityIdExist(createRequest.getRentedCityId());
         checkCityIdExist(createRequest.getReturnedCityId());
 
-        CarRental temp = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
+        CarRental carRental = this.modelMapperService.forRequest().map(createRequest, CarRental.class);
 
         Customer customer = new Customer();
         customer.setUserId(createRequest.getCustomerId());
-        temp.setCustomer(customer);
+        carRental.setCustomer(customer);
 
-        temp.setStartMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
-        temp.setEndMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
+        carRental.setStartMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
+        carRental.setEndMileage(carService.getById(createRequest.getCarId()).getData().getMileage());
 
-        CarRental carRental = this.repository.saveAndFlush(temp);
+        carRental = this.repository.saveAndFlush(carRental);
 
         this.orderedAdditionalServiceService.add(createRequest.getOrderedAdditionalServiceCreateRequestSet(), carRental.getId());
         carRental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getByCarRentalId(carRental.getId()));

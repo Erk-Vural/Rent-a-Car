@@ -11,6 +11,7 @@ import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CardInfoGetResponse;
 import com.erkvural.rentacar.dto.car.update.CardInfoUpdateRequest;
 import com.erkvural.rentacar.entity.car.CardInfo;
+import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.CardInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,23 +32,17 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result add(CardInfoCreateRequest createRequest) {
+    public Result add(CardInfoCreateRequest createRequest, long customerId) {
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
+
+        Customer customer = new Customer();
+        customer.setUserId(customerId);
+        cardInfo.setCustomer(customer);
 
         this.repository.save(cardInfo);
 
         return new SuccessResult(MessageStrings.CREDIT_CARD_ADDED);
-    }
-
-    @Override
-    public DataResult<CardInfo> addByPayment(CardInfoCreateRequest createRequest) {
-
-        CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
-
-        this.repository.save(cardInfo);
-
-        return new SuccessDataResult<>(MessageStrings.CREDIT_CARD_ADDED, cardInfo);
     }
 
     @Override
@@ -63,7 +58,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public DataResult<CardInfoGetResponse> getById(long id){
+    public DataResult<CardInfoGetResponse> getById(long id) {
         checkCardInfoIdExist(id);
 
         CardInfo cardInfo = repository.getById(id);
@@ -73,7 +68,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result update(long id, CardInfoUpdateRequest updateRequest){
+    public Result update(long id, CardInfoUpdateRequest updateRequest) {
         checkCardInfoIdExist(id);
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(updateRequest, CardInfo.class);
@@ -85,7 +80,7 @@ public class CardInfoServiceImpl implements CardInfoService {
     }
 
     @Override
-    public Result delete(long id){
+    public Result delete(long id) {
         checkCardInfoIdExist(id);
 
         this.repository.deleteById(id);

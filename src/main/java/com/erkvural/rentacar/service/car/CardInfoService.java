@@ -11,9 +11,7 @@ import java.util.List;
 
 
 public interface CardInfoService {
-    Result add(CardInfoCreateRequest createRequest);
-
-    DataResult<CardInfo> addByPayment(CardInfoCreateRequest createRequest);
+    Result add(CardInfoCreateRequest createRequest, long customerId);
 
     DataResult<List<CardInfoGetResponse>> getAll();
 

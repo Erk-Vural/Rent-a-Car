@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
+import com.erkvural.rentacar.entity.customer.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -22,14 +23,13 @@ public class Payment {
     @Column(name = "total")
     private double total;
 
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "card_info_id")
-    private CardInfo cardInfo;
-
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
     private CarRental carRental;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude

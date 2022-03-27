@@ -11,8 +11,9 @@ import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 import com.erkvural.rentacar.dto.car.create.InvoiceCreateRequest;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
-import com.erkvural.rentacar.entity.car.CardInfo;
 import com.erkvural.rentacar.entity.car.Payment;
+import com.erkvural.rentacar.entity.customer.Customer;
+import com.erkvural.rentacar.pos.service.PosService;
 import com.erkvural.rentacar.repository.car.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -28,29 +29,37 @@ public class PaymentServiceImpl implements PaymentService {
     private final CardInfoService cardInfoService;
     private final CarRentalService carRentalService;
     private final InvoiceService invoiceService;
+    private final PosService posService;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CardInfoService cardInfoService, CarRentalService carRentalService,@Lazy InvoiceService invoiceService) {
+    public PaymentServiceImpl(PaymentRepository repository, ModelMapperService modelMapperService, CardInfoService cardInfoService, CarRentalService carRentalService, @Lazy InvoiceService invoiceService, PosService posService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.cardInfoService = cardInfoService;
         this.carRentalService = carRentalService;
         this.invoiceService = invoiceService;
+        this.posService = posService;
     }
 
     @Override
-    public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo){
+    public Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo) {
         checkCarRentalIdExist(createRequest.getCarRentalId());
 
         Payment payment = this.modelMapperService.forRequest().map(createRequest, Payment.class);
 
         payment.setTotal(carRentalService.calRentedTotal(createRequest.getCarRentalId()));
 
-        payment.setCardInfo(handleCardInfo(createRequest.getCardInfo(), rememberCardInfo));
+        Customer customer = new Customer();
+        customer.setUserId(carRentalService.getById(payment.getCarRental().getId()).getData().getCustomerId());
+        payment.setCustomer(customer);
 
-        this.repository.save(payment);
+        saveCardInfo(createRequest.getCardInfo(), rememberCardInfo, carRentalService.getById(payment.getCarRental().getId()).getData().getCustomerId());
+
+        payment = this.repository.saveAndFlush(payment);
 
         invoiceService.add(new InvoiceCreateRequest(payment.getId()));
+
+        sendPosService(createRequest);
 
         return new SuccessResult(MessageStrings.PAYMENT_ADDED);
     }
@@ -67,13 +76,17 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public DataResult<PaymentGetResponse> getById(long id){
+    public DataResult<PaymentGetResponse> getById(long id) {
         checkPaymentIdExist(id);
 
         Payment payment = repository.getById(id);
         PaymentGetResponse response = modelMapperService.forResponse().map(payment, PaymentGetResponse.class);
 
         return new SuccessDataResult<>(MessageStrings.PAYMENT_FOUND, response);
+    }
+
+    private void sendPosService(PaymentCreateRequest createRequest) {
+        this.posService.addPayment(createRequest);
     }
 
     private void checkPaymentIdExist(long id) throws BusinessException {
@@ -86,24 +99,9 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
-    private CardInfo handleCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo) throws BusinessException {
+    private void saveCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo, long customerId) throws BusinessException {
         if (rememberCardInfo) {
-            return saveCardInfo(createRequest);
+            this.cardInfoService.add(createRequest, customerId);
         }
-        return setCardInfo(createRequest);
-    }
-
-    private CardInfo saveCardInfo(CardInfoCreateRequest createRequest) throws BusinessException {
-        return this.cardInfoService.addByPayment(createRequest).getData();
-    }
-
-    private CardInfo setCardInfo(CardInfoCreateRequest createRequest) {
-        CardInfo cardInfo = new CardInfo();
-        cardInfo.setCardNumber(createRequest.getCardNumber());
-        cardInfo.setCardholderName(createRequest.getCardholderName());
-        cardInfo.setExpiryDate(createRequest.getExpiryDate());
-        cardInfo.setSecurityCode(createRequest.getSecurityCode());
-
-        return cardInfo;
     }
 }

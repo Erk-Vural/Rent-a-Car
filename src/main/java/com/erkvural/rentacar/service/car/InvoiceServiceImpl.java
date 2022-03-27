@@ -12,6 +12,7 @@ import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
 import com.erkvural.rentacar.entity.car.Invoice;
+import com.erkvural.rentacar.entity.car.Payment;
 import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +113,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         Customer customer = new Customer();
         customer.setUserId(carRental.getCustomerId());
         invoice.setCustomer(customer);
+        Payment payment1 = new Payment();
+        payment1.setId(paymentId);
+        invoice.setPayment(payment1);
 
         return invoice;
     }

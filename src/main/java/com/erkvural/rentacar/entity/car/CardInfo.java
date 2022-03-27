@@ -1,5 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
+import com.erkvural.rentacar.entity.customer.Customer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CAR_INFOS")
+@Table(name = "CARD_INFOS")
 public class CardInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,8 @@ public class CardInfo {
     @Column(name = "security_code")
     private String securityCode;
 
-    @OneToOne(mappedBy = "cardInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Payment payment;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
 }

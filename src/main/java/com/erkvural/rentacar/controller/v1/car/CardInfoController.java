@@ -22,9 +22,9 @@ public class CardInfoController {
         this.service = cardInfoService;
     }
 
-    @PostMapping("/add")
-    public Result add(@RequestBody CardInfoCreateRequest createRequest) {
-        return this.service.add(createRequest);
+    @PostMapping("/add/customerId={customerId}")
+    public Result add(@RequestBody CardInfoCreateRequest createRequest, @PathVariable long customerId) {
+        return this.service.add(createRequest, customerId);
     }
 
     @GetMapping("/get/all")
