@@ -65,6 +65,29 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public void addForExtra(PaymentCreateRequest createRequest, boolean rememberCardInfo, double newExtraTotal) {
+        checkCarRentalIdExist(createRequest.getCarRentalId());
+
+        Payment payment = this.modelMapperService.forRequest().map(createRequest, Payment.class);
+
+        payment.setTotal(newExtraTotal);
+
+        Customer customer = new Customer();
+        customer.setUserId(carRentalService.getById(payment.getCarRental().getId()).getData().getCustomerId());
+        payment.setCustomer(customer);
+
+        saveCardInfo(createRequest.getCardInfo(), rememberCardInfo, carRentalService.getById(payment.getCarRental().getId()).getData().getCustomerId());
+
+        payment = this.repository.saveAndFlush(payment);
+
+        invoiceService.add(new InvoiceCreateRequest(payment.getId()));
+
+        sendPosService(createRequest);
+
+        new SuccessResult(MessageStrings.PAYMENT_ADDED);
+    }
+
+    @Override
     public DataResult<List<PaymentGetResponse>> getAll() {
         List<Payment> result = repository.findAll();
 

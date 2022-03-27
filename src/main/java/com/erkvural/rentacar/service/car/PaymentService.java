@@ -11,6 +11,8 @@ public interface PaymentService {
 
     Result add(PaymentCreateRequest createRequest, boolean rememberCardInfo);
 
+    void addForExtra(PaymentCreateRequest createRequest, boolean rememberCardInfo, double newExtraTotal);
+
     DataResult<List<PaymentGetResponse>> getAll();
 
     DataResult<PaymentGetResponse> getById(long id);

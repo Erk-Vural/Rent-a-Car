@@ -9,6 +9,7 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
 import com.erkvural.rentacar.core.utils.results.SuccessResult;
 import com.erkvural.rentacar.dto.car.create.CarRentalCreateRequest;
+import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarRentalGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarRentalUpdateRequest;
 import com.erkvural.rentacar.entity.car.CarRental;
@@ -16,10 +17,10 @@ import com.erkvural.rentacar.entity.customer.Customer;
 import com.erkvural.rentacar.repository.car.CarRentalRepository;
 import com.erkvural.rentacar.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -34,15 +35,17 @@ public class CarRentalServiceImpl implements CarRentalService {
     private final CarService carService;
     private final CustomerService customerService;
     private final CityService cityService;
+    private final PaymentService paymentService;
 
     @Autowired
-    public CarRentalServiceImpl(CarRentalRepository repository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService, CarService carService, CustomerService customerService, CityService cityService) {
+    public CarRentalServiceImpl(CarRentalRepository repository, ModelMapperService modelMapperService, OrderedAdditionalServiceService orderedAdditionalServiceService, CarService carService, CustomerService customerService, CityService cityService, @Lazy PaymentService paymentService) {
         this.repository = repository;
         this.modelMapperService = modelMapperService;
         this.orderedAdditionalServiceService = orderedAdditionalServiceService;
         this.carService = carService;
         this.customerService = customerService;
         this.cityService = cityService;
+        this.paymentService = paymentService;
     }
 
     @Override
@@ -136,6 +139,8 @@ public class CarRentalServiceImpl implements CarRentalService {
         checkCityIdExist(updateRequest.getRentedCityId());
         checkCityIdExist(updateRequest.getReturnedCityId());
 
+        calExtraRentedTotal(id, updateRequest.getEndDate(), updateRequest.getPaymentCreateRequest(), updateRequest.isRememberMe());
+
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
         carService.setMileage(updateRequest.getEndMileage(), updateRequest.getCarId());
@@ -195,11 +200,21 @@ public class CarRentalServiceImpl implements CarRentalService {
             throw new BusinessException(MessageStrings.RENTED_CAR_IS_DAMAGED);
     }
 
+    private void calExtraRentedTotal(long id, LocalDate newEndDate, PaymentCreateRequest createRequest, boolean rememberMe) {
+        CarRental carRental = repository.findById(id);
+
+        double newTotal = (carRental.getCar().getDailyPrice()
+                + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
+                * calTotalDays(carRental.getEndDate(), newEndDate));
+
+        this.paymentService.addForExtra(createRequest, rememberMe, newTotal);
+    }
+
     @Override
     public double calRentedTotal(long id) {
         CarRental carRental = repository.findById(id);
 
-        return (repository.findById(id).getCar().getDailyPrice()
+        return (carRental.getCar().getDailyPrice()
                 + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
                 * calTotalDays(carRental.getStartDate(), carRental.getEndDate()))
                 + checkCityIds(carRental);
