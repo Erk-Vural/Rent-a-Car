@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
@@ -8,7 +7,6 @@ import com.erkvural.rentacar.dto.car.create.CarMaintenanceCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

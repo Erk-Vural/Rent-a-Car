@@ -1,6 +1,5 @@
 package com.erkvural.rentacar.service.car;
 
-import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.AdditionalServiceCreateRequest;

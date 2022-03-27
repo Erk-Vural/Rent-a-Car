@@ -19,7 +19,7 @@ public class CarMaintenance {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "returnDate", nullable = false)
+    @Column(name = "return_date", nullable = false)
     private LocalDate returnDate;
 
     @Column(name = "description", length = 64)

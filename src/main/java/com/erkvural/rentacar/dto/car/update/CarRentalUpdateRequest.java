@@ -17,25 +17,32 @@ public class CarRentalUpdateRequest {
     @NotNull
     @FutureOrPresent
     private LocalDate startDate;
+
     @NotNull
     @Future
     private LocalDate endDate;
+
     @NotNull
     @PositiveOrZero
     private double endMileage;
+
     @NotNull
     @NotBlank
     @Size(min = 2, max = 64)
     private String description;
+
     @NotNull
     @Positive
     private long rentedCityId;
+
     @NotNull
     @Positive
     private long returnedCityId;
+
     @NotNull
     @Positive
     private long customerId;
+
     @NotNull
     @Positive
     private long carId;

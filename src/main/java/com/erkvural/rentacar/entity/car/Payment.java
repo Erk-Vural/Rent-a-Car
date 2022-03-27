@@ -1,7 +1,6 @@
 package com.erkvural.rentacar.entity.car;
 
 import com.erkvural.rentacar.entity.customer.Customer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

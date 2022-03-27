@@ -5,7 +5,6 @@ import com.erkvural.rentacar.core.utils.results.Result;
 import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 import com.erkvural.rentacar.dto.car.get.CardInfoGetResponse;
 import com.erkvural.rentacar.dto.car.update.CardInfoUpdateRequest;
-import com.erkvural.rentacar.entity.car.CardInfo;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class InvoiceGetResponse {
 
     private LocalDate createDate;

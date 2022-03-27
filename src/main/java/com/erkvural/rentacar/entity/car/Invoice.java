@@ -29,7 +29,6 @@ public class Invoice {
     @Column(name = "rent_end_date")
     private LocalDate rentEndDate;
 
-    @Transient
     @Column(name = "total_rent_days")
     private long totalRentDays;
 
