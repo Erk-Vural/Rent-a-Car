@@ -139,10 +139,12 @@ public class CarRentalServiceImpl implements CarRentalService {
         checkCityIdExist(updateRequest.getRentedCityId());
         checkCityIdExist(updateRequest.getReturnedCityId());
 
-        calExtraRentedTotal(id, updateRequest.getEndDate(), updateRequest.getPaymentCreateRequest(), updateRequest.isRememberMe());
+        LocalDate endDate = repository.findById(id).getEndDate();
+        long oldReturnCityId = repository.findById(id).getReturnedCity().getId();
 
         CarRental carRental = this.modelMapperService.forRequest().map(updateRequest, CarRental.class);
         carRental.setId(id);
+        carRental.setStartMileage(carService.getById(updateRequest.getCarId()).getData().getMileage());
         carService.setMileage(updateRequest.getEndMileage(), updateRequest.getCarId());
 
         Customer customer = new Customer();
@@ -150,6 +152,8 @@ public class CarRentalServiceImpl implements CarRentalService {
         carRental.setCustomer(customer);
 
         this.repository.save(carRental);
+
+        calExtraRentedTotal(id, endDate, updateRequest.getEndDate(), oldReturnCityId, updateRequest.getPaymentCreateRequest(), updateRequest.isRememberMe());
 
         carService.setCarStatus(CarStatus.AVAILABLE, updateRequest.getCarId());
 
@@ -170,8 +174,7 @@ public class CarRentalServiceImpl implements CarRentalService {
     }
 
     private void checkCarRentalIdExist(long id) throws BusinessException {
-        if (!Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
+        if (!Objects.nonNull(repository.findById(id))) throw new BusinessException(MessageStrings.RENTAL_NOT_FOUND);
     }
 
     private void checkCarIdExist(long carId) throws BusinessException {
@@ -200,28 +203,42 @@ public class CarRentalServiceImpl implements CarRentalService {
             throw new BusinessException(MessageStrings.RENTED_CAR_IS_DAMAGED);
     }
 
-    private void calExtraRentedTotal(long id, LocalDate newEndDate, PaymentCreateRequest createRequest, boolean rememberMe) {
+    private void calExtraRentedTotal(long id, LocalDate oldEndDate, LocalDate newEndDate, long oldReturnCityId, PaymentCreateRequest createRequest, boolean rememberMe) {
         CarRental carRental = repository.findById(id);
 
         double newTotal = (carRental.getCar().getDailyPrice()
-                + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
-                * calTotalDays(carRental.getEndDate(), newEndDate));
+                + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices()))
+                * calTotalDays(oldEndDate, newEndDate)
+                + checkReturnCities(carRental.getRentedCity().getId(), oldReturnCityId, carRental.getReturnedCity().getId());
 
         this.paymentService.addForExtra(createRequest, rememberMe, newTotal);
+    }
+
+    /*
+        1 == 1      1 == 2,3 (take extra),
+        1 == 2      1 == 1 (repay) / 1 == 3 (no action)
+        1 == 3      visa versa
+    */
+    private double checkReturnCities(long rentCity, long oldReturnCityId, long newReturnCityId) {
+        if (rentCity == oldReturnCityId) {
+            if (oldReturnCityId != newReturnCityId)
+                return 750.0;
+        } else {
+            if (rentCity == newReturnCityId)
+                return -750.0;
+        }
+        return 0.0;
     }
 
     @Override
     public double calRentedTotal(long id) {
         CarRental carRental = repository.findById(id);
 
-        return (carRental.getCar().getDailyPrice()
-                + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())
-                * calTotalDays(carRental.getStartDate(), carRental.getEndDate()))
-                + checkCityIds(carRental);
+        return (carRental.getCar().getDailyPrice() + this.orderedAdditionalServiceService.calDailyTotal(carRental.getOrderedAdditionalServices())) * calTotalDays(carRental.getStartDate(), carRental.getEndDate()) + checkCitiesDifferent(carRental);
     }
 
-    private double checkCityIds(CarRental carRental) {
-        if (carRental.getRentedCity().getId().equals(carRental.getReturnedCity().getId())) {
+    private double checkCitiesDifferent(CarRental carRental) {
+        if (!carRental.getRentedCity().getId().equals(carRental.getReturnedCity().getId())) {
             return 750.0;
         }
         return 0.0;
