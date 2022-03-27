@@ -9,5 +9,5 @@ public interface CardInfoRepository extends JpaRepository<CardInfo, Long> {
 
     CardInfo findById(long id);
 
-    CardInfo findByCardholderNameAndCardNumberAndExpiryDateAndSecurityCode(String cardHolderName, String cardNumber, String expiryDate, String securityCode);
+    CardInfo findByCardholderNameAndCardNumberAndExpiryDateAndSecurityCode(String cardholderName, String cardNumber, String expiryDate, String securityCode);
 }

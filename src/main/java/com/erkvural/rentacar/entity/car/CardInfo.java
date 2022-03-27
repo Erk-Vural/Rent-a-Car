@@ -20,10 +20,10 @@ public class CardInfo {
     private Long id;
 
     @Column(name = "card_number")
-    private String CardNumber;
+    private String cardNumber;
 
     @Column(name = "cardholder_name")
-    private String CardholderName;
+    private String cardholderName;
 
     @Column(name = "expiry_date")
     private String expiryDate;
