@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CardInfoRepository extends JpaRepository<CardInfo, Long> {
 
     CardInfo findById(long id);
+
+    CardInfo findByCardholderNameAndCardNumberAndExpiryDateAndSecurityCode(String cardHolderName, String cardNumber, String expiryDate, String securityCode);
 }

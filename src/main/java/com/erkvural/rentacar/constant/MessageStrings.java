@@ -27,7 +27,6 @@ public class MessageStrings {
     public static final String CITY_DELETED = "city.deleted";
     public static final String CITIES_LISTED = "cities.listed";
     public static final String CITY_NOT_FOUND = "city.not.found";
-    public static final String CITY_NAME_NOT_FOUND = "city.name.not.found";
     public static final String CITY_FOUND = "city.found";
     public static final String CITY_EXISTS = "city.exists";
 
@@ -79,7 +78,6 @@ public class MessageStrings {
     public static final String PAYMENT_ADDED = "payment.added";
     public static final String PAYMENT_FOUND = "payment.found";
     public static final String PAYMENT_NOT_FOUND = "payment.not.found";
-    public static final String PAYMENT_UPDATED = "payment.updated";
     public static final String PAYMENTS_LISTED = "payments.listed";
     public static final String PAYMENT_CARD_FAIL = "payment.card.fail";
     public static final String POS_HALK_BANK_SUCCESSFUL = "pos.halk.bank.successful";
@@ -98,21 +96,18 @@ public class MessageStrings {
     public static final String CAR_IS_UNDER_MAINTENANCE = "car.is.under.maintenance";
 
     public static final String INVOICE_ADDED = "invoice.added";
-    public static final String INVOICE_UPDATED = "invoice.updated";
-    public static final String INVOICE_DELETED = "invoice.deleted";
     public static final String INVOICES_LISTED = "invoices.listed";
     public static final String CUSTOMERS_INVOICES_LISTED = "customers.invoices.listed";
     public static final String INVOICE_FOUND = "invoice.found";
     public static final String INVOICE_NOT_FOUND = "invoice.not.found";
-    public static final String INVOICE_EXISTS = "invoice.exists";
 
     public static final String DAMAGE_ADDED = "damage.added";
     public static final String DAMAGE_DELETED = "damage.deleted";
     public static final String DAMAGE_UPDATED = "damage.updated";
     public static final String DAMAGES_LISTED = "damages.listed";
+    public static final String DAMAGES_FOUND = "damages.found";
     public static final String DAMAGE_NOT_FOUND = "damage.not.found";
     public static final String DAMAGE_EXISTS = "damage.exists";
-    public static final String DAMAGE_ALREADY_EXISTS = "damage.already.exists";
 
     public static final String ADDITIONAL_SERVICE_ADDED = "additional.service.added";
     public static final String ADDITIONAL_SERVICE_UPDATED = "additional.service.updated";

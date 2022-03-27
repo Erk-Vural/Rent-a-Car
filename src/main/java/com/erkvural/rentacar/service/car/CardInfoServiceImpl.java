@@ -16,6 +16,7 @@ import com.erkvural.rentacar.repository.car.CardInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,6 +34,10 @@ public class CardInfoServiceImpl implements CardInfoService {
 
     @Override
     public Result add(CardInfoCreateRequest createRequest, long customerId) {
+        checkCardNumber(createRequest.getCardNumber());
+        checkExpiryDate(createRequest.getExpiryDate());
+        checkSecurityCode(createRequest.getSecurityCode());
+        checkCardExists(createRequest);
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(createRequest, CardInfo.class);
 
@@ -70,6 +75,9 @@ public class CardInfoServiceImpl implements CardInfoService {
     @Override
     public Result update(long id, CardInfoUpdateRequest updateRequest) {
         checkCardInfoIdExist(id);
+        checkCardNumber(updateRequest.getCardNumber());
+        checkExpiryDate(updateRequest.getExpiryDate());
+        checkSecurityCode(updateRequest.getSecurityCode());
 
         CardInfo cardInfo = this.modelMapperService.forRequest().map(updateRequest, CardInfo.class);
         cardInfo.setId(id);
@@ -91,5 +99,29 @@ public class CardInfoServiceImpl implements CardInfoService {
     private void checkCardInfoIdExist(long id) throws BusinessException {
         if (!Objects.nonNull(repository.findById(id)))
             throw new BusinessException(MessageStrings.CREDIT_CARD_NOT_FOUND);
+    }
+
+    private void checkCardNumber(String cardNumber) {
+        if (cardNumber.length() != 16)
+            throw new BusinessException(MessageStrings.CREDIT_CARD_NUMBER_ERROR);
+    }
+
+    private void checkExpiryDate(String expiryDate) {
+        int month = Integer.parseInt(expiryDate.substring(0, 2));
+        int year = Integer.parseInt(expiryDate.substring(expiryDate.length() - 2)) + 2000;
+
+        if (month < LocalDate.now().getMonthValue() && year <= LocalDate.now().getYear()) {
+            throw new BusinessException(MessageStrings.CREDIT_CARD_DATE_ERROR);
+        }
+    }
+
+    private void checkSecurityCode(String securityCode) {
+        if (securityCode.length() != 3)
+            throw new BusinessException(MessageStrings.CREDIT_CARD_CVV_ERROR);
+    }
+
+    private void checkCardExists(CardInfoCreateRequest createRequest) {
+        if (!Objects.nonNull(repository.findByCardholderNameAndCardNumberAndExpiryDateAndSecurityCode(createRequest.getCardholderName(), createRequest.getCardNumber(), createRequest.getExpiryDate(), createRequest.getSecurityCode())))
+            throw new BusinessException(MessageStrings.CREDIT_CARD_EXISTS);
     }
 }

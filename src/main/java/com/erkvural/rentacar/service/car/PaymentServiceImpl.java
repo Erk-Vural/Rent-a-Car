@@ -3,10 +3,7 @@ package com.erkvural.rentacar.service.car;
 import com.erkvural.rentacar.constant.MessageStrings;
 import com.erkvural.rentacar.core.exception.BusinessException;
 import com.erkvural.rentacar.core.utils.mapping.ModelMapperService;
-import com.erkvural.rentacar.core.utils.results.DataResult;
-import com.erkvural.rentacar.core.utils.results.Result;
-import com.erkvural.rentacar.core.utils.results.SuccessDataResult;
-import com.erkvural.rentacar.core.utils.results.SuccessResult;
+import com.erkvural.rentacar.core.utils.results.*;
 import com.erkvural.rentacar.dto.car.create.CardInfoCreateRequest;
 import com.erkvural.rentacar.dto.car.create.InvoiceCreateRequest;
 import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
@@ -125,6 +122,9 @@ public class PaymentServiceImpl implements PaymentService {
     private void saveCardInfo(CardInfoCreateRequest createRequest, boolean rememberCardInfo, long customerId) throws BusinessException {
         if (rememberCardInfo) {
             this.cardInfoService.add(createRequest, customerId);
+
+            new SuccessResult(MessageStrings.CREDIT_CARD_REGISTERED);
         }
+        new ErrorResult(MessageStrings.CREDIT_CARD_NOT_SAVE);
     }
 }

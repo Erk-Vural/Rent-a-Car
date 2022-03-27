@@ -95,7 +95,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private void checkInvoiceIdExist(long id) throws BusinessException {
         if (!Objects.nonNull(repository.findById(id)))
-            throw new BusinessException(MessageStrings.INVOICE_FOUND);
+            throw new BusinessException(MessageStrings.INVOICE_NOT_FOUND);
     }
 
     private Invoice setInvoice(long paymentId) {

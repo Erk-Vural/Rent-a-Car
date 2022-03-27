@@ -66,7 +66,7 @@ public class CarDamageServiceImpl implements CarDamageService {
         CarDamage carDamage = repository.getById(id);
         CarDamageGetResponse response = modelMapperService.forResponse().map(carDamage, CarDamageGetResponse.class);
 
-        return new SuccessDataResult<>(MessageStrings.DAMAGE_ALREADY_EXISTS, response);
+        return new SuccessDataResult<>(MessageStrings.DAMAGES_FOUND, response);
     }
 
     @Override
@@ -106,9 +106,8 @@ public class CarDamageServiceImpl implements CarDamageService {
             throw new BusinessException(MessageStrings.CAR_NOT_FOUND);
     }
 
-
     private void checkCarStatus(long carId) throws BusinessException {
         if (this.carService.getById(carId).getData().getStatus() == CarStatus.DAMAGED)
-            throw new BusinessException(MessageStrings.DAMAGE_ALREADY_EXISTS);
+            throw new BusinessException(MessageStrings.DAMAGE_EXISTS);
     }
 }
