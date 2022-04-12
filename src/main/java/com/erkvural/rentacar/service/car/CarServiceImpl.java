@@ -142,8 +142,7 @@ public class CarServiceImpl implements CarService {
 
         Car car = repository.findById(carId);
         car.setStatus(status);
-
-        System.out.println(repository.findById(carId));
+        repository.save(car);
 
         new SuccessResult(MessageStrings.CAR_STATUS_SET);
     }
