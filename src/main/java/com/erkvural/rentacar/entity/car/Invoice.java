@@ -30,7 +30,7 @@ public class Invoice {
     private LocalDate rentEndDate;
 
     @Column(name = "total_rent_days")
-    private long totalRentDays;
+    private Long totalRentDays;
 
     @Column(name = "total")
     private double total;
