@@ -9,6 +9,7 @@ import com.erkvural.rentacar.service.car.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class ColorController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody ColorCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid ColorCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -37,7 +38,7 @@ public class ColorController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody ColorUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  ColorUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

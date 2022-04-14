@@ -9,6 +9,7 @@ import com.erkvural.rentacar.service.car.CarDamageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CarDamageController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarDamageCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid CarDamageCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -38,7 +39,7 @@ public class CarDamageController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody CarDamageUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  CarDamageUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

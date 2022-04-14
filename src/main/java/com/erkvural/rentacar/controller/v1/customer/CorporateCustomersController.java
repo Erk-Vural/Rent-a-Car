@@ -9,6 +9,7 @@ import com.erkvural.rentacar.service.customer.CorporateCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class CorporateCustomersController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CorporateCustomerCreateRequest createRequest) {
+    public Result add(@RequestBody @Valid CorporateCustomerCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -37,7 +38,7 @@ public class CorporateCustomersController {
     }
 
     @PutMapping("/update/{id}")
-    public Result update(@PathVariable long id, @RequestBody CorporateCustomerUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody @Valid CorporateCustomerUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

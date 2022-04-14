@@ -9,6 +9,7 @@ import com.erkvural.rentacar.service.car.CardInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CardInfoController {
     }
 
     @PostMapping("/add/customerId={customerId}")
-    public Result add(@RequestBody CardInfoCreateRequest createRequest, @PathVariable long customerId) {
+    public Result add(@RequestBody  @Valid CardInfoCreateRequest createRequest, @PathVariable long customerId) {
         return this.service.add(createRequest, customerId);
     }
 
@@ -38,7 +39,7 @@ public class CardInfoController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody CardInfoUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  CardInfoUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

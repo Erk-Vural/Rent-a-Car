@@ -10,6 +10,7 @@ import com.erkvural.rentacar.service.car.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody BrandCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid BrandCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -40,7 +41,7 @@ public class BrandController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody BrandUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  BrandUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class CarRentalController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarRentalCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid CarRentalCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -60,7 +61,7 @@ public class CarRentalController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody CarRentalUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  CarRentalUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

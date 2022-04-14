@@ -9,6 +9,7 @@ import com.erkvural.rentacar.service.customer.IndividualCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class IndividualCustomerController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody IndividualCustomerCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid IndividualCustomerCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -37,7 +38,7 @@ public class IndividualCustomerController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody IndividualCustomerUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  IndividualCustomerUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

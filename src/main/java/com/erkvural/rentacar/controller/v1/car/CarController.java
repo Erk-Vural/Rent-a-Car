@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CarCreateRequest createRequest) {
+    public Result add(@RequestBody  @Valid CarCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
@@ -54,7 +55,7 @@ public class CarController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody CarUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody  @Valid  CarUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

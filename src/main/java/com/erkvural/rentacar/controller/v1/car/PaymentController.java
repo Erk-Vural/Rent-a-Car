@@ -8,6 +8,7 @@ import com.erkvural.rentacar.service.car.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class PaymentController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody PaymentCreateRequest createRequest, @RequestParam("rememberMe") boolean rememberMe) {
+    public Result add(@RequestBody  @Valid PaymentCreateRequest createRequest, @RequestParam("rememberMe") boolean rememberMe) {
         return this.service.add(createRequest, rememberMe);
     }
 
