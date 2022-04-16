@@ -13,7 +13,7 @@ public class PaymentGetResponse {
 
     private double total;
 
-    private CardInfo cardInfo;
+    private long cardInfoId;
 
     private long carRentalId;
 }

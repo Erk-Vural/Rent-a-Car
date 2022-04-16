@@ -4,6 +4,7 @@ import com.erkvural.rentacar.core.utils.results.DataResult;
 import com.erkvural.rentacar.dto.car.get.InvoiceGetResponse;
 import com.erkvural.rentacar.service.car.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,8 @@ public class InvoiceController {
     }
 
     @GetMapping("/get/start-date={startDate}+end-date={endDate}")
-    public DataResult<List<InvoiceGetResponse>> getByBetweenDates(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+    public DataResult<List<InvoiceGetResponse>> getByBetweenDates(@PathVariable @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                  @PathVariable @DateTimeFormat (iso = DateTimeFormat.ISO.DATE)  LocalDate endDate) {
         return service.getByBetweenDates(endDate, startDate);
     }
 }

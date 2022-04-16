@@ -42,5 +42,4 @@ public class Invoice {
     @OneToOne
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
-
 }
