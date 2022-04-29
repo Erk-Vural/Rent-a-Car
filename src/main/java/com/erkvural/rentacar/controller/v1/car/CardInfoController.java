@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.CardInfoGetResponse;
 import com.erkvural.rentacar.dto.car.update.CardInfoUpdateRequest;
 import com.erkvural.rentacar.service.car.CardInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class CardInfoController {
         return this.service.add(createRequest, customerId);
     }
 
+    @Cacheable("cardInfos")
     @GetMapping("/get/all")
     public DataResult<List<CardInfoGetResponse>> getAll() {
         return service.getAll();

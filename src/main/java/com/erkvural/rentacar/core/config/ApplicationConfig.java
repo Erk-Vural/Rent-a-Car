@@ -22,6 +22,7 @@ class ApplicationConfig {
         return new ModelMapper();
     }
 
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException methodArgumentNotValidException) {
@@ -33,8 +34,8 @@ class ApplicationConfig {
     }
 
     @ExceptionHandler
-    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleBusinessExceptions(BusinessException businessException){
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ErrorDataResult<Object> handleBusinessExceptions(BusinessException businessException) {
         return new ErrorDataResult<>(businessException.getMessage());
     }
 }

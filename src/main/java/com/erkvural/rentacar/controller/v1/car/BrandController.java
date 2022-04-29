@@ -8,6 +8,7 @@ import com.erkvural.rentacar.dto.car.get.BrandGetResponse;
 import com.erkvural.rentacar.dto.car.update.BrandUpdateRequest;
 import com.erkvural.rentacar.service.car.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class BrandController {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("brands")
     @GetMapping("/get/all")
     public DataResult<List<BrandGetResponse>> getAll() {
         return service.getAll();

@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.CarGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarUpdateRequest;
 import com.erkvural.rentacar.service.car.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class CarController {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("cars")
     @GetMapping("/get/all")
     public DataResult<List<CarGetResponse>> getAll() {
         return service.getAll();

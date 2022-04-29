@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.ColorGetResponse;
 import com.erkvural.rentacar.dto.car.update.ColorUpdateRequest;
 import com.erkvural.rentacar.service.car.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,10 +24,11 @@ public class ColorController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody  @Valid ColorCreateRequest createRequest) {
+    public Result add(@RequestBody @Valid ColorCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("colors")
     @GetMapping("/get/all")
     public DataResult<List<ColorGetResponse>> getAll() {
         return service.getAll();
@@ -38,7 +40,7 @@ public class ColorController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody  @Valid  ColorUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody @Valid ColorUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

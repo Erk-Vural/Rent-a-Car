@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.CityGetResponse;
 import com.erkvural.rentacar.dto.car.update.CityUpdateRequest;
 import com.erkvural.rentacar.service.car.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,10 +25,11 @@ public class CityController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody  @Valid CityCreateRequest createRequest) {
+    public Result add(@RequestBody @Valid CityCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("cities")
     @GetMapping("/get/all")
     public DataResult<List<CityGetResponse>> getAll() {
         return service.getAll();
@@ -39,7 +41,7 @@ public class CityController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody  @Valid  CityUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody @Valid CityUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

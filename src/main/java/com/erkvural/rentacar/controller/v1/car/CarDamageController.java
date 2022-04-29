@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.CarDamageGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarDamageUpdateRequest;
 import com.erkvural.rentacar.service.car.CarDamageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class CarDamageController {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("carDamages")
     @GetMapping("/get/all")
     public DataResult<List<CarDamageGetResponse>> getAll() {
         return service.getAll();

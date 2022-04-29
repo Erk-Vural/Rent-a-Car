@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 public interface CarRentalRepository extends JpaRepository<CarRental, Long> {
 
+
     CarRental findById(long id);
 
+
     List<CarRental> findByCar_Id(long carId);
+
 
     List<CarRental> findByCustomer_UserId(long customerId);
 }

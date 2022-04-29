@@ -8,6 +8,7 @@ import com.erkvural.rentacar.dto.car.get.CarMaintenanceGetResponse;
 import com.erkvural.rentacar.dto.car.update.CarMaintenanceUpdateRequest;
 import com.erkvural.rentacar.service.car.CarMaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +26,11 @@ public class CarMaintenanceController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody  @Valid CarMaintenanceCreateRequest createRequest) {
+    public Result add(@RequestBody @Valid CarMaintenanceCreateRequest createRequest) {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("carMaintenances")
     @GetMapping("/get/all")
     public DataResult<List<CarMaintenanceGetResponse>> getAll() {
         return service.getAll();
@@ -56,7 +58,7 @@ public class CarMaintenanceController {
     }
 
     @PutMapping("/update/id={id}")
-    public Result update(@PathVariable long id, @RequestBody  @Valid  CarMaintenanceUpdateRequest updateRequest) {
+    public Result update(@PathVariable long id, @RequestBody @Valid CarMaintenanceUpdateRequest updateRequest) {
         return this.service.update(id, updateRequest);
     }
 

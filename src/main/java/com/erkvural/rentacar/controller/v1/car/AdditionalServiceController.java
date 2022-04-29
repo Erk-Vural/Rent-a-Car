@@ -7,6 +7,7 @@ import com.erkvural.rentacar.dto.car.get.AdditionalServiceGetResponse;
 import com.erkvural.rentacar.dto.car.update.AdditionalServiceUpdateRequest;
 import com.erkvural.rentacar.service.car.AdditionalServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class AdditionalServiceController {
         return this.service.add(createRequest);
     }
 
+    @Cacheable("additionalServices")
     @GetMapping("/get/all")
     public DataResult<List<AdditionalServiceGetResponse>> getAll() {
         return service.getAll();

@@ -6,6 +6,7 @@ import com.erkvural.rentacar.dto.car.create.PaymentCreateRequest;
 import com.erkvural.rentacar.dto.car.get.PaymentGetResponse;
 import com.erkvural.rentacar.service.car.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class PaymentController {
         return this.service.add(createRequest, rememberMe);
     }
 
+    @Cacheable("payments")
     @GetMapping("/get/all")
     public DataResult<List<PaymentGetResponse>> getAll() {
         return service.getAll();
