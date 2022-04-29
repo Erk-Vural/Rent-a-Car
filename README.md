@@ -3,7 +3,11 @@
 RentACar is a layered Architecture Back-end Application. It's developed as a starter/basics project for Spring
 framework, back-end development and Java clean code exercises.
 
+_**Crow's foot diagram for RentACar**_
 ![rentacar-crow's foot diagram](rentacar(crow's%20foot%20diagram).png)
+
+**_UML Class diagram for RentACar_**
+![rentacar-uml class diagram](rentacar(UML%20class%20diagram).png)
 
 ### Notes:
 
